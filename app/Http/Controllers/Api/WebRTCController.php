@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Events\WebRTCOffer;
+use App\Events\WebRTCAnswer;
+use App\Events\WebRTCIceCandidate;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Log;
 
 class WebRTCController extends Controller
@@ -13,21 +15,32 @@ class WebRTCController extends Controller
     {
         $request->validate([
             'roomId' => 'required|string',
-            'offer' => 'required',
-            'from' => 'required|integer'
+            'offer' => 'required|array',
+            'from' => 'required|integer',
+            'sessionId' => 'nullable|string|max:128',
         ]);
 
         try {
-            broadcast(new \App\Events\WebRTCOffer([
-                'roomId' => $request->roomId,
-                'offer' => $request->offer,
-                'from' => $request->from
-            ]));
+            broadcast(new WebRTCOffer(
+                $request->input('roomId'),
+                $request->input('offer'),
+                (int) $request->input('from'),
+                $request->input('sessionId') ? (string) $request->input('sessionId') : null
+            ));
 
             return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            Log::error('Error sending WebRTC offer: ' . $e->getMessage());
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        } catch (\Throwable $e) {
+            Log::error('WebRTC offer broadcast failed', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'request' => $request->all(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -35,20 +48,32 @@ class WebRTCController extends Controller
     {
         $request->validate([
             'roomId' => 'required|string',
-            'answer' => 'required',
-            'from' => 'required|integer'
+            'answer' => 'required|array',
+            'from' => 'required|integer',
+            'sessionId' => 'nullable|string|max:128',
         ]);
 
         try {
-            broadcast(new \App\Events\WebRTCAnswer([
-                'roomId' => $request->roomId,
-                'answer' => $request->answer,
-                'from' => $request->from
-            ]));
+            broadcast(new WebRTCAnswer(
+                $request->input('roomId'),
+                $request->input('answer'),
+                (int) $request->input('from'),
+                $request->input('sessionId') ? (string) $request->input('sessionId') : null
+            ));
 
             return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        } catch (\Throwable $e) {
+            Log::error('WebRTC answer broadcast failed', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'request' => $request->all(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -56,21 +81,41 @@ class WebRTCController extends Controller
     {
         $request->validate([
             'roomId' => 'required|string',
-            'candidate' => 'required',
-            'from' => 'required|integer'
+            'candidate' => 'required|array',
+            'from' => 'required|integer',
+            'sessionId' => 'nullable|string|max:128',
         ]);
 
         try {
-            broadcast(new \App\Events\WebRTCIceCandidate([
-                'roomId' => $request->roomId,
-                'candidate' => $request->candidate,
-                'from' => $request->from
-            ]));
+            $candidate = $request->input('candidate');
+
+            $plainCandidate = [
+                'candidate' => $candidate['candidate'] ?? null,
+                'sdpMid' => $candidate['sdpMid'] ?? null,
+                'sdpMLineIndex' => $candidate['sdpMLineIndex'] ?? null,
+                'usernameFragment' => $candidate['usernameFragment'] ?? null,
+            ];
+
+            broadcast(new WebRTCIceCandidate(
+                $request->input('roomId'),
+                $plainCandidate,
+                (int) $request->input('from'),
+                $request->input('sessionId') ? (string) $request->input('sessionId') : null
+            ));
 
             return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        } catch (\Throwable $e) {
+            Log::error('WebRTC ICE broadcast failed', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'request' => $request->all(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 }
-

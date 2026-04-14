@@ -3,27 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/MentorHub.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('images/MentorHub.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>MentorHub - Messages</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @livewireStyles
-    <!-- Pusher Client -->
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
-        // Pass user data to frontend - use unified user ID
-        @php
-            $unifiedUser = \App\Models\UnifiedUser::where('email', Auth::guard('tutor')->user()->email)->first();
-        @endphp
-        window.currentUserId = {{ $unifiedUser ? $unifiedUser->id : Auth::guard('tutor')->id() }};
+        window.currentUserId = @json(Auth::guard('tutor')->id());
         window.currentUserType = 'tutor';
-        
-        // Pusher configuration
-        @php
-            $pusherKey = env('PUSHER_APP_KEY');
-            $pusherCluster = env('PUSHER_APP_CLUSTER', 'mt1');
-        @endphp
-        window.pusherKey = @json($pusherKey);
-        window.pusherCluster = @json($pusherCluster);
+        window.pusherKey = @json(config('broadcasting.connections.pusher.key'));
+        window.pusherCluster = @json(config('broadcasting.connections.pusher.options.cluster', 'mt1'));
     </script>
     <style>
         * {

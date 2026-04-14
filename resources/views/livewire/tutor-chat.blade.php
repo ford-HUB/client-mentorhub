@@ -58,29 +58,16 @@
                         </div>
                         <div class="chat-user-details">
                             <h3>{{ $selectedConversation['name'] ?? 'Student' }}</h3>
-                            <div class="chat-user-status">
-                                @if($selectedConversation['online'] ?? false)
-                                    Online • Student
-                                @else
-                                    Offline • Student
-                                @endif
-                            </div>
                         </div>
                     </div>
-                    @if($selectedStudentId)
-                        <div class="chat-actions">
-                            <button class="action-btn" title="Video Call" wire:click="startCall('video', {{ $selectedStudentId }}, '{{ $selectedConversation['name'] ?? 'Student' }}')">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-                                </svg>
-                            </button>
-                            <button class="action-btn" title="Voice Call" wire:click="startCall('voice', {{ $selectedStudentId }}, '{{ $selectedConversation['name'] ?? 'Student' }}')">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    @endif
+                    <div class="chat-actions">
+                        <button type="button" class="action-btn" title="Voice Call" wire:click.prevent="startCall('voice', {{ $selectedStudentId }}, '{{ addslashes($selectedConversation['name'] ?? 'Student') }}')" wire:loading.attr="disabled" wire:target="startCall">
+                            <i class="fas fa-phone"></i>
+                        </button>
+                        <button type="button" class="action-btn" title="Video Call" wire:click.prevent="startCall('video', {{ $selectedStudentId }}, '{{ addslashes($selectedConversation['name'] ?? 'Student') }}')" wire:loading.attr="disabled" wire:target="startCall">
+                            <i class="fas fa-video"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="messages-container" id="messages-container">
@@ -800,32 +787,5 @@
                 });
             }
         });
-    </script>
-
-    <script>
-        // Call button functions
-        function startVideoCall(studentId, studentName) {
-            console.log('Starting video call to:', studentId, studentName);
-            // Find the Livewire component and call the method
-            const component = document.querySelector('[wire\\:id]');
-            if (component) {
-                const wireId = component.getAttribute('wire:id');
-                window.Livewire.find(wireId).call('startCall', 'video', studentId, studentName);
-            } else {
-                console.error('Livewire component not found');
-            }
-        }
-
-        function startVoiceCall(studentId, studentName) {
-            console.log('Starting voice call to:', studentId, studentName);
-            // Find the Livewire component and call the method
-            const component = document.querySelector('[wire\\:id]');
-            if (component) {
-                const wireId = component.getAttribute('wire:id');
-                window.Livewire.find(wireId).call('startCall', 'voice', studentId, studentName);
-            } else {
-                console.error('Livewire component not found');
-            }
-        }
     </script>
 </div> 

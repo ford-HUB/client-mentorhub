@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/MentorHub.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('images/MentorHub.png') }}">
     <title>Email Verification - MentorHub</title>
     <link rel="stylesheet" href="{{ asset('style/studentregister2.css') }}">
     <style>
@@ -300,7 +303,7 @@
                     </div>
                 @endif
                 
-                <form action="{{ route('verify.email') }}" method="POST" class="verification-form" id="verificationForm">
+                <form action="{{ route('verify.email.submit') }}" method="POST" class="verification-form" id="verificationForm">
                     @csrf
                     <input type="hidden" name="email" value="{{ $email }}">
                     <input type="hidden" name="type" value="{{ $type }}">

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Broadcast;
 use App\Http\Controllers\uiController\homeController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TutorRegisterController;
@@ -15,6 +16,9 @@ use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\CallController;
 use App\Http\Controllers\Api\WebRTCController;
 
+// Register broadcast authentication routes
+Broadcast::routes(['middleware' => ['web', 'auth:student,tutor']]);
+
 Route::get('/', [homeController::class, 'homePage'])->name('home');
 
 Route::get('/signup', [homeController::class, 'signupPage'])->name('signup');
@@ -28,7 +32,7 @@ Route::post('/register/tutor', [TutorRegisterController::class, 'tutorRegister']
 
 // Email verification routes
 Route::get('/verify-email', [App\Http\Controllers\EmailVerificationController::class, 'showVerificationForm'])->name('verify.email');
-Route::post('/verify-email', [App\Http\Controllers\EmailVerificationController::class, 'verifyCode'])->name('verify.email');
+Route::post('/verify-email', [App\Http\Controllers\EmailVerificationController::class, 'verifyCode'])->name('verify.email.submit');
 Route::post('/resend-verification', [App\Http\Controllers\EmailVerificationController::class, 'resendCode'])->name('resend.verification');
 
 Route::get('/login', [homeController::class, 'loginPage'])->name('login');
@@ -333,6 +337,7 @@ Route::middleware(['auth:student,tutor', 'web'])->prefix('api')->group(function 
     // Call routes
     Route::post('/calls/initiate', [CallController::class, 'initiate'])->name('api.calls.initiate');
     Route::post('/calls/answer', [CallController::class, 'answer'])->name('api.calls.answer');
+    Route::post('/calls/decline', [CallController::class, 'decline'])->name('api.calls.decline');
     Route::post('/calls/end', [CallController::class, 'end'])->name('api.calls.end');
     
     // WebRTC signaling routes

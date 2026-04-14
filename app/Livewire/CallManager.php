@@ -187,9 +187,6 @@ class CallManager extends Component
         try {
         $this->dispatch('sendCallToReceiver', $dispatchData);
         
-        // Also try direct JavaScript method call as backup
-        $this->dispatch('callInitiationDirect', $dispatchData);
-        
         // Also dispatch to initialize WebRTC for the caller
         $this->dispatch('initializeWebRTC', [
             'roomId' => $this->roomId,
@@ -223,40 +220,38 @@ class CallManager extends Component
         $this->callerName = $data['callerName'];
         $this->receiverId = $data['receiverId'];
         
-        // Get current user info and set profile pictures correctly
+        // The UI schema dictates that "caller" = Local Viewport User, and "receiver" = Remote Counterpart User.
         if (Auth::guard('student')->check()) {
             $currentUser = Auth::guard('student')->user();
-            $this->receiverId = $currentUser->id;
-            $this->receiverName = $currentUser->getFullName();
+            // Local User (Student)
+            $this->callerId = $currentUser->id;
+            $this->callerName = $currentUser->getFullName();
+            $this->callerProfilePicture = $currentUser->profile_picture;
             
-            // For incoming calls, the current user (student) is the "caller" in terms of display
-            // and the actual caller (tutor) is the "receiver" in terms of display
-            $this->callerName = $currentUser->getFullName(); // Student's own name for local display
-            $this->callerProfilePicture = $currentUser->profile_picture; // Student's own profile picture
-            $this->receiverProfilePicture = $this->getUserProfilePicture($data['callerId'], 'tutor'); // Tutor's profile picture
+            // Remote Counterpart (Tutor)
+            $this->receiverId = $data['callerId'];
+            $this->receiverName = $data['callerName'];
+            $this->receiverProfilePicture = $this->getUserProfilePicture($data['callerId'], 'tutor');
             
-            \Log::info('Student receiving call - profile pictures set:', [
-                'studentProfilePicture' => $this->callerProfilePicture,
-                'tutorProfilePicture' => $this->receiverProfilePicture,
-                'studentName' => $this->callerName,
-                'tutorName' => $data['callerName']
+            \Log::info('Student receiving call - mapping established:', [
+                'localName' => $this->callerName,
+                'remoteName' => $this->receiverName
             ]);
         } elseif (Auth::guard('tutor')->check()) {
             $currentUser = Auth::guard('tutor')->user();
-            $this->receiverId = $currentUser->id;
-            $this->receiverName = $currentUser->getFullName();
+            // Local User (Tutor)
+            $this->callerId = $currentUser->id;
+            $this->callerName = $currentUser->getFullName();
+            $this->callerProfilePicture = $currentUser->profile_picture;
             
-            // For incoming calls, the current user (tutor) is the "caller" in terms of display
-            // and the actual caller (student) is the "receiver" in terms of display
-            $this->callerName = $currentUser->getFullName(); // Tutor's own name for local display
-            $this->callerProfilePicture = $currentUser->profile_picture; // Tutor's own profile picture
-            $this->receiverProfilePicture = $this->getUserProfilePicture($data['callerId'], 'student'); // Student's profile picture
+            // Remote Counterpart (Student)
+            $this->receiverId = $data['callerId'];
+            $this->receiverName = $data['callerName'];  
+            $this->receiverProfilePicture = $this->getUserProfilePicture($data['callerId'], 'student');
             
-            \Log::info('Tutor receiving call - profile pictures set:', [
-                'tutorProfilePicture' => $this->callerProfilePicture,
-                'studentProfilePicture' => $this->receiverProfilePicture,
-                'tutorName' => $this->callerName,
-                'studentName' => $data['callerName']
+            \Log::info('Tutor receiving call - mapping established:', [
+                'localName' => $this->callerName,
+                'remoteName' => $this->receiverName
             ]);
         }
         
@@ -284,16 +279,21 @@ class CallManager extends Component
             'call_answered'
         );
         
-        // Notify caller that call was answered
+        $answeredId = Auth::guard('student')->check()
+            ? Auth::guard('student')->id()
+            : Auth::guard('tutor')->id();
+        $answeredType = Auth::guard('student')->check() ? 'student' : 'tutor';
+
         $this->dispatch('callAnswered', [
             'roomId' => $this->roomId,
-            'receiverId' => $this->receiverId
+            'answeredId' => $answeredId,
+            'answeredType' => $answeredType,
         ]);
 
-        // Also dispatch to Socket.IO for cross-tab communication
         $this->dispatch('socketCallAnswered', [
             'roomId' => $this->roomId,
-            'receiverId' => $this->receiverId
+            'answeredId' => $answeredId,
+            'answeredType' => $answeredType,
         ]);
         } catch (\Exception $e) {
             \Log::error('CallManager::answerCall - Error:', [
@@ -322,16 +322,21 @@ class CallManager extends Component
             'call_declined'
         );
         
-        // Notify caller that call was declined
+        $declinedId = Auth::guard('student')->check()
+            ? Auth::guard('student')->id()
+            : Auth::guard('tutor')->id();
+        $declinedType = Auth::guard('student')->check() ? 'student' : 'tutor';
+
         $this->dispatch('callDeclined', [
             'roomId' => $this->roomId,
-            'receiverId' => $this->receiverId
+            'declinedId' => $declinedId,
+            'declinedType' => $declinedType,
         ]);
 
-        // Also dispatch to Socket.IO for cross-tab communication
         $this->dispatch('socketCallDeclined', [
             'roomId' => $this->roomId,
-            'receiverId' => $this->receiverId
+            'declinedId' => $declinedId,
+            'declinedType' => $declinedType,
         ]);
         
         $this->resetCall();
@@ -341,11 +346,9 @@ class CallManager extends Component
     {
         // This method handles when the call is answered by the receiver
         if ($this->isInCall && $this->isCaller) {
-            // Call was answered, initialize WebRTC
-            $this->dispatch('initializeWebRTC', [
-                'roomId' => $this->roomId,
-                'isCaller' => true
-            ]);
+            \Log::info('Call answered by receiver, Caller continuing connection.');
+            // Caller WebRTC is already initialized and waiting for the answer.
+            // Do not re-dispatch initializeWebRTC here as it will reset the camera.
         }
     }
 

@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{asset('style/loginPage.css')}}">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/MentorHub.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('images/MentorHub.png') }}">
+    <link rel="stylesheet" href="{{asset('style/loginpage.css')}}">
     <title>MentorHub - Student Login</title>
 </head>
 <body>

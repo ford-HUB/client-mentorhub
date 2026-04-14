@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MentorHub</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/MentorHub.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('images/MentorHub.png') }}">
     <link rel="stylesheet" href="{{ asset('style/dashboard.css') }}">
 </head>
 <body>

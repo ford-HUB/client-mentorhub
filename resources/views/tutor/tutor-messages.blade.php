@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/MentorHub.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('images/MentorHub.png') }}">
     <link rel="stylesheet" href="{{ asset('style/dashboard.css') }}">
     <title>MentorHub - Messages</title>
     <style>
@@ -624,13 +627,7 @@
                         <div class="chat-avatar" id="chat-avatar">JD</div>
                         <div class="chat-user-details">
                             <h3 id="chat-user-name">John Doe</h3>
-                            <div class="chat-user-status">Online • Mathematics Student</div>
                         </div>
-                    </div>
-                    <div class="chat-actions">
-                        <button class="action-btn" title="Video Call">📹</button>
-                        <button class="action-btn" title="Voice Call">📞</button>
-                        <button class="action-btn" title="More Options">⋯</button>
                     </div>
                 </div>
 
@@ -722,7 +719,6 @@
                 '1': {
                     name: 'John Doe',
                     avatar: 'JD',
-                    status: 'Online • Mathematics Student',
                     messages: [
                         { sender: 'student', text: 'Hi! I have a question about calculus. Can you help me understand derivatives?', time: '2:15 PM' },
                         { sender: 'tutor', text: 'Of course! I\'d be happy to help you with derivatives. What specific concept are you having trouble with?', time: '2:18 PM' },
@@ -734,7 +730,6 @@
                 '2': {
                     name: 'Maria Smith',
                     avatar: 'MS',
-                    status: 'Online • Physics Student',
                     messages: [
                         { sender: 'student', text: 'Can we reschedule our session for tomorrow? I have a conflict today.', time: '1:10 PM' },
                         { sender: 'tutor', text: 'No problem! What time works better for you tomorrow?', time: '1:12 PM' },
@@ -744,7 +739,6 @@
                 '3': {
                     name: 'Alex Johnson',
                     avatar: 'AJ',
-                    status: 'Offline • Chemistry Student',
                     messages: [
                         { sender: 'student', text: 'Thank you for the help with physics! The concepts are much clearer now.', time: 'Yesterday' },
                         { sender: 'tutor', text: 'You\'re very welcome! I\'m glad I could help. Keep practicing those problems!', time: 'Yesterday' }
@@ -753,7 +747,6 @@
                 '4': {
                     name: 'Emma Brown',
                     avatar: 'EB',
-                    status: 'Online • Chemistry Student',
                     messages: [
                         { sender: 'student', text: 'I\'m struggling with the chemistry assignment. Can you help me with question 5?', time: 'Monday' },
                         { sender: 'tutor', text: 'Absolutely! Let\'s work through it together. What\'s the question about?', time: 'Monday' }
@@ -789,7 +782,6 @@
                 // Update chat header
                 chatUserName.textContent = conversation.name;
                 chatAvatar.textContent = conversation.avatar;
-                document.querySelector('.chat-user-status').textContent = conversation.status;
 
                 // Clear and load messages
                 messagesContainer.innerHTML = '';

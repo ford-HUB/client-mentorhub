@@ -1,3 +1,4 @@
+//socket-client.js
 // Pusher Client for Laravel Application (Replaces Socket.IO)
 class ChatSocket {
     constructor() {
@@ -29,7 +30,15 @@ class ChatSocket {
                 cluster: pusherCluster,
                 encrypted: true,
                 forceTLS: true,
-                enabledTransports: ['ws', 'wss']
+                enabledTransports: ['ws', 'wss'],
+                // Use Laravel's broadcasting auth endpoint
+                channelAuthorization: {
+                    endpoint: '/broadcasting/auth',
+                    transport: 'ajax',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    }
+                }
             });
 
             // Connection state handlers
@@ -367,7 +376,7 @@ class ChatSocket {
     }
 
     // Answer a call
-    async answerCall(roomId, receiverId, receiverType) {
+    async answerCall(roomId, answeredId, answeredType) {
         try {
             await fetch(`${this.apiBaseUrl}/api/calls/answer`, {
                 method: 'POST',
@@ -377,12 +386,31 @@ class ChatSocket {
                 },
                 body: JSON.stringify({
                     roomId,
-                    receiverId,
-                    receiverType
+                    answeredId,
+                    answeredType
                 })
             });
         } catch (error) {
             console.error('Error answering call:', error);
+        }
+    }
+
+    async declineCall(roomId, declinedId, declinedType) {
+        try {
+            await fetch(`${this.apiBaseUrl}/api/calls/decline`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                },
+                body: JSON.stringify({
+                    roomId,
+                    declinedId,
+                    declinedType
+                })
+            });
+        } catch (error) {
+            console.error('Error declining call:', error);
         }
     }
 
@@ -405,41 +433,86 @@ class ChatSocket {
         }
     }
 
-    // Join call room for WebRTC signaling
+    /**
+     * Subscribe to private-call-{roomId} for WebRTC signaling and call lifecycle events.
+     * Returns a Promise that resolves when bindings are ready (subscription active).
+     */
     joinCallRoom(roomId) {
-        if (!this.isConnected) return;
+        return new Promise((resolve, reject) => {
+            if (!this.pusher || !this.isConnected) {
+                console.warn('joinCallRoom skipped: Pusher not ready');
+                resolve();
+                return;
+            }
 
-        const channelName = `private-call-${roomId}`;
-        this.subscribeToChannel(channelName, (channel) => {
-            // Listen for WebRTC signaling events
-            channel.bind('webrtc-offer', (data) => {
-                this.handleWebRTCOffer(data);
+            const channelName = `private-call-${roomId}`;
+
+            const attachCallRoomListeners = (channel) => {
+                if (channel.__mentorHubCallBindings) {
+                    return;
+                }
+                channel.__mentorHubCallBindings = true;
+
+                channel.bind('webrtc-offer', (data) => {
+                    this.handleWebRTCOffer(data);
+                });
+                channel.bind('webrtc-answer', (data) => {
+                    this.handleWebRTCAnswer(data);
+                });
+                channel.bind('webrtc-ice-candidate', (data) => {
+                    this.handleWebRTCIceCandidate(data);
+                });
+                channel.bind('call-ended', (data) => {
+                    this.handleCallEnded(data);
+                });
+                channel.bind('call-answered', (data) => {
+                    this.handleCallAnswered(data);
+                });
+                channel.bind('call-declined', (data) => {
+                    this.handleCallDeclined(data);
+                });
+            };
+
+            const finish = (channel) => {
+                attachCallRoomListeners(channel);
+                resolve();
+            };
+
+            if (this.channels.has(channelName)) {
+                const channel = this.channels.get(channelName);
+                finish(channel);
+                return;
+            }
+
+            const channel = this.pusher.subscribe(channelName);
+            this.channels.set(channelName, channel);
+
+            channel.bind('pusher:subscription_succeeded', () => {
+                console.log('✅ Subscribed to channel:', channelName);
+                finish(channel);
             });
 
-            channel.bind('webrtc-answer', (data) => {
-                this.handleWebRTCAnswer(data);
-            });
-
-            channel.bind('webrtc-ice-candidate', (data) => {
-                this.handleWebRTCIceCandidate(data);
+            channel.bind('pusher:subscription_error', (error) => {
+                console.error('❌ Subscription error for channel:', channelName, error);
+                reject(error);
             });
         });
     }
 
     // Send WebRTC offer
-    async sendWebRTCOffer(roomId, offer, from) {
+    async sendWebRTCOffer(roomId, offer, from, sessionId = null) {
         try {
+            const body = { roomId, offer, from };
+            if (sessionId) {
+                body.sessionId = sessionId;
+            }
             await fetch(`${this.apiBaseUrl}/api/webrtc/offer`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
                 },
-                body: JSON.stringify({
-                    roomId,
-                    offer,
-                    from
-                })
+                body: JSON.stringify(body)
             });
         } catch (error) {
             console.error('Error sending WebRTC offer:', error);
@@ -447,19 +520,19 @@ class ChatSocket {
     }
 
     // Send WebRTC answer
-    async sendWebRTCAnswer(roomId, answer, from) {
+    async sendWebRTCAnswer(roomId, answer, from, sessionId = null) {
         try {
+            const body = { roomId, answer, from };
+            if (sessionId) {
+                body.sessionId = sessionId;
+            }
             await fetch(`${this.apiBaseUrl}/api/webrtc/answer`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
                 },
-                body: JSON.stringify({
-                    roomId,
-                    answer,
-                    from
-                })
+                body: JSON.stringify(body)
             });
         } catch (error) {
             console.error('Error sending WebRTC answer:', error);
@@ -467,19 +540,19 @@ class ChatSocket {
     }
 
     // Send WebRTC ICE candidate
-    async sendWebRTCIceCandidate(roomId, candidate, from) {
+    async sendWebRTCIceCandidate(roomId, candidate, from, sessionId = null) {
         try {
+            const body = { roomId, candidate, from };
+            if (sessionId) {
+                body.sessionId = sessionId;
+            }
             await fetch(`${this.apiBaseUrl}/api/webrtc/ice-candidate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
                 },
-                body: JSON.stringify({
-                    roomId,
-                    candidate,
-                    from
-                })
+                body: JSON.stringify(body)
             });
         } catch (error) {
             console.error('Error sending WebRTC ICE candidate:', error);
@@ -551,13 +624,22 @@ class ChatSocket {
 
     // Compatibility: Expose socket property for existing code
     get socket() {
+        const self = this;
+
         return {
-            emit: (event, data) => {
+            get connected() {
+                return self.isConnected;
+            },
+            get id() {
+                return self.pusher?.connection?.socket_id || null;
+            },
+            emit: (event, data = {}) => {
                 console.warn('socket.emit() called. Use API methods instead:', event, data);
-                // Route to appropriate API method
+
                 if (event === 'send_message') {
-                    this.sendMessage(data.receiverId, data.receiverType, data.message, data.fileData);
+                    self.sendMessage(data.receiverId, data.receiverType, data.message, data.fileData);
                 } else if (event === 'join_chat') {
+<<<<<<< HEAD
                     this.joinChat(data.studentId, data.tutorId);
                 } else if (event === 'call_initiated') {
                     const normalizedCallType = data.callType === 'voice' ? 'audio' : data.callType;
@@ -570,18 +652,37 @@ class ChatSocket {
                     );
                 } else if (event === 'call_ended') {
                     this.endCall(data.roomId, data.endedBy);
+=======
+                    self.joinChat(data.studentId, data.tutorId);
+                } else if (event === 'call_initiated') {
+                    self.initiateCall(data.callType, data.receiverId, data.receiverType, data.roomId);
+                } else if (event === 'call_answered') {
+                    self.answerCall(
+                        data.roomId,
+                        data.answeredId ?? data.receiverId,
+                        data.answeredType ?? data.receiverType ?? self.userType
+                    );
+                } else if (event === 'call_declined') {
+                    self.declineCall(
+                        data.roomId,
+                        data.declinedId ?? data.receiverId,
+                        data.declinedType ?? data.receiverType ?? self.userType
+                    );
+                } else if (event === 'call_ended') {
+                    self.endCall(data.roomId, data.endedBy);
+>>>>>>> 03da1d95fe89ac79a5e168970176c5d8c5f87fcf
                 } else if (event === 'webrtc_offer') {
-                    this.sendWebRTCOffer(data.roomId, data.offer, data.from);
+                    self.sendWebRTCOffer(data.roomId, data.offer, data.from, data.sessionId || null);
                 } else if (event === 'webrtc_answer') {
-                    this.sendWebRTCAnswer(data.roomId, data.answer, data.from);
+                    self.sendWebRTCAnswer(data.roomId, data.answer, data.from, data.sessionId || null);
                 } else if (event === 'webrtc_ice_candidate') {
-                    this.sendWebRTCIceCandidate(data.roomId, data.candidate, data.from);
+                    self.sendWebRTCIceCandidate(data.roomId, data.candidate, data.from, data.sessionId || null);
                 } else if (event === 'join_call_room') {
-                    this.joinCallRoom(data.roomId);
+                    self.joinCallRoom(data.roomId).catch((err) => console.error('joinCallRoom failed:', err));
                 }
             },
-            on: () => {}, // Events are handled via Pusher channels
-            disconnect: () => this.disconnect()
+            on: () => {},
+            disconnect: () => self.disconnect()
         };
     }
 }

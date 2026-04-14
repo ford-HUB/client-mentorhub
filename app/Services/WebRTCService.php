@@ -23,21 +23,11 @@ class WebRTCService
     }
 
     /**
-     * Get STUN/TURN server configuration
+     * Get STUN/TURN server configuration (from config/webrtc.php)
      */
     public function getIceServers(): array
     {
-        return [
-            [
-                'urls' => [
-                    'stun:stun.l.google.com:19302',
-                    'stun:stun1.l.google.com:19302',
-                    'stun:stun2.l.google.com:19302',
-                    'stun:stun3.l.google.com:19302',
-                    'stun:stun4.l.google.com:19302',
-                ]
-            ]
-        ];
+        return config('webrtc.ice_servers', []);
     }
 
     /**

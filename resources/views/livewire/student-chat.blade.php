@@ -57,46 +57,49 @@
                         </div>
                         <div class="chat-user-details">
                             <h3>{{ $selectedConversation['name'] ?? 'Tutor' }}</h3>
-                            <div class="chat-user-status">
-                                @if($selectedConversation['online'] ?? false)
-                                    Online • Tutor
-                                @else
-                                    Offline • Tutor
-                                @endif
-                            </div>
                         </div>
                     </div>
-                    @if($selectedTutorId)
-                        <div class="chat-actions">
-                            <button class="action-btn" title="Video Call" wire:click="startCall('video', {{ $selectedTutorId }}, '{{ $selectedConversation['name'] ?? 'Tutor' }}')">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-                                </svg>
-                            </button>
-                            <button class="action-btn" title="Voice Call" wire:click="startCall('voice', {{ $selectedTutorId }}, '{{ $selectedConversation['name'] ?? 'Tutor' }}')">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    @endif
+
+                    <div class="chat-actions">
+                        <button
+                            type="button"
+                            class="action-btn"
+                            title="Voice Call"
+                            wire:click.prevent="startCall('voice', {{ $selectedTutorId }}, '{{ addslashes($selectedConversation['name'] ?? 'Tutor') }}')"
+                            wire:loading.attr="disabled"
+                            wire:target="startCall"
+                        >
+                            <i class="fas fa-phone"></i>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="action-btn"
+                            title="Video Call"
+                            wire:click.prevent="startCall('video', {{ $selectedTutorId }}, '{{ addslashes($selectedConversation['name'] ?? 'Tutor') }}')"
+                            wire:loading.attr="disabled"
+                            wire:target="startCall"
+                        >
+                            <i class="fas fa-video"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="messages-container" id="messages-container">
                     @forelse($messages as $message)
                         <div class="message {{ $message['sender_type'] === 'student' ? 'sent' : '' }}">
-                                                    <div class="message-avatar">
-                            @if($message['display_has_profile_picture'])
-                                <img src="{{ $message['display_avatar'] }}" alt="{{ $message['sender_name'] }}" class="avatar-image">
-                            @else
-                                {{ $message['display_avatar'] }}
-                            @endif
-                        </div>
+                            <div class="message-avatar">
+                                @if($message['display_has_profile_picture'])
+                                    <img src="{{ $message['display_avatar'] }}" alt="{{ $message['sender_name'] }}" class="avatar-image">
+                                @else
+                                    {{ $message['display_avatar'] }}
+                                @endif
+                            </div>
                             <div class="message-content">
                                 @if($message['is_file'])
                                     @if($message['is_image'])
                                         <div class="message-file">
-                                            <img src="{{ $message['file_url'] }}" alt="{{ $message['file_name'] }}" 
+                                            <img src="{{ $message['file_url'] }}" alt="{{ $message['file_name'] }}"
                                                  class="message-image" onclick="openImageModal('{{ $message['file_url'] }}')"
                                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                                             <div class="file-name" style="display: none;">{{ $message['file_name'] }}</div>
@@ -127,12 +130,12 @@
 
                 <div class="message-input-area">
                     <div class="message-input-container">
-                        <textarea wire:model="message" class="message-input" placeholder="Type your message..." 
+                        <textarea wire:model="message" class="message-input" placeholder="Type your message..."
                                   rows="1" wire:keydown.enter.prevent="sendMessage"></textarea>
                         <div class="input-actions">
                             <label for="file-upload" class="input-btn" title="Attach File">
                                 📎
-                                <input type="file" id="file-upload" wire:model="file" style="display: none;" 
+                                <input type="file" id="file-upload" wire:model="file" style="display: none;"
                                        accept="image/*,.pdf,.doc,.docx,.txt">
                             </label>
                             @if($file)
@@ -164,8 +167,6 @@
             <img id="modal-image" src="" alt="Full size image">
         </div>
     </div>
-
-
 
     <style>
         .messaging-container {
@@ -408,7 +409,6 @@
             transform: translateY(0) scale(0.98);
         }
 
-        /* Specific button styles */
         .action-btn:first-child {
             background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
@@ -741,12 +741,9 @@
                 height: 400px;
             }
         }
-
-
     </style>
 
     <script>
-        // Auto-scroll to bottom when new messages arrive
         document.addEventListener('livewire:init', () => {
             Livewire.on('message-sent', () => {
                 setTimeout(() => {
@@ -757,7 +754,6 @@
                 }, 100);
             });
 
-            // Auto-scroll on every Livewire update
             Livewire.hook('message.processed', () => {
                 setTimeout(() => {
                     const container = document.getElementById('messages-container');
@@ -768,7 +764,6 @@
             });
         });
 
-        // Image modal functions
         function openImageModal(imageUrl) {
             const modal = document.getElementById('image-modal');
             const modalImage = document.getElementById('modal-image');
@@ -781,7 +776,6 @@
             modal.style.display = 'none';
         }
 
-        // Close modal when clicking outside
         window.onclick = function(event) {
             const modal = document.getElementById('image-modal');
             if (event.target == modal) {
@@ -789,7 +783,6 @@
             }
         }
 
-        // Auto-resize textarea
         document.addEventListener('DOMContentLoaded', function() {
             const textarea = document.querySelector('.message-input');
             if (textarea) {
@@ -800,4 +793,4 @@
             }
         });
     </script>
-</div> 
+</div>
