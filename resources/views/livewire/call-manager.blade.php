@@ -536,6 +536,7 @@
     let retryTimeoutId = null;
     let noOfferTimeoutId = null;
     let disconnectedTimeoutId = null;
+    let callerOfferFallbackTimeoutId = null;
     let pendingIceCandidates = [];
     let retryCount = 0;
     const MAX_RETRIES = 3;
@@ -690,6 +691,11 @@
         if (disconnectedTimeoutId) {
             clearTimeout(disconnectedTimeoutId);
             disconnectedTimeoutId = null;
+        }
+
+        if (callerOfferFallbackTimeoutId) {
+            clearTimeout(callerOfferFallbackTimeoutId);
+            callerOfferFallbackTimeoutId = null;
         }
     }
 
@@ -1415,6 +1421,21 @@
                     readyState: t.readyState
                 })));
 
+                const hasIncomingVideoTrack = remoteStream.getVideoTracks().some((t) => t.readyState === 'live');
+                if (hasIncomingVideoTrack) {
+                    const remoteVideo = document.getElementById('remoteVideo');
+                    if (remoteVideo) {
+                        if (remoteVideo.srcObject !== remoteStream) {
+                            remoteVideo.srcObject = remoteStream;
+                        }
+                        remoteVideo.style.display = 'block';
+                        remoteVideo.muted = false;
+                        remoteVideo.play().catch(() => {});
+                    }
+                    hideRemoteProfilePlaceholder();
+                    console.log('Incoming live video track detected; forcing remote video render.');
+                }
+
                 const track = event.track;
                 if (track && !track._mentorHubListenersAttached) {
                     track._mentorHubListenersAttached = true;
@@ -1506,6 +1527,9 @@
                             }, 3000);
                         }
                     } else {
+                        if (hasIncomingVideoTrack) {
+                            console.warn('Voice UI branch detected while remote stream has video; keeping remote video visible.');
+                        }
                         const remoteAudio = document.getElementById('remoteAudio');
                         if (remoteAudio) {
                             if (remoteAudio.srcObject !== remoteStream) {
@@ -1593,6 +1617,23 @@
 
             if (window.mentorHubWebRtcIsCaller) {
                 console.log('Caller: media and signaling ready; SDP offer is sent when call-answered is received (callee must be on the call channel).');
+
+                // Fallback: in production, if the call-answered event is missed/racy, send an offer once after a short delay.
+                // sendCallerWebRtcOffer() is idempotent and will skip duplicates if an offer already exists.
+                callerOfferFallbackTimeoutId = setTimeout(async () => {
+                    if (!window.mentorHubWebRtcIsCaller) {
+                        return;
+                    }
+                    if (!peerConnection) {
+                        return;
+                    }
+                    if (peerConnection.localDescription || peerConnection.signalingState === 'have-local-offer') {
+                        return;
+                    }
+
+                    console.warn('Caller fallback triggered: no local offer yet after call init; sending offer now.');
+                    await sendCallerWebRtcOffer(roomId);
+                }, 7000);
             } else {
                 console.log('Waiting for offer as receiver...');
                 noOfferTimeoutId = setTimeout(() => {

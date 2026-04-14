@@ -639,20 +639,6 @@ class ChatSocket {
                 if (event === 'send_message') {
                     self.sendMessage(data.receiverId, data.receiverType, data.message, data.fileData);
                 } else if (event === 'join_chat') {
-<<<<<<< HEAD
-                    this.joinChat(data.studentId, data.tutorId);
-                } else if (event === 'call_initiated') {
-                    const normalizedCallType = data.callType === 'voice' ? 'audio' : data.callType;
-                    this.initiateCall(normalizedCallType, data.receiverId, data.receiverType, data.roomId);
-                } else if (event === 'call_answered') {
-                    this.answerCall(
-                        data.roomId,
-                        data.answeredId ?? data.receiverId ?? this.userId,
-                        data.answeredType ?? data.receiverType ?? this.userType
-                    );
-                } else if (event === 'call_ended') {
-                    this.endCall(data.roomId, data.endedBy);
-=======
                     self.joinChat(data.studentId, data.tutorId);
                 } else if (event === 'call_initiated') {
                     self.initiateCall(data.callType, data.receiverId, data.receiverType, data.roomId);
@@ -670,7 +656,6 @@ class ChatSocket {
                     );
                 } else if (event === 'call_ended') {
                     self.endCall(data.roomId, data.endedBy);
->>>>>>> 03da1d95fe89ac79a5e168970176c5d8c5f87fcf
                 } else if (event === 'webrtc_offer') {
                     self.sendWebRTCOffer(data.roomId, data.offer, data.from, data.sessionId || null);
                 } else if (event === 'webrtc_answer') {
