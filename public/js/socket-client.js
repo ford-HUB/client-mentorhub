@@ -559,6 +559,17 @@ class ChatSocket {
                     this.sendMessage(data.receiverId, data.receiverType, data.message, data.fileData);
                 } else if (event === 'join_chat') {
                     this.joinChat(data.studentId, data.tutorId);
+                } else if (event === 'call_initiated') {
+                    const normalizedCallType = data.callType === 'voice' ? 'audio' : data.callType;
+                    this.initiateCall(normalizedCallType, data.receiverId, data.receiverType, data.roomId);
+                } else if (event === 'call_answered') {
+                    this.answerCall(
+                        data.roomId,
+                        data.answeredId ?? data.receiverId ?? this.userId,
+                        data.answeredType ?? data.receiverType ?? this.userType
+                    );
+                } else if (event === 'call_ended') {
+                    this.endCall(data.roomId, data.endedBy);
                 } else if (event === 'webrtc_offer') {
                     this.sendWebRTCOffer(data.roomId, data.offer, data.from);
                 } else if (event === 'webrtc_answer') {
