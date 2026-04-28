@@ -741,6 +741,11 @@
                             <a href="{{ route('tutor.activities.show', $activity) }}" class="btn btn-primary btn-sm">
                                 <i class="fas fa-eye"></i> View
                             </a>
+                            @if($activity->session_id)
+                                <a href="{{ route('tutor.bookings.show', $activity->session_id) }}" class="btn btn-secondary btn-sm" style="background-color: #6c757d; color: white;">
+                                    <i class="fas fa-calendar-alt"></i> Session
+                                </a>
+                            @endif
                         </div>
                     </div>
                 @empty

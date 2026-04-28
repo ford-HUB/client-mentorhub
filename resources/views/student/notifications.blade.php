@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +24,7 @@
             font-weight: bold;
             cursor: pointer;
             z-index: 1000;
-            transition: transform 0.2s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s cubic-bezier(0.4,0,0.2,1);
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .profile-icon:hover {
@@ -288,6 +289,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header>
@@ -313,14 +315,19 @@
                         <div class="currency-label">Balance</div>
                     </div>
                 </div>
-                
+
                 <!-- Profile Dropdown -->
                 <div class="profile-dropdown-container" style="position: relative;">
                     <div class="profile-icon" id="profile-icon">
                         @auth('student')
                             @if(Auth::guard('student')->user()->profile_picture)
-                                <img src="{{ route('student.profile.picture') }}?v={{ time() }}" alt="Profile Picture" class="profile-icon-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background-color: #f5f5f5; color: #666; font-weight: bold; font-size: 1.2rem; border-radius: 50%;">{{ substr(Auth::guard('student')->user()->first_name, 0, 1) }}{{ substr(Auth::guard('student')->user()->last_name, 0, 1) }}</div>
+                                <img src="{{ route('student.profile.picture') }}?v={{ time() }}" alt="Profile Picture"
+                                    class="profile-icon-img"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div
+                                    style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background-color: #f5f5f5; color: #666; font-weight: bold; font-size: 1.2rem; border-radius: 50%;">
+                                    {{ substr(Auth::guard('student')->user()->first_name, 0, 1) }}{{ substr(Auth::guard('student')->user()->last_name, 0, 1) }}
+                                </div>
                             @else
                                 {{ substr(Auth::guard('student')->user()->first_name, 0, 1) }}{{ substr(Auth::guard('student')->user()->last_name, 0, 1) }}
                             @endif
@@ -329,21 +336,23 @@
                         @endauth
                     </div>
                     @auth('student')
-                    <div class="dropdown-menu" id="dropdown-menu">
-                        <a href="{{ route('student.profile.edit') }}">My Profile</a>
-                        <a href="{{ route('student.settings') }}">Achievements</a>
-                        <a href="{{ route('student.report-problem') }}">Report a Problem</a>
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                        <form id="logout-form" method="POST" action="{{ route('student.logout') }}" style="display: none;">
-                            @csrf
-                        </form>
-                    </div>
+                        <div class="dropdown-menu" id="dropdown-menu">
+                            <a href="{{ route('student.profile.edit') }}">My Profile</a>
+                            <a href="{{ route('student.settings') }}">Achievements</a>
+                            <a href="{{ route('student.report-problem') }}">Report a Problem</a>
+                            <a href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                            <form id="logout-form" method="POST" action="{{ route('student.logout') }}"
+                                style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
                     @endauth
                 </div>
             </div>
         </div>
     </header>
-    
+
     <!-- Main Content -->
     <main>
         <div class="notifications-container">
@@ -356,8 +365,10 @@
 
             <div id="notifications-list">
                 @forelse($notifications as $notification)
-                    <div class="notification-card {{ !$notification->is_read ? 'unread' : '' }}" data-id="{{ $notification->id }}">
-                        <div class="notification-icon {{ $notification->type === 'activity_posted' ? 'activity' : ($notification->type === 'activity_graded' ? 'payment' : ($notification->type === 'activity_submitted' ? 'booking' : ($notification->type === 'booking_confirmed' ? 'booking' : ($notification->type === 'subscription_expiring' ? 'subscription' : ($notification->type === 'admin_message' ? 'admin' : 'alert'))))) }}">
+                    <div class="notification-card {{ !$notification->is_read ? 'unread' : '' }}"
+                        data-id="{{ $notification->id }}">
+                        <div
+                            class="notification-icon {{ $notification->type === 'activity_posted' ? 'activity' : ($notification->type === 'activity_graded' ? 'payment' : ($notification->type === 'activity_submitted' ? 'booking' : ($notification->type === 'booking_confirmed' ? 'booking' : ($notification->type === 'subscription_expiring' ? 'subscription' : ($notification->type === 'admin_message' ? 'admin' : 'alert'))))) }}">
                             @if($notification->type === 'problem_report_response')
                                 <i class="fas fa-exclamation-circle"></i>
                             @elseif($notification->type === 'booking_confirmed')
@@ -393,12 +404,14 @@
                                 <i class="fas fa-clock"></i> {{ $notification->created_at->diffForHumans() }}
                             </div>
                         </div>
-                        <button class="notification-delete" onclick="deleteNotification({{ $notification->id }})" title="Delete notification">
+                        <button class="notification-delete" onclick="deleteNotification({{ $notification->id }})"
+                            title="Delete notification">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
                 @empty
-                    <div style="text-align: center; padding: 4rem 2rem; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                    <div
+                        style="text-align: center; padding: 4rem 2rem; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
                         <i class="fas fa-bell-slash" style="font-size: 4rem; color: #ddd; margin-bottom: 1rem;"></i>
                         <p style="color: #666; font-size: 1.1rem;">No notifications yet</p>
                     </div>
@@ -406,7 +419,7 @@
             </div>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer>
         <div class="footer-content">
@@ -421,31 +434,31 @@
             </div>
         </div>
     </footer>
-    
+
     @include('layouts.footer-modals')
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const menuToggle = document.getElementById('menu-toggle');
             const navLinks = document.getElementById('nav-links');
-            
+
             if (menuToggle) {
-                menuToggle.addEventListener('click', function() {
+                menuToggle.addEventListener('click', function () {
                     navLinks.classList.toggle('active');
                 });
             }
-            
+
             // Profile dropdown functionality
             const profileIcon = document.getElementById('profile-icon');
             const dropdownMenu = document.getElementById('dropdown-menu');
-            
+
             if (profileIcon && dropdownMenu) {
-                profileIcon.addEventListener('click', function(e) {
+                profileIcon.addEventListener('click', function (e) {
                     e.stopPropagation();
                     dropdownMenu.classList.toggle('active');
                 });
 
-                document.addEventListener('click', function(e) {
+                document.addEventListener('click', function (e) {
                     if (!profileIcon.contains(e.target)) {
                         dropdownMenu.classList.remove('active');
                     }
@@ -474,18 +487,18 @@
                     'Content-Type': 'application/json'
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Remove unread class from all notifications
-                    document.querySelectorAll('.notification-card.unread').forEach(card => {
-                        card.classList.remove('unread');
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error marking all as read:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Remove unread class from all notifications
+                        document.querySelectorAll('.notification-card.unread').forEach(card => {
+                            card.classList.remove('unread');
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error marking all as read:', error);
+                });
         }
 
         function deleteNotification(id) {
@@ -500,40 +513,40 @@
                     'Content-Type': 'application/json'
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const card = document.querySelector(`[data-id="${id}"]`);
-                    if (card) {
-                        card.style.transition = 'opacity 0.3s';
-                        card.style.opacity = '0';
-                        setTimeout(() => {
-                            card.remove();
-                            
-                            // Check if no more notifications
-                            const notificationsList = document.getElementById('notifications-list');
-                            if (!notificationsList.querySelector('.notification-card')) {
-                                notificationsList.innerHTML = `
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const card = document.querySelector(`[data-id="${id}"]`);
+                        if (card) {
+                            card.style.transition = 'opacity 0.3s';
+                            card.style.opacity = '0';
+                            setTimeout(() => {
+                                card.remove();
+
+                                // Check if no more notifications
+                                const notificationsList = document.getElementById('notifications-list');
+                                if (!notificationsList.querySelector('.notification-card')) {
+                                    notificationsList.innerHTML = `
                                     <div style="text-align: center; padding: 4rem 2rem; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
                                         <i class="fas fa-bell-slash" style="font-size: 4rem; color: #ddd; margin-bottom: 1rem;"></i>
                                         <p style="color: #666; font-size: 1.1rem;">No notifications yet</p>
                                     </div>
                                 `;
-                            }
-                        }, 300);
+                                }
+                            }, 300);
+                        }
+                    } else {
+                        alert('Failed to delete notification');
                     }
-                } else {
-                    alert('Failed to delete notification');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while deleting the notification');
-            });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the notification');
+                });
         }
     </script>
-    
+
     @include('layouts.footer-js')
 </body>
-</html>
 
+</html>

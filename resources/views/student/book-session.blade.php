@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +26,7 @@
             font-weight: bold;
             cursor: pointer;
             z-index: 1000;
-            transition: transform 0.2s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s cubic-bezier(0.4,0,0.2,1);
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .profile-icon:hover {
@@ -144,17 +145,17 @@
             margin: 0 auto;
             padding: 0 1rem;
         }
-        
+
         .tutor-search {
             margin-bottom: 2rem;
         }
-        
+
         .search-bar {
             display: flex;
             gap: 1rem;
             margin-bottom: 1rem;
         }
-        
+
         .search-bar input {
             flex: 1;
             padding: 0.8rem 1rem;
@@ -164,11 +165,11 @@
             outline: none;
             transition: border-color 0.3s;
         }
-        
+
         .search-bar input:focus {
             border-color: #4a90e2;
         }
-        
+
         .search-bar button {
             background-color: #4a90e2;
             color: white;
@@ -179,18 +180,18 @@
             font-size: 1rem;
             transition: background-color 0.3s;
         }
-        
+
         .search-bar button:hover {
             background-color: #3a7ccc;
         }
-        
+
         .tutor-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
-        
+
         .tutor-card {
             background-color: white;
             border-radius: 8px;
@@ -199,7 +200,7 @@
             transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
         }
-        
+
         .tutor-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -221,14 +222,17 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(1.05);
             }
         }
-        
+
         .tutor-header {
             position: relative;
             height: 120px;
@@ -238,7 +242,7 @@
             align-items: flex-end;
             padding-bottom: 1rem;
         }
-        
+
         .tutor-avatar {
             width: 80px;
             height: 80px;
@@ -249,37 +253,37 @@
             bottom: -40px;
             overflow: hidden;
         }
-        
+
         .tutor-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
         .tutor-body {
             padding: 3rem 1.5rem 1.5rem;
             text-align: center;
         }
-        
+
         .tutor-name {
             font-size: 1.2rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
         }
-        
+
         .tutor-title {
             color: #666;
             font-size: 0.9rem;
             margin-bottom: 1rem;
         }
-        
+
         .tutor-rate {
             color: #4a90e2;
             font-weight: bold;
             font-size: 1.1rem;
             margin-bottom: 1rem;
         }
-        
+
         .tutor-specialties {
             display: flex;
             flex-wrap: wrap;
@@ -287,7 +291,7 @@
             gap: 0.5rem;
             margin-bottom: 1.5rem;
         }
-        
+
         .specialty-badge {
             background-color: #ebf4ff;
             color: #4a90e2;
@@ -296,7 +300,7 @@
             font-size: 0.75rem;
             font-weight: 500;
         }
-        
+
         .tutor-rating {
             margin-bottom: 1rem;
             display: flex;
@@ -336,15 +340,16 @@
             color: #666;
             margin-left: 0.5rem;
         }
-        
+
         .tutor-footer {
             display: flex;
             justify-content: space-between;
             padding: 1rem 1.5rem;
             border-top: 1px solid #eee;
         }
-        
-        .tutor-footer button, .tutor-footer a {
+
+        .tutor-footer button,
+        .tutor-footer a {
             background-color: transparent;
             border: none;
             color: #4a90e2;
@@ -355,11 +360,12 @@
             text-decoration: none;
             font-size: inherit;
         }
-        
-        .tutor-footer button:hover, .tutor-footer a:hover {
+
+        .tutor-footer button:hover,
+        .tutor-footer a:hover {
             color: #3a7ccc;
         }
-        
+
         /* Modal styles */
         .modal-overlay {
             position: fixed;
@@ -376,12 +382,12 @@
             visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
         }
-        
+
         .modal-overlay.active {
             opacity: 1;
             visibility: visible;
         }
-        
+
         .modal {
             background-color: white;
             border-radius: 8px;
@@ -393,11 +399,11 @@
             transform: translateY(-20px);
             transition: transform 0.3s;
         }
-        
+
         .modal-overlay.active .modal {
             transform: translateY(0);
         }
-        
+
         .modal-header {
             padding: 1.5rem;
             border-bottom: 1px solid #eee;
@@ -405,13 +411,13 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .modal-title {
             font-size: 1.3rem;
             font-weight: bold;
             color: #4a90e2;
         }
-        
+
         .modal-close {
             background: none;
             border: none;
@@ -419,17 +425,17 @@
             cursor: pointer;
             color: #666;
         }
-        
+
         .modal-body {
             padding: 1.5rem;
         }
-        
+
         .tutor-modal-header {
             display: flex;
             gap: 1.5rem;
             margin-bottom: 1.5rem;
         }
-        
+
         .tutor-modal-avatar {
             width: 100px;
             height: 100px;
@@ -437,44 +443,44 @@
             overflow: hidden;
             flex-shrink: 0;
         }
-        
+
         .tutor-modal-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
         .tutor-modal-info {
             flex: 1;
         }
-        
+
         .tutor-modal-name {
             font-size: 1.5rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
         }
-        
+
         .tutor-modal-title {
             color: #666;
             margin-bottom: 0.5rem;
         }
-        
+
         .tutor-modal-rate {
             color: #4a90e2;
             font-weight: bold;
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
         }
-        
+
         .tutor-modal-bio {
             margin-bottom: 1.5rem;
             line-height: 1.6;
         }
-        
+
         .session-options {
             margin-top: 2rem;
         }
-        
+
         .session-type-toggle {
             display: flex;
             border: 1px solid #ddd;
@@ -482,7 +488,7 @@
             overflow: hidden;
             margin-bottom: 1.5rem;
         }
-        
+
         .session-type-toggle button {
             flex: 1;
             padding: 0.8rem;
@@ -492,18 +498,18 @@
             font-weight: 600;
             transition: all 0.3s;
         }
-        
+
         .session-type-toggle button.active {
             background-color: #4a90e2;
             color: white;
         }
-        
+
         .booking-type-toggle {
             display: flex;
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
-        
+
         .booking-type-btn {
             flex: 1;
             padding: 1.2rem;
@@ -514,26 +520,26 @@
             transition: all 0.3s;
             text-align: center;
         }
-        
+
         .booking-type-btn:hover {
             border-color: #4a90e2;
             background-color: #f0f7ff;
         }
-        
+
         .booking-type-btn.active {
             background-color: #4a90e2;
             border-color: #4a90e2;
             color: white;
         }
-        
+
         .booking-type-btn.active div {
             color: white !important;
         }
-        
+
         .calendar-container {
             margin-bottom: 1.5rem;
         }
-        
+
         .duration-select {
             width: 100%;
             padding: 0.8rem;
@@ -541,11 +547,11 @@
             border-radius: 5px;
             font-size: 1rem;
         }
-        
+
         .notes-container {
             margin-bottom: 1.5rem;
         }
-        
+
         .notes-container textarea {
             width: 100%;
             padding: 0.8rem;
@@ -555,40 +561,40 @@
             resize: vertical;
             min-height: 80px;
         }
-        
+
         .booking-summary {
             background-color: #f8f9fa;
             border-radius: 8px;
             padding: 1.5rem;
             margin-top: 1.5rem;
         }
-        
+
         .booking-summary h4 {
             margin-bottom: 1rem;
             color: #4a90e2;
         }
-        
+
         .summary-item {
             display: flex;
             justify-content: space-between;
             margin-bottom: 0.5rem;
         }
-        
+
         .summary-label {
             color: #666;
         }
-        
+
         .summary-value {
             font-weight: 600;
         }
-        
+
         .booking-actions {
             display: flex;
             justify-content: flex-end;
             gap: 1rem;
             margin-top: 1.5rem;
         }
-        
+
         .booking-actions button {
             padding: 0.8rem 1.5rem;
             border-radius: 50px;
@@ -596,44 +602,44 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        
+
         .btn-secondary {
             background-color: transparent;
             border: 1px solid #ddd;
             color: #333;
         }
-        
+
         .btn-secondary:hover {
             background-color: #f5f5f5;
         }
-        
+
         .btn-primary {
             background-color: #4a90e2;
             border: none;
             color: white;
         }
-        
+
         .btn-primary:hover {
             background-color: #3a7ccc;
         }
-        
+
         .btn-primary:disabled {
             background-color: #ccc;
             cursor: not-allowed;
         }
-        
+
         .alert {
             padding: 1rem;
             border-radius: 5px;
             margin-bottom: 1rem;
         }
-        
+
         .alert-success {
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
         }
-        
+
         .alert-error {
             background-color: #f8d7da;
             color: #721c24;
@@ -648,7 +654,7 @@
             width: 1.5rem;
             height: 1.5rem;
         }
-        
+
         @media (max-width: 768px) {
             .tutor-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -665,27 +671,27 @@
                 width: 100%;
                 justify-content: center;
             }
-            
+
             .tutor-modal-header {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
             }
-            
+
             .tutor-modal-avatar {
                 margin-bottom: 1rem;
             }
         }
-        
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header>
         <div class="navbar">
             <a href="#" class="logo">
                 <img src="{{asset('images/MentorHub.png')}}" alt="UCTutor Logo" class="logo-img">
-                
+
             </a>
             <button class="menu-toggle" id="menu-toggle">☰</button>
             <nav class="nav-links" id="nav-links">
@@ -693,7 +699,7 @@
                 <a href="{{route('student.book-session')}}" class="active">Book Session</a>
                 <a href="{{route('student.my-sessions')}}">Activities</a>
                 <a href="{{route('student.schedule')}}">Schedule</a>
-                
+
             </nav>
             <div class="header-right-section">
                 <!-- Currency Display -->
@@ -706,13 +712,14 @@
                         <div class="currency-label">Balance</div>
                     </div>
                 </div>
-                
+
                 <!-- Profile Dropdown -->
                 <div class="profile-dropdown-container" style="position: relative;">
                     <div class="profile-icon" id="profile-icon">
                         @auth('student')
                             @if(Auth::guard('student')->user()->profile_picture)
-                                <img src="{{ route('student.profile.picture') }}?v={{ time() }}" alt="Profile Picture" class="profile-icon-img">
+                                <img src="{{ route('student.profile.picture') }}?v={{ time() }}" alt="Profile Picture"
+                                    class="profile-icon-img">
                             @else
                                 {{ substr(Auth::guard('student')->user()->first_name, 0, 1) }}{{ substr(Auth::guard('student')->user()->last_name, 0, 1) }}
                             @endif
@@ -721,43 +728,48 @@
                         @endauth
                     </div>
                     @auth('student')
-                    <div class="dropdown-menu" id="dropdown-menu">
-                        <a href="{{ route('student.profile.edit') }}">My Profile</a>
-                        <a href="{{ route('student.settings') }}">Achievements</a>
-                        <a href="{{ route('student.report-problem') }}">Report a Problem</a>
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                        <form id="logout-form" method="POST" action="{{ route('student.logout') }}" style="display: none;">
-                            @csrf
-                        </form>
-                    </div>
+                        <div class="dropdown-menu" id="dropdown-menu">
+                            <a href="{{ route('student.profile.edit') }}">My Profile</a>
+                            <a href="{{ route('student.settings') }}">Achievements</a>
+                            <a href="{{ route('student.report-problem') }}">Report a Problem</a>
+                            <a href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                            <form id="logout-form" method="POST" action="{{ route('student.logout') }}"
+                                style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
                     @endauth
                 </div>
             </div>
         </div>
     </header>
-    
+
     <!-- Main Content -->
     <main>
         <div class="book-session-container">
-            <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+            <div class="dashboard-header"
+                style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
                 <div style="display: flex; flex-direction: column; align-items: flex-start;">
                     <h1 class="greeting">Book a Session</h1>
                     <div class="badge badge-student">Student</div>
                 </div>
                 <div class="date-time" id="current-date-time">Tuesday, May 13, 2025</div>
             </div>
-            
+
             @if(session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
                 </div>
             @endif
-            
+
             @if(session('error'))
                 <div class="alert alert-error">
                     <div class="alert-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-4.293a1 1 0 001.414 1.414L10 11.414l.293.293a1 1 0 001.414-1.414L11.414 10l.293-.293a1 1 0 00-1.414-1.414L10 8.586l-.293-.293a1 1 0 00-1.414 1.414L8.586 10l-.293.293z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-4.293a1 1 0 001.414 1.414L10 11.414l.293.293a1 1 0 001.414-1.414L11.414 10l.293-.293a1 1 0 00-1.414-1.414L10 8.586l-.293-.293a1 1 0 00-1.414 1.414L8.586 10l-.293.293z"
+                                clip-rule="evenodd" />
                         </svg>
                     </div>
                     <span>{{ session('error') }}</span>
@@ -766,9 +778,11 @@
 
             @if($errors->any())
                 <div class="alert alert-error">
-                     <div class="alert-icon">
+                    <div class="alert-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-4.293a1 1 0 001.414 1.414L10 11.414l.293.293a1 1 0 001.414-1.414L11.414 10l.293-.293a1 1 0 00-1.414-1.414L10 8.586l-.293-.293a1 1 0 00-1.414 1.414L8.586 10l-.293.293z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-4.293a1 1 0 001.414 1.414L10 11.414l.293.293a1 1 0 001.414-1.414L11.414 10l.293-.293a1 1 0 00-1.414-1.414L10 8.586l-.293-.293a1 1 0 00-1.414 1.414L8.586 10l-.293.293z"
+                                clip-rule="evenodd" />
                         </svg>
                     </div>
                     <ul>
@@ -778,49 +792,81 @@
                     </ul>
                 </div>
             @endif
-            
+
             <!-- Tutor Search -->
             <div class="tutor-search">
                 <div class="search-bar">
-                    <input type="text" id="search-input" placeholder="Search for tutors by name, subject, or keyword...">
+                    <input type="text" id="search-input"
+                        placeholder="Search for tutors by name, subject, or keyword...">
                     <button onclick="searchTutors()">Search</button>
                 </div>
             </div>
-            
+
             <!-- Tutor Grid -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
                 <h2 class="section-title" style="margin: 0;">Available Tutors</h2>
                 @if($student && $student->subjects_interest)
-                    <div style="font-size: 0.9rem; color: #666; background: #f8f9fa; padding: 0.5rem 1rem; border-radius: 20px; display: flex; align-items: center; gap: 0.5rem;">
-                        <i class="fas fa-magic" style="color: #28a745;"></i> 
+                    <div
+                        style="font-size: 0.9rem; color: #666; background: #f8f9fa; padding: 0.5rem 1rem; border-radius: 20px; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-magic" style="color: #28a745;"></i>
                         <span>Smart matching enabled</span>
                     </div>
                 @endif
             </div>
             <div class="tutor-grid" id="tutor-grid">
                 @forelse($tutors as $tutor)
-                    <div class="tutor-card {{ isset($tutor->is_matched) && $tutor->is_matched ? 'tutor-matched' : '' }}" data-tutor-id="{{ $tutor->id }}">
+                    <div class="tutor-card {{ isset($tutor->is_matched) && $tutor->is_matched ? 'tutor-matched' : '' }}"
+                        data-tutor-id="{{ $tutor->id }}">
                         @if(isset($tutor->is_matched) && $tutor->is_matched)
-                            <div class="match-badge" style="position: absolute; top: 10px; right: 10px; background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; z-index: 10; box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);">
+                            <div class="match-badge"
+                                style="position: absolute; top: 10px; right: 10px; background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; z-index: 10; box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);">
                                 <i class="fas fa-check-circle"></i> Matched
                             </div>
                         @endif
                         <div class="tutor-header">
                             <div class="tutor-avatar">
                                 @if($tutor->profile_picture)
-                                    <img src="{{ route('tutor.profile.picture.view', $tutor->id) }}?v={{ time() }}" alt="{{ $tutor->first_name }} {{ $tutor->last_name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                    <div style="display: none; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #f5f5f5; color: #666; font-weight: bold; font-size: 1.5rem; border-radius: 50%;">
+                                    <img src="{{ route('tutor.profile.picture.view', $tutor->id) }}?v={{ time() }}"
+                                        alt="{{ $tutor->first_name }} {{ $tutor->last_name }}"
+                                        style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"
+                                        onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div
+                                        style="display: none; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #f5f5f5; color: #666; font-weight: bold; font-size: 1.5rem; border-radius: 50%;">
                                         {{ strtoupper(substr($tutor->first_name, 0, 1) . substr($tutor->last_name, 0, 1)) }}
                                     </div>
                                 @else
-                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #f5f5f5; color: #666; font-weight: bold; font-size: 1.5rem; border-radius: 50%;">
+                                    <div
+                                        style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #f5f5f5; color: #666; font-weight: bold; font-size: 1.5rem; border-radius: 50%;">
                                         {{ strtoupper(substr($tutor->first_name, 0, 1) . substr($tutor->last_name, 0, 1)) }}
                                     </div>
                                 @endif
                             </div>
                         </div>
                         <div class="tutor-body">
-                            <div class="tutor-name">{{ $tutor->first_name }} {{ $tutor->last_name }}</div>
+                            <div class="tutor-name"
+                                style="display: flex; align-items: center; justify-content: center; gap: 0.4rem; flex-wrap: nowrap;">
+                                {{ $tutor->first_name }} {{ $tutor->last_name }}
+                                <span class="verified-badge" title="Verified Tutor" style="
+                                        display: inline-flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        background: linear-gradient(135deg, #1a8fff, #0063cc);
+                                        color: #fff;
+                                        border-radius: 50%;
+                                        width: 1.1rem;
+                                        height: 1.1rem;
+                                        min-width: 1.1rem;
+                                        font-size: 0.65rem;
+                                        line-height: 1;
+                                        flex-shrink: 0;
+                                        box-shadow: 0 1px 4px rgba(0,99,204,0.35);
+                                        cursor: default;
+                                        vertical-align: middle;
+                                    ">
+                                    <i class="fas fa-check" style="font-size: 0.55rem; line-height: 1;"></i>
+                                </span>
+                            </div>
                             <div class="tutor-title">{{ $tutor->specialization ?? 'Tutor' }}</div>
                             @php
                                 $hourlyRate = $tutor->hourly_rate ?? $tutor->session_rate ?? 0;
@@ -833,7 +879,8 @@
                             @endphp
                             <div class="tutor-rate">₱{{ number_format($hourlyRate, 2) }}/hour</div>
                             @if(!is_null($monthlyRate))
-                                <div class="tutor-rate-month" style="font-size: 0.9rem; color: #666;">₱{{ number_format($monthlyRate, 2) }}/month</div>
+                                <div class="tutor-rate-month" style="font-size: 0.9rem; color: #666;">
+                                    ₱{{ number_format($monthlyRate, 2) }}/month</div>
                             @endif
                             <div class="tutor-rating" aria-label="Tutor rating">
                                 @for($i = 1; $i <= 5; $i++)
@@ -862,9 +909,27 @@
                                     @endforeach
                                 </div>
                             @endif
+
+                            @if(isset($tutor->next_available))
+                                <div class="tutor-availability" style="font-size: 0.85rem; color: #28a745; margin-bottom: 1rem; font-weight: 500;">
+                                    <i class="fas fa-calendar-check" style="margin-right: 0.25rem;"></i>
+                                    @if($tutor->next_available['is_today'])
+                                        Available Today at {{ \Carbon\Carbon::parse($tutor->next_available['start_time'])->format('g:i A') }}
+                                    @elseif($tutor->next_available['is_tomorrow'])
+                                        Available Tomorrow at {{ \Carbon\Carbon::parse($tutor->next_available['start_time'])->format('g:i A') }}
+                                    @else
+                                        Available {{ $tutor->next_available['formatted_date'] }} at {{ \Carbon\Carbon::parse($tutor->next_available['start_time'])->format('g:i A') }}
+                                    @endif
+                                </div>
+                            @else
+                                <div class="tutor-availability" style="font-size: 0.85rem; color: #dc3545; margin-bottom: 1rem; font-weight: 500;">
+                                    <i class="fas fa-calendar-times" style="margin-right: 0.25rem;"></i> Currently Unavailable
+                                </div>
+                            @endif
                         </div>
                         <div class="tutor-footer">
-                            <a href="{{ route('student.messages') }}?tutor_id={{ $tutor->id }}" class="message-tutor">Message</a>
+                            <a href="{{ route('student.messages') }}?tutor_id={{ $tutor->id }}"
+                                class="message-tutor">Message</a>
                             <button class="view-details" onclick="viewTutorDetails({{ $tutor->id }})">View Details</button>
                             <button class="book-session" onclick="bookSession({{ $tutor->id }})">Book Session</button>
                         </div>
@@ -878,7 +943,7 @@
             </div>
         </div>
     </main>
-    
+
     <!-- Footer (same as dashboard) -->
     <footer>
         <div class="footer-content">
@@ -893,9 +958,9 @@
             </div>
         </div>
     </footer>
-    
+
     @include('layouts.footer-modals')
-    
+
     <!-- Tutor Details Modal -->
     <div class="modal-overlay" id="tutor-details-modal">
         <div class="modal">
@@ -920,36 +985,41 @@
                 <form id="booking-form" method="POST" action="{{ route('student.book-session.store') }}">
                     @csrf
                     <input type="hidden" id="tutor-id" name="tutor_id">
-                    
+
                     <div class="tutor-modal-header">
                         <div class="tutor-modal-avatar">
                             <!-- Avatar will be loaded here dynamically -->
                         </div>
                         <div class="tutor-modal-info">
                             <div id="modal-tutor-name" style="font-size: 1.8rem; font-weight: 600;"></div>
-                            <div id="modal-tutor-title" style="font-size: 1rem; color: #555; margin-bottom: 0.5rem;"></div>
-                            <div class="tutor-rating" id="modal-rating" style="margin-bottom: 0.75rem; display: flex; align-items: center;"></div>
-                            <div id="modal-tutor-rate" style="font-size: 1.1rem; font-weight: 600; color: #4a90e2;"></div>
+                            <div id="modal-tutor-title" style="font-size: 1rem; color: #555; margin-bottom: 0.5rem;">
+                            </div>
+                            <div class="tutor-rating" id="modal-rating"
+                                style="margin-bottom: 0.75rem; display: flex; align-items: center;"></div>
+                            <div id="modal-tutor-rate" style="font-size: 1.1rem; font-weight: 600; color: #4a90e2;">
+                            </div>
                         </div>
                     </div>
-                    
+
                     <div class="session-options">
                         <h3>Booking Type</h3>
-                        
+
                         <div class="booking-type-toggle" style="margin-bottom: 2rem;">
-                            <button type="button" class="booking-type-btn active" data-booking-type="hourly" id="booking-type-hourly">
+                            <button type="button" class="booking-type-btn active" data-booking-type="hourly"
+                                id="booking-type-hourly">
                                 <div style="font-weight: 600; font-size: 1rem;">Book a Session</div>
                                 <div style="font-size: 0.85rem; color: #666; margin-top: 0.25rem;">Pay per hour</div>
                             </button>
-                            <button type="button" class="booking-type-btn" data-booking-type="monthly" id="booking-type-monthly">
+                            <button type="button" class="booking-type-btn" data-booking-type="monthly"
+                                id="booking-type-monthly">
                                 <div style="font-weight: 600; font-size: 1rem;">Book a Tutor</div>
                                 <div style="font-size: 0.85rem; color: #666; margin-top: 0.25rem;">Pay per month</div>
                             </button>
                         </div>
                         <input type="hidden" id="booking-type" name="booking_type" value="hourly">
-                        
+
                         <h3>Session Details</h3>
-                        
+
                         <div class="session-type-toggle">
                             <button type="button" class="active" data-type="online">Online Session</button>
                             <button type="button" data-type="face_to_face">Face-to-Face</button>
@@ -957,38 +1027,59 @@
                         <input type="hidden" id="session-type" name="session_type" value="online">
                         <input type="hidden" id="start-time" name="start_time" value="00:00:00">
                         <input type="hidden" id="end-time" name="end_time" value="23:59:59">
-                        
+
                         <div class="calendar-container">
                             <h4>Select Date</h4>
-                            <input type="date" id="session-date" name="date" min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}" style="padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; width: 100%;">
-                            
+                            <input type="date" id="session-date" name="date" min="{{ date('Y-m-d') }}"
+                                value="{{ date('Y-m-d') }}"
+                                style="padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; width: 100%;">
+
                             <!-- Time selection for hourly bookings -->
                             <div id="time-selection-container" style="margin-top: 1rem; display: none;">
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                                    <div>
-                                        <label for="session-start-time" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Start Time *</label>
-                                        <input type="time" id="session-start-time" style="padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; width: 100%;">
-                                    </div>
-                                    <div>
-                                        <label for="session-end-time" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">End Time *</label>
-                                        <input type="time" id="session-end-time" style="padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; width: 100%;">
+                                <div id="booked-times-container" style="margin-bottom: 1rem; display: none;">
+                                    <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem; font-weight: 500;">Existing Bookings for this Date:</div>
+                                    <div id="booked-times-list" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                        <!-- Booked times badges will be inserted here -->
                                     </div>
                                 </div>
-                                <div id="time-error" style="margin-top: 0.5rem; color: #e74c3c; font-size: 0.85rem; display: none;"></div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <label for="session-start-time"
+                                            style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Start
+                                            Time *</label>
+                                        <input type="time" id="session-start-time"
+                                            style="padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; width: 100%;">
+                                    </div>
+                                    <div>
+                                        <label for="session-end-time"
+                                            style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">End
+                                            Time *</label>
+                                        <input type="time" id="session-end-time"
+                                            style="padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; width: 100%;">
+                                    </div>
+                                </div>
+                                <div id="time-error"
+                                    style="margin-top: 0.5rem; color: #e74c3c; font-size: 0.85rem; display: none;">
+                                </div>
                             </div>
-                            
+
                             <!-- End date display for monthly bookings -->
-                            <div id="end-date-container" style="margin-top: 1rem; padding: 0.75rem; background-color: #f8f9fa; border-radius: 5px; border-left: 3px solid #4a90e2; display: none;">
-                                <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.25rem;">Session End Date:</div>
-                                <div id="end-session-date-display" style="font-size: 1rem; font-weight: 600; color: #e74c3c;">{{ date('F j, Y', strtotime('+1 month')) }}</div>
+                            <div id="end-date-container"
+                                style="margin-top: 1rem; padding: 0.75rem; background-color: #f8f9fa; border-radius: 5px; border-left: 3px solid #4a90e2; display: none;">
+                                <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.25rem;">Session End Date:
+                                </div>
+                                <div id="end-session-date-display"
+                                    style="font-size: 1rem; font-weight: 600; color: #e74c3c;">
+                                    {{ date('F j, Y', strtotime('+1 month')) }}</div>
                             </div>
                         </div>
-                        
+
                         <div class="notes-container">
                             <h4>Additional Notes (Optional)</h4>
-                            <textarea id="notes" name="notes" placeholder="Any specific topics you'd like to cover or questions you have..."></textarea>
+                            <textarea id="notes" name="notes"
+                                placeholder="Any specific topics you'd like to cover or questions you have..."></textarea>
                         </div>
-                        
+
                         <div class="booking-summary">
                             <h4>Booking Summary</h4>
                             <div class="summary-item">
@@ -1009,41 +1100,49 @@
                             </div>
                             <div class="summary-item" id="summary-end-date-item" style="display: none;">
                                 <span class="summary-label">Session End Date:</span>
-                                <span class="summary-value" id="summary-end-date" style="color: #e74c3c; font-weight: 600;">{{ date('F j, Y', strtotime('+1 month')) }}</span>
+                                <span class="summary-value" id="summary-end-date"
+                                    style="color: #e74c3c; font-weight: 600;">{{ date('F j, Y', strtotime('+1 month')) }}</span>
                             </div>
                             <div class="summary-item">
                                 <span class="summary-label">Rate:</span>
                                 <span class="summary-value" id="summary-rate">₱0.00/hour</span>
                             </div>
                         </div>
-                        
-                        <div class="terms-container" style="margin-top: 1.5rem; padding: 1rem; background-color: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
-                            <h4 style="margin: 0 0 0.75rem 0; color: #856404; font-size: 1rem;">Terms and Conditions</h4>
+
+                        <div class="terms-container"
+                            style="margin-top: 1.5rem; padding: 1rem; background-color: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
+                            <h4 style="margin: 0 0 0.75rem 0; color: #856404; font-size: 1rem;">Terms and Conditions
+                            </h4>
                             <div style="font-size: 0.9rem; color: #856404; margin-bottom: 1rem; line-height: 1.6;">
                                 By confirming this booking, you agree to the following terms:
                                 <ul style="margin: 0.5rem 0 0 1.5rem; padding-left: 1rem;">
                                     <li>Payment is required upon booking confirmation</li>
-                                    <li>If you are absent or fail to attend the session, you will still be charged the full session rate</li>
+                                    <li>If you are absent or fail to attend the session, you will still be charged the
+                                        full session rate</li>
                                     <li>Rescheduling must be done at least 24 hours before the session</li>
-                                    <li>Refunds are only available for cancellations made at least 48 hours in advance</li>
+                                    <li>Refunds are only available for cancellations made at least 48 hours in advance
+                                    </li>
                                 </ul>
                             </div>
                             <label style="display: flex; align-items: flex-start; cursor: pointer; margin-top: 0.5rem;">
-                                <input type="checkbox" id="terms-checkbox" style="margin-right: 0.75rem; margin-top: 0.25rem; cursor: pointer; width: 18px; height: 18px;">
-                                <span style="font-size: 0.95rem; color: #856404;">I have read and agree to the terms and conditions</span>
+                                <input type="checkbox" id="terms-checkbox"
+                                    style="margin-right: 0.75rem; margin-top: 0.25rem; cursor: pointer; width: 18px; height: 18px;">
+                                <span style="font-size: 0.95rem; color: #856404;">I have read and agree to the terms and
+                                    conditions</span>
                             </label>
                         </div>
-                        
+
                         <div class="booking-actions">
                             <button type="button" class="btn-secondary" onclick="closeBookingModal()">Cancel</button>
-                            <button type="submit" class="btn-primary" id="confirm-booking" disabled>Confirm Booking</button>
+                            <button type="submit" class="btn-primary" id="confirm-booking" disabled>Confirm
+                                Booking</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    
+
     <!-- Report a Problem Modal -->
     <div class="modal-overlay" id="report-problem-modal">
         <div class="modal">
@@ -1054,10 +1153,11 @@
             <div class="modal-body">
                 <form id="report-problem-form" method="POST" action="{{ route('student.report-problem.store') }}">
                     @csrf
-                    
+
                     <div style="margin-bottom: 1.5rem;">
                         <h4 style="margin-bottom: 0.5rem;">Problem Type</h4>
-                        <select name="problem_type" id="problem-type" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                        <select name="problem_type" id="problem-type" required
+                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
                             <option value="">Select a problem type...</option>
                             <option value="technical">Technical Issue</option>
                             <option value="payment">Payment Issue</option>
@@ -1067,17 +1167,21 @@
                             <option value="other">Other</option>
                         </select>
                     </div>
-                    
+
                     <div style="margin-bottom: 1.5rem;">
                         <h4 style="margin-bottom: 0.5rem;">Subject</h4>
-                        <input type="text" name="subject" id="problem-subject" required placeholder="Brief description of the problem" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                        <input type="text" name="subject" id="problem-subject" required
+                            placeholder="Brief description of the problem"
+                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
                     </div>
-                    
+
                     <div style="margin-bottom: 1.5rem;">
                         <h4 style="margin-bottom: 0.5rem;">Description</h4>
-                        <textarea name="description" id="problem-description" required placeholder="Please provide detailed information about the problem you're experiencing..." style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; resize: vertical; min-height: 150px;"></textarea>
+                        <textarea name="description" id="problem-description" required
+                            placeholder="Please provide detailed information about the problem you're experiencing..."
+                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; resize: vertical; min-height: 150px;"></textarea>
                     </div>
-                    
+
                     <div class="booking-actions" style="margin-top: 1.5rem;">
                         <button type="button" class="btn-secondary" onclick="closeReportProblemModal()">Cancel</button>
                         <button type="submit" class="btn-primary">Submit Report</button>
@@ -1086,29 +1190,29 @@
             </div>
         </div>
     </div>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Mobile menu toggle
             const menuToggle = document.getElementById('menu-toggle');
             const navLinks = document.getElementById('nav-links');
-            
-            menuToggle.addEventListener('click', function() {
+
+            menuToggle.addEventListener('click', function () {
                 navLinks.classList.toggle('active');
             });
-            
+
             // Profile dropdown functionality
             const profileIcon = document.getElementById('profile-icon');
             const dropdownMenu = document.getElementById('dropdown-menu');
-            
+
             if (profileIcon && dropdownMenu) {
-                profileIcon.addEventListener('click', function(e) {
+                profileIcon.addEventListener('click', function (e) {
                     e.stopPropagation();
                     dropdownMenu.classList.toggle('active');
                 });
 
                 // Close dropdown when clicking outside
-                document.addEventListener('click', function(e) {
+                document.addEventListener('click', function (e) {
                     if (!profileIcon.contains(e.target)) {
                         dropdownMenu.classList.remove('active');
                     }
@@ -1126,10 +1230,10 @@
             // Initialize currency display
             initializeCurrencyDisplay();
             // Load currency data with a slight delay to ensure DOM is ready
-            setTimeout(function() {
+            setTimeout(function () {
                 loadCurrencyData();
             }, 100);
-            
+
             // Initialize booking modal functionality
             initializeBookingModal();
         });
@@ -1138,7 +1242,7 @@
         function initializeCurrencyDisplay() {
             const currencyDisplay = document.querySelector('.currency-display');
             if (currencyDisplay) {
-                currencyDisplay.addEventListener('click', function() {
+                currencyDisplay.addEventListener('click', function () {
                     viewWallet();
                 });
             }
@@ -1167,27 +1271,27 @@
         function viewWallet() {
             window.location.href = "{{ route('student.wallet') }}";
         }
-        
+
         function searchTutors() {
             const searchTerm = document.getElementById('search-input').value.toLowerCase();
             const tutorCards = document.querySelectorAll('.tutor-card');
-            
+
             // Filter by search term
             tutorCards.forEach(card => {
                 const tutorName = card.querySelector('.tutor-name').textContent.toLowerCase();
                 const tutorTitle = card.querySelector('.tutor-title').textContent.toLowerCase();
-                
+
                 let showCard = true;
-                
+
                 // Search filter
                 if (searchTerm && !tutorName.includes(searchTerm) && !tutorTitle.includes(searchTerm)) {
                     showCard = false;
                 }
-                
+
                 card.style.display = showCard ? 'block' : 'none';
             });
         }
-        
+
         function extractRatingData(tutor) {
             // Try to get from model methods first, then fallback to eager loaded data
             const rawAverage = tutor.average_rating ?? tutor.reviews_avg_rating ?? 0;
@@ -1237,30 +1341,93 @@
                                      </div>`;
                     }
 
-                    document.getElementById('modal-tutor-name').textContent = `${tutor.first_name} ${tutor.last_name}`;
+                    document.getElementById('modal-tutor-name').innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            ${tutor.first_name} ${tutor.last_name}
+                            <span class="verified-badge" title="Verified Tutor" style="
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                background: linear-gradient(135deg, #1a8fff, #0063cc);
+                                color: #fff;
+                                border-radius: 50%;
+                                width: 1.4rem;
+                                height: 1.4rem;
+                                min-width: 1.4rem;
+                                font-size: 0.8rem;
+                                line-height: 1;
+                                flex-shrink: 0;
+                                box-shadow: 0 1px 4px rgba(0,99,204,0.35);
+                                cursor: default;
+                            ">
+                                <i class="fas fa-check" style="font-size: 0.7rem; line-height: 1;"></i>
+                            </span>
+                        </div>
+                    `;
                     document.getElementById('modal-tutor-title').textContent = tutor.specialization || 'Tutor';
                     const hourlyRate = parseFloat(tutor.hourly_rate ?? tutor.session_rate ?? 0);
                     const monthlyRate = parseFloat(tutor.session_rate ?? 0);
                     const ratingData = extractRatingData(tutor);
-                    
+
                     // Store rates globally for booking type toggle
                     window.currentTutorRates = {
                         hourly: hourlyRate,
                         monthly: monthlyRate
                     };
+                    
+                    window.currentTutorSessions = tutor.sessions || [];
+                    window.currentTutorNextAvailable = tutor.next_available;
+
+                    // Pre-fill next available slot if available
+                    if (tutor.next_available) {
+                        const dateInput = document.getElementById('session-date');
+                        dateInput.value = tutor.next_available.date;
+                        dateInput.setAttribute('min', new Date().toISOString().split('T')[0]); // Ensure min is today
+                        
+                        const startTimeInput = document.getElementById('session-start-time');
+                        const endTimeInput = document.getElementById('session-end-time');
+                        
+                        if (startTimeInput && endTimeInput) {
+                            startTimeInput.value = tutor.next_available.start_time;
+                            endTimeInput.value = tutor.next_available.end_time;
+                            
+                            // Trigger change to validate and update hidden fields
+                            startTimeInput.dispatchEvent(new Event('change'));
+                        }
+                    }
 
                     const modalRatingEl = document.getElementById('modal-rating');
                     if (modalRatingEl) {
                         modalRatingEl.innerHTML = renderRatingStars(ratingData.average, ratingData.count);
                     }
-                    
+
                     const modalRateEl = document.getElementById('modal-tutor-rate');
                     modalRateEl.innerHTML = `
                         <div>₱${hourlyRate.toFixed(2)}/hour</div>
                         ${monthlyRate > 0 ? `<div style="font-size: 0.9rem; color: #666;">₱${monthlyRate.toFixed(2)}/month (Book a tutor)</div>` : ''}
                     `;
-                    
-                    document.getElementById('summary-tutor').textContent = `${tutor.first_name} ${tutor.last_name}`;
+
+                    document.getElementById('summary-tutor').innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 0.4rem;">
+                            ${tutor.first_name} ${tutor.last_name}
+                            <span class="verified-badge" title="Verified Tutor" style="
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                background: linear-gradient(135deg, #1a8fff, #0063cc);
+                                color: #fff;
+                                border-radius: 50%;
+                                width: 1rem;
+                                height: 1rem;
+                                min-width: 1rem;
+                                font-size: 0.6rem;
+                                line-height: 1;
+                                flex-shrink: 0;
+                            ">
+                                <i class="fas fa-check" style="font-size: 0.5rem; line-height: 1;"></i>
+                            </span>
+                        </div>
+                    `;
                     updateBookingRate('hourly'); // Initialize with hourly rate
 
                     // Initialize end session date display
@@ -1278,90 +1445,127 @@
                     alert('Could not prepare the booking form. Please try again later.');
                 });
         }
-        
+
         function closeBookingModal() {
             document.getElementById('booking-modal').classList.remove('active');
             document.getElementById('booking-form').reset();
             document.getElementById('confirm-booking').disabled = true;
         }
-        
+
+        function addOrUpdateDiscountRow(level, percentage, amount) {
+            let discountRow = document.getElementById('summary-discount-item');
+            if (!discountRow) {
+                discountRow = document.createElement('div');
+                discountRow.id = 'summary-discount-item';
+                discountRow.className = 'summary-item';
+                discountRow.innerHTML = `
+                    <span class="summary-label">Level ${level} Discount (${percentage}%):</span>
+                    <span class="summary-value" style="color: #28a745;">-₱${amount.toFixed(2)}</span>
+                `;
+                const rateItem = document.getElementById('summary-rate-item');
+                if (rateItem && rateItem.parentNode) {
+                    rateItem.parentNode.insertBefore(discountRow, rateItem.nextSibling);
+                }
+            } else {
+                discountRow.querySelector('.summary-label').textContent = `Level ${level} Discount (${percentage}%):`;
+                discountRow.querySelector('.summary-value').textContent = `-₱${amount.toFixed(2)}`;
+            }
+        }
+
+        function removeDiscountRow() {
+            const discountRow = document.getElementById('summary-discount-item');
+            if (discountRow) {
+                discountRow.remove();
+            }
+        }
+
         // Function to update booking rate based on booking type
         function updateBookingRate(bookingType) {
             if (!window.currentTutorRates) return;
-            
+
             document.getElementById('booking-type').value = bookingType;
             
+            const studentLevel = {{ isset($studentLevel) ? $studentLevel : 1 }};
+            const studentDiscount = {{ isset($studentDiscount) ? $studentDiscount : 0 }};
+
             if (bookingType === 'monthly') {
                 const rate = window.currentTutorRates.monthly;
-                document.getElementById('summary-rate').textContent = `₱${rate.toFixed(2)}/month`;
+                const discountAmount = rate * (studentDiscount / 100);
+                const discountedRate = rate - discountAmount;
+                
+                if (studentDiscount > 0) {
+                    document.getElementById('summary-rate').innerHTML = `<span style="text-decoration: line-through; color: #999; margin-right: 5px;">₱${rate.toFixed(2)}</span> ₱${discountedRate.toFixed(2)}/month`;
+                    addOrUpdateDiscountRow(studentLevel, studentDiscount, discountAmount);
+                } else {
+                    document.getElementById('summary-rate').textContent = `₱${rate.toFixed(2)}/month`;
+                    removeDiscountRow();
+                }
             } else {
                 // For hourly, rate will be calculated based on duration in updateSummaryTime
-                // Just show the hourly rate for now, it will be updated when time is selected
                 const hourlyRate = window.currentTutorRates.hourly;
                 document.getElementById('summary-rate').textContent = `₱${hourlyRate.toFixed(2)}/hour`;
+                removeDiscountRow();
             }
-            
+
             const endDateContainer = document.getElementById('end-date-container');
             const timeSelectionContainer = document.getElementById('time-selection-container');
             const sessionDate = document.getElementById('session-date');
             const date = new Date(sessionDate.value);
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            
+
             // Update end date display for monthly bookings
             const summaryEndDateItem = document.getElementById('summary-end-date-item');
             const summaryTimeItem = document.getElementById('summary-time-item');
+            
+            // Show time selection for both hourly and monthly
+            timeSelectionContainer.style.display = 'block';
+            summaryTimeItem.style.display = 'flex';
+            
+            const startTimeInput = document.getElementById('session-start-time');
+            const endTimeInput = document.getElementById('session-end-time');
+            
+            if (startTimeInput && endTimeInput) {
+                if (!startTimeInput.value) startTimeInput.value = '09:00';
+                if (!endTimeInput.value) endTimeInput.value = '10:00';
+                // Add required attribute for time fields
+                startTimeInput.setAttribute('required', 'required');
+                endTimeInput.setAttribute('required', 'required');
+            }
+
             if (bookingType === 'monthly') {
                 const endDate = new Date(date);
                 endDate.setMonth(endDate.getMonth() + 1);
                 document.getElementById('end-session-date-display').textContent = endDate.toLocaleDateString('en-US', options);
                 document.getElementById('summary-end-date').textContent = endDate.toLocaleDateString('en-US', options);
                 endDateContainer.style.display = 'block';
-                timeSelectionContainer.style.display = 'none';
                 summaryEndDateItem.style.display = 'flex';
-                summaryTimeItem.style.display = 'none';
-                // Set default times for monthly bookings
-                document.getElementById('start-time').value = '00:00:00';
-                document.getElementById('end-time').value = '23:59:59';
-                // Remove required attribute for time fields
-                const startTimeInput = document.getElementById('session-start-time');
-                const endTimeInput = document.getElementById('session-end-time');
-                if (startTimeInput) startTimeInput.removeAttribute('required');
-                if (endTimeInput) endTimeInput.removeAttribute('required');
+                
+                updateTimeFields();
+                updateSummaryTime();
             } else {
                 // For hourly, show time selection and hide end date display
                 document.getElementById('summary-end-date').textContent = date.toLocaleDateString('en-US', options);
                 endDateContainer.style.display = 'none';
-                timeSelectionContainer.style.display = 'block';
                 summaryEndDateItem.style.display = 'none';
-                summaryTimeItem.style.display = 'flex';
-                // Set default times for hourly bookings (e.g., 9:00 AM to 10:00 AM)
-                const startTimeInput = document.getElementById('session-start-time');
-                const endTimeInput = document.getElementById('session-end-time');
-                if (startTimeInput && endTimeInput) {
-                    if (!startTimeInput.value) startTimeInput.value = '09:00';
-                    if (!endTimeInput.value) endTimeInput.value = '10:00';
-                    // Add required attribute for time fields
-                    startTimeInput.setAttribute('required', 'required');
-                    endTimeInput.setAttribute('required', 'required');
-                    updateTimeFields();
-                    updateSummaryTime();
-                }
+                
+                updateTimeFields();
+                updateSummaryTime();
             }
         }
-        
+
         // Function to update hidden time fields and validate
         function updateTimeFields() {
             const startTimeInput = document.getElementById('session-start-time');
             const endTimeInput = document.getElementById('session-end-time');
             const timeError = document.getElementById('time-error');
-            
+
             if (startTimeInput && endTimeInput && startTimeInput.value && endTimeInput.value) {
                 const startTime = startTimeInput.value;
                 const endTime = endTimeInput.value;
-                
+
                 // Calculate hours to check if valid
                 const hours = calculateHours(startTime, endTime);
-                
+
                 // Validate that duration is reasonable
                 if (hours <= 0) {
                     timeError.textContent = 'End time must be after start time';
@@ -1372,15 +1576,23 @@
                     timeError.style.display = 'block';
                     return false;
                 } else {
+                    // Check for overlap with existing sessions
+                    const sessionDate = document.getElementById('session-date').value;
+                    if (checkTimeOverlap(sessionDate, startTime + ':00', endTime + ':00')) {
+                        timeError.textContent = 'This time conflicts with an existing booking. Please select an available time.';
+                        timeError.style.display = 'block';
+                        return false;
+                    }
+
                     timeError.style.display = 'none';
                     // Update hidden fields
                     document.getElementById('start-time').value = startTime + ':00';
-                    
+
                     // If we treated 00:00 as 12:00 PM in calculateHours, store 12:00:00 instead
                     let endTimeToStore = endTime;
                     const [endHours, endMinutes] = endTime.split(':').map(Number);
                     const [startHours, startMinutes] = startTime.split(':').map(Number);
-                    
+
                     if (endHours === 0 && startHours < 12) {
                         // Check if calculateHours treated it as 12:00 PM
                         const calculatedHours = calculateHours(startTime, endTime);
@@ -1397,7 +1609,7 @@
             }
             return false;
         }
-        
+
         // Helper function to format time (HH:MM to 12-hour format)
         function formatTime(time24) {
             if (!time24) return '';
@@ -1407,15 +1619,15 @@
             const hour12 = hour % 12 || 12;
             return `${hour12}:${minutes} ${ampm}`;
         }
-        
+
         // Function to calculate hours between two times
         function calculateHours(startTime, endTime) {
             const [startHours, startMinutes] = startTime.split(':').map(Number);
             const [endHours, endMinutes] = endTime.split(':').map(Number);
-            
+
             const startTotalMinutes = startHours * 60 + startMinutes;
             let endTotalMinutes = endHours * 60 + endMinutes;
-            
+
             // Handle case where end time is before start time
             if (endTotalMinutes < startTotalMinutes) {
                 // If end time is 00:00 (midnight) and start is in the morning (before 12:00 PM),
@@ -1423,7 +1635,7 @@
                 if (endHours === 0 && startHours < 12) {
                     const nextDayDuration = (24 * 60 - startTotalMinutes + endTotalMinutes) / 60;
                     const sameDayDuration = (12 * 60 - startTotalMinutes) / 60; // Treating 00:00 as 12:00 PM
-                    
+
                     // If same-day duration is more reasonable (< 12 hours), use that
                     if (sameDayDuration > 0 && sameDayDuration <= 12 && nextDayDuration > 12) {
                         endTotalMinutes = 12 * 60; // Treat as 12:00 PM (noon)
@@ -1434,70 +1646,81 @@
                     endTotalMinutes += 24 * 60; // Add 24 hours for next day
                 }
             }
-            
+
             const diffMinutes = endTotalMinutes - startTotalMinutes;
             return diffMinutes / 60; // Convert to hours
         }
-        
+
         // Function to update summary with time information and calculate total rate
         function updateSummaryTime() {
             const bookingType = document.getElementById('booking-type')?.value;
             const summaryTimeItem = document.getElementById('summary-time-item');
-            if (bookingType === 'hourly') {
-                const startTimeInput = document.getElementById('session-start-time');
-                const endTimeInput = document.getElementById('session-end-time');
-                if (startTimeInput && endTimeInput && startTimeInput.value && endTimeInput.value) {
-                    const startTime = startTimeInput.value;
-                    const endTime = endTimeInput.value;
-                    // Format time for display (e.g., "9:00 AM - 10:00 AM")
-                    const startFormatted = formatTime(startTime);
-                    const endFormatted = formatTime(endTime);
-                    const timeDisplay = document.getElementById('summary-time');
-                    if (timeDisplay) {
-                        timeDisplay.textContent = `${startFormatted} - ${endFormatted}`;
-                    }
-                    if (summaryTimeItem) {
-                        summaryTimeItem.style.display = 'flex';
-                    }
+            const startTimeInput = document.getElementById('session-start-time');
+            const endTimeInput = document.getElementById('session-end-time');
+            
+            if (startTimeInput && endTimeInput && startTimeInput.value && endTimeInput.value) {
+                const startTime = startTimeInput.value;
+                const endTime = endTimeInput.value;
+                // Format time for display (e.g., "9:00 AM - 10:00 AM")
+                const startFormatted = formatTime(startTime);
+                const endFormatted = formatTime(endTime);
+                const timeDisplay = document.getElementById('summary-time');
+                if (timeDisplay) {
+                    timeDisplay.textContent = `${startFormatted} - ${endFormatted}`;
+                }
+                if (summaryTimeItem) {
+                    summaryTimeItem.style.display = 'flex';
+                }
+
+                if (window.currentTutorRates) {
+                    const hours = calculateHours(startTime, endTime);
                     
-                    // Calculate total rate based on duration
-                    if (window.currentTutorRates) {
-                        const hours = calculateHours(startTime, endTime);
+                    // Only update the rate display for hourly bookings
+                    if (bookingType === 'hourly') {
                         const hourlyRate = window.currentTutorRates.hourly;
                         const totalRate = hourlyRate * hours;
                         const rateDisplay = document.getElementById('summary-rate');
-                        if (rateDisplay) {
-                            rateDisplay.textContent = `₱${totalRate.toFixed(2)} (₱${hourlyRate.toFixed(2)}/hour)`;
-                        }
                         
-                        // Update time display if we corrected 00:00 to 12:00 PM
-                        if (endTime === '00:00' && startTime.split(':')[0] < 12) {
-                            const startTotalMinutes = parseInt(startTime.split(':')[0]) * 60 + parseInt(startTime.split(':')[1]);
-                            const sameDayHours = (12 * 60 - startTotalMinutes) / 60;
-                            if (hours === sameDayHours && hours <= 12) {
-                                // Update the displayed time to show 12:00 PM instead of 12:00 AM
-                                const endFormatted = formatTime('12:00');
-                                timeDisplay.textContent = `${startFormatted} - ${endFormatted}`;
+                        const studentLevel = {{ isset($studentLevel) ? $studentLevel : 1 }};
+                        const studentDiscount = {{ isset($studentDiscount) ? $studentDiscount : 0 }};
+                        
+                        if (rateDisplay) {
+                            if (studentDiscount > 0) {
+                                const discountAmount = totalRate * (studentDiscount / 100);
+                                const discountedRate = totalRate - discountAmount;
+                                
+                                rateDisplay.innerHTML = `<span style="text-decoration: line-through; color: #999; margin-right: 5px;">₱${totalRate.toFixed(2)}</span> ₱${discountedRate.toFixed(2)} <span style="font-size: 0.9em; color: #666;">(₱${hourlyRate.toFixed(2)}/hour)</span>`;
+                                addOrUpdateDiscountRow(studentLevel, studentDiscount, discountAmount);
+                            } else {
+                                rateDisplay.innerHTML = `₱${totalRate.toFixed(2)} <span style="font-size: 0.9em; color: #666;">(₱${hourlyRate.toFixed(2)}/hour)</span>`;
+                                removeDiscountRow();
                             }
                         }
                     }
-                }
-            } else {
-                if (summaryTimeItem) {
-                    summaryTimeItem.style.display = 'none';
+
+                    // Update time display if we corrected 00:00 to 12:00 PM
+                    if (endTime === '00:00' && startTime.split(':')[0] < 12) {
+                        const startTotalMinutes = parseInt(startTime.split(':')[0]) * 60 + parseInt(startTime.split(':')[1]);
+                        const sameDayHours = (12 * 60 - startTotalMinutes) / 60;
+                        if (hours === sameDayHours && hours <= 12) {
+                            // Update the displayed time to show 12:00 PM instead of 12:00 AM
+                            const endFormatted = formatTime('12:00');
+                            timeDisplay.textContent = `${startFormatted} - ${endFormatted}`;
+                        }
+                    }
                 }
             }
         }
-        
+
         function initializeBookingModal() {
             const sessionTypeButtons = document.querySelectorAll('.session-type-toggle button');
             const bookingTypeButtons = document.querySelectorAll('.booking-type-toggle button');
             const sessionDate = document.getElementById('session-date');
             const confirmBooking = document.getElementById('confirm-booking');
-            
+
             // Booking type toggle
             bookingTypeButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     bookingTypeButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
                     const bookingType = this.getAttribute('data-booking-type');
@@ -1505,75 +1728,88 @@
                     validateForm();
                 });
             });
-            
+
             // Session type toggle
             sessionTypeButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     sessionTypeButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
                     document.getElementById('session-type').value = this.getAttribute('data-type');
-                    document.getElementById('summary-type').textContent = 
+                    document.getElementById('summary-type').textContent =
                         this.getAttribute('data-type') === 'online' ? 'Online' : 'Face-to-Face';
                     validateForm();
                 });
             });
-            
+
             // Date change handler
-            sessionDate.addEventListener('change', function() {
+            sessionDate.addEventListener('change', function () {
+                // Check if date is fully booked
+                if (isDateFullyBooked(this.value)) {
+                    alert('This date is fully booked. Please select another date.');
+                    // Reset to next available date
+                    if (window.currentTutorNextAvailable && window.currentTutorNextAvailable.date !== this.value) {
+                        this.value = window.currentTutorNextAvailable.date;
+                    } else {
+                        // If no available date found or current is fully booked (edge case), just set to tomorrow
+                        const tmr = new Date();
+                        tmr.setDate(tmr.getDate() + 1);
+                        this.value = tmr.toISOString().split('T')[0];
+                    }
+                }
+                
+                updateBookedTimesDisplay();
                 updateSummaryDate();
                 validateForm();
             });
-            
+
             // Time input handlers for hourly bookings
             const startTimeInput = document.getElementById('session-start-time');
             const endTimeInput = document.getElementById('session-end-time');
-            
+
             if (startTimeInput && endTimeInput) {
-                startTimeInput.addEventListener('change', function() {
+                startTimeInput.addEventListener('change', function () {
                     updateTimeFields();
                     updateSummaryTime();
                     validateForm();
                 });
-                
-                endTimeInput.addEventListener('change', function() {
+
+                endTimeInput.addEventListener('change', function () {
                     updateTimeFields();
                     updateSummaryTime();
                     validateForm();
                 });
             }
-            
+
             function validateForm() {
                 const isSessionTypeSelected = document.querySelector('.session-type-toggle button.active') !== null;
                 const isDateSelected = sessionDate.value !== '';
                 const isTermsAccepted = document.getElementById('terms-checkbox').checked;
                 const bookingType = document.getElementById('booking-type').value;
-                
+
                 let isValid = isSessionTypeSelected && isDateSelected && isTermsAccepted;
-                
-                // For hourly bookings, also validate time fields
-                if (bookingType === 'hourly') {
-                    const timeValid = updateTimeFields();
-                    isValid = isValid && timeValid;
-                }
-                
+
+                // Validate time fields for all bookings
+                const timeValid = updateTimeFields();
+                isValid = isValid && timeValid;
+
                 confirmBooking.disabled = !isValid;
             }
-            
+
             // Add event listener to terms checkbox
             const termsCheckbox = document.getElementById('terms-checkbox');
             if (termsCheckbox) {
                 termsCheckbox.addEventListener('change', validateForm);
             }
-            
+
             function updateSummaryDate() {
                 const date = new Date(sessionDate.value);
                 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 document.getElementById('summary-date').textContent = date.toLocaleDateString('en-US', options);
-                
+
                 // Get current booking type
                 const bookingType = document.getElementById('booking-type').value;
                 const endDateContainer = document.getElementById('end-date-container');
-                
+
                 const summaryEndDateItem = document.getElementById('summary-end-date-item');
                 const summaryTimeItem = document.getElementById('summary-time-item');
                 if (bookingType === 'monthly') {
@@ -1584,7 +1820,8 @@
                     document.getElementById('end-session-date-display').textContent = endDate.toLocaleDateString('en-US', options);
                     endDateContainer.style.display = 'block';
                     summaryEndDateItem.style.display = 'flex';
-                    summaryTimeItem.style.display = 'none';
+                    summaryTimeItem.style.display = 'flex';
+                    updateSummaryTime();
                 } else {
                     // For hourly, end date is same as start date and hide end date container
                     document.getElementById('summary-end-date').textContent = date.toLocaleDateString('en-US', options);
@@ -1594,11 +1831,111 @@
                     updateSummaryTime();
                 }
             }
-            
+
         }
-        
+
+        // Helper function for checking overlap
+        function checkTimeOverlap(date, startTime, endTime) {
+            if (!window.currentTutorSessions || window.currentTutorSessions.length === 0) return false;
+            
+            const daySessions = window.currentTutorSessions.filter(s => s.date === date);
+            if (daySessions.length === 0) return false;
+            
+            const selectedStart = new Date(`2000-01-01T${startTime}`);
+            const selectedEnd = new Date(`2000-01-01T${endTime}`);
+            
+            if (selectedEnd <= selectedStart) {
+                selectedEnd.setDate(selectedEnd.getDate() + 1);
+            }
+            
+            for (const session of daySessions) {
+                const sessionStart = new Date(`2000-01-01T${session.start_time}`);
+                const sessionEnd = new Date(`2000-01-01T${session.end_time}`);
+                
+                if (sessionEnd <= sessionStart) {
+                    sessionEnd.setDate(sessionEnd.getDate() + 1);
+                }
+                
+                // Overlap condition: start1 < end2 AND end1 > start2
+                if (selectedStart < sessionEnd && selectedEnd > sessionStart) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Helper function to update booked times display
+        function updateBookedTimesDisplay() {
+            const sessionDate = document.getElementById('session-date').value;
+            const container = document.getElementById('booked-times-container');
+            const list = document.getElementById('booked-times-list');
+            
+            if (!sessionDate || !window.currentTutorSessions) {
+                if (container) container.style.display = 'none';
+                return;
+            }
+            
+            const daySessions = window.currentTutorSessions.filter(s => s.date === sessionDate);
+            
+            if (daySessions.length > 0) {
+                let html = '';
+                // Sort by start time
+                daySessions.sort((a, b) => a.start_time.localeCompare(b.start_time));
+                
+                daySessions.forEach(s => {
+                    const startFmt = formatTime(s.start_time.substring(0, 5));
+                    const endFmt = formatTime(s.end_time.substring(0, 5));
+                    html += `<span style="background: #fff3cd; color: #856404; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.8rem; border: 1px solid #ffeeba;">
+                        <i class="fas fa-clock" style="margin-right: 0.25rem;"></i> ${startFmt} - ${endFmt}
+                    </span>`;
+                });
+                
+                list.innerHTML = html;
+                container.style.display = 'block';
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
+        // Helper function to check if a date is fully booked (8 AM to 8 PM has no free 1hr slot)
+        function isDateFullyBooked(dateStr) {
+            if (!window.currentTutorSessions) return false;
+            const daySessions = window.currentTutorSessions.filter(s => s.date === dateStr);
+            if (daySessions.length === 0) return false;
+            
+            let checkStart = new Date(`2000-01-01T08:00:00`);
+            const endOfDay = new Date(`2000-01-01T20:00:00`);
+            let isFullyBooked = true;
+            
+            while (checkStart < endOfDay) {
+                const slotStart = new Date(checkStart);
+                const slotEnd = new Date(checkStart);
+                slotEnd.setHours(slotEnd.getHours() + 1);
+                
+                let hasConflict = false;
+                for (const session of daySessions) {
+                    const sessionStart = new Date(`2000-01-01T${session.start_time}`);
+                    const sessionEnd = new Date(`2000-01-01T${session.end_time}`);
+                    if (sessionEnd <= sessionStart) sessionEnd.setDate(sessionEnd.getDate() + 1);
+                    
+                    if (slotStart < sessionEnd && slotEnd > sessionStart) {
+                        hasConflict = true;
+                        break;
+                    }
+                }
+                
+                if (!hasConflict) {
+                    isFullyBooked = false;
+                    break;
+                }
+                checkStart.setHours(checkStart.getHours() + 1);
+            }
+            
+            return isFullyBooked;
+        }
+
         // Close modal when clicking outside
-        window.addEventListener('click', function(e) {
+        window.addEventListener('click', function (e) {
             if (e.target === document.getElementById('booking-modal')) {
                 closeBookingModal();
             }
@@ -1620,7 +1957,7 @@
                     const content = document.getElementById('tutor-details-content');
                     const ratingData = extractRatingData(tutor);
                     const ratingHtml = renderRatingStars(ratingData.average, ratingData.count);
-                    
+
                     let avatarHtml;
                     if (tutor.profile_picture) {
                         const tutorPicUrl = `/tutor/profile/picture/${tutor.id}`;
@@ -1630,10 +1967,10 @@
                                         ${tutor.first_name.charAt(0)}${tutor.last_name.charAt(0)}
                                      </div>`;
                     }
-                    
+
                     let specialtiesHtml = '';
                     if (tutor.specialization) {
-                         specialtiesHtml = tutor.specialization.split(',').map(s => `<span class="specialty-badge">${s.trim()}</span>`).join('');
+                        specialtiesHtml = tutor.specialization.split(',').map(s => `<span class="specialty-badge">${s.trim()}</span>`).join('');
                     }
 
                     content.innerHTML = `
@@ -1642,7 +1979,27 @@
                                 ${avatarHtml}
                             </div>
                             <div class="tutor-modal-info">
-                                <div class="tutor-modal-name" style="font-size: 1.8rem; font-weight: 600;">${tutor.first_name} ${tutor.last_name}</div>
+                                <div class="tutor-modal-name" style="font-size: 1.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                                    ${tutor.first_name} ${tutor.last_name}
+                                    <span class="verified-badge" title="Verified Tutor" style="
+                                        display: inline-flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        background: linear-gradient(135deg, #1a8fff, #0063cc);
+                                        color: #fff;
+                                        border-radius: 50%;
+                                        width: 1.4rem;
+                                        height: 1.4rem;
+                                        min-width: 1.4rem;
+                                        font-size: 0.8rem;
+                                        line-height: 1;
+                                        flex-shrink: 0;
+                                        box-shadow: 0 1px 4px rgba(0,99,204,0.35);
+                                        cursor: default;
+                                    ">
+                                        <i class="fas fa-check" style="font-size: 0.7rem; line-height: 1;"></i>
+                                    </span>
+                                </div>
                                 <div class="tutor-modal-title" style="font-size: 1rem; color: #555; margin-bottom: 0.5rem;">${tutor.specialization || 'Tutor'}</div>
                                 <div class="tutor-rating" style="margin-bottom: 0.75rem; display: flex; align-items: center;">
                                     ${ratingHtml}
@@ -1691,7 +2048,7 @@
         function closeTutorDetailsModal() {
             document.getElementById('tutor-details-modal').classList.remove('active');
         }
-        
+
         // Report Problem Modal Functions
         function openReportProblemModal() {
             document.getElementById('report-problem-modal').classList.add('active');
@@ -1701,20 +2058,21 @@
                 dropdownMenu.classList.remove('active');
             }
         }
-        
+
         function closeReportProblemModal() {
             document.getElementById('report-problem-modal').classList.remove('active');
             document.getElementById('report-problem-form').reset();
         }
-        
+
         // Close report problem modal when clicking outside
-        window.addEventListener('click', function(e) {
+        window.addEventListener('click', function (e) {
             if (e.target === document.getElementById('report-problem-modal')) {
                 closeReportProblemModal();
             }
         });
     </script>
-    
+
     @include('layouts.footer-js')
 </body>
+
 </html>

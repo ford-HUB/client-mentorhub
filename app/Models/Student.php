@@ -85,6 +85,43 @@ class Student extends Authenticatable
         return $this->getInitials();
     }
 
+    public function getLevel()
+    {
+        // Get total points from unlocked achievements
+        $totalPoints = \App\Models\UserAchievement::where('user_type', 'App\Models\Student')
+            ->where('user_id', $this->id)
+            ->where('is_unlocked', true)
+            ->join('achievements', 'user_achievements.achievement_id', '=', 'achievements.id')
+            ->sum('achievements.points');
+            
+        // Count completed quests (activities submitted)
+        $completedQuests = \App\Models\ActivitySubmission::where('student_id', $this->id)
+            ->where('status', 'submitted')
+            ->count();
+            
+        $level = 1;
+        $maxLevel = 50;
+        for ($i = 2; $i <= $maxLevel; $i++) {
+            $requiredPoints = ($i - 1) * 100;
+            $requiredQuests = ($i - 1) * 2;
+            
+            if ($totalPoints >= $requiredPoints && $completedQuests >= $requiredQuests) {
+                $level = $i;
+            } else {
+                break;
+            }
+        }
+        
+        return $level;
+    }
+
+    public function getWithdrawalFeePercent()
+    {
+        $level = $this->getLevel();
+        $reduction = min(8, floor(($level - 1) / 2));
+        return max(2, 10 - $reduction);
+    }
+
     public static function generateStudentId(): string
     {
         do {

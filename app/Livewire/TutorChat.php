@@ -53,9 +53,10 @@ class TutorChat extends Component
     {
         $tutorId = Auth::guard('tutor')->id();
         
-        // Get all students that the tutor has sessions with or has messaged
+        // Get all students that the tutor has sessions with (accepted or completed) or has messaged
         $students = Student::whereHas('sessions', function($query) use ($tutorId) {
-            $query->where('tutor_id', $tutorId);
+            $query->where('tutor_id', $tutorId)
+                  ->whereIn('status', ['accepted', 'completed']);
         })->orWhereHas('messages', function($query) use ($tutorId) {
             $query->where('receiver_id', $tutorId)
                   ->where('receiver_type', 'tutor');

@@ -315,5 +315,50 @@ class AdaptiveLearningService
                 return 'every_other_day';
         }
     }
+    /**
+     * Generate behavioral analysis based on student performance patterns
+     */
+    public function getBehavioralAnalysis($studentId, $tutorId)
+    {
+        $analysis = $this->analyzeStudentPerformance($studentId, $tutorId);
+        $scores = $analysis['scores'] ?? [];
+        $averageScore = $analysis['average_score'] ?? 0;
+        
+        if (empty($scores)) {
+            return "Insufficient data to analyze behavior. The student needs to complete more activities.";
+        }
+
+        $insights = [];
+        
+        // Pattern: Consistency
+        $variance = $this->calculateVariance($scores);
+        if ($variance < 100) {
+            $insights[] = "Highly consistent performance across all activities, indicating a stable learning pattern.";
+        } elseif ($variance > 400) {
+            $insights[] = "Inconsistent performance noticed. The student excels in some areas but struggles significantly in others.";
+        }
+
+        // Pattern: Retention
+        $recentAvg = !empty($analysis['recent_scores']) ? array_sum($analysis['recent_scores']) / count($analysis['recent_scores']) : $averageScore;
+        if ($recentAvg > $averageScore + 15) {
+            $insights[] = "Showing rapid improvement recently, suggesting better engagement or improved study habits.";
+        } elseif ($recentAvg < $averageScore - 15) {
+            $insights[] = "Recent performance dip detected. The student may be losing focus or finding current topics too difficult.";
+        }
+
+        // Pattern: Accuracy vs Speed (Conceptual)
+        if ($averageScore >= 85) {
+            $insights[] = "Strong conceptual understanding. The student tends to answer correctly but should be challenged with higher-order thinking tasks.";
+        } elseif ($averageScore < 60) {
+            $insights[] = "Struggles with foundational accuracy. The student often misses core concepts, suggesting a need for more fundamental review.";
+        }
+
+        // Pattern: Topic-specific behavior (Simplified)
+        if ($analysis['performance_trend'] === 'improving') {
+            $insights[] = "Resilient learning behavior: student overcomes initial difficulties and shows growth.";
+        }
+
+        return implode(' ', $insights) ?: "The student demonstrates a steady learning pattern with no significant behavioral anomalies detected.";
+    }
 }
 

@@ -77,11 +77,36 @@ class TutorSettingsController extends Controller
             ];
         }
         
-        // Calculate level based on total points
-        $level = floor($totalPoints / 100) + 1;
-        $pointsForNextLevel = ($level * 100) - $totalPoints;
+        // Count completed sessions as "quests"
+        $completedQuests = Session::where('tutor_id', $tutor->id)
+            ->where('status', 'completed')
+            ->count();
+
+        // Calculate level based on total points and completed quests
+        $level = 1;
+        $maxLevel = 50;
+        for ($i = 2; $i <= $maxLevel; $i++) {
+            $requiredPoints = ($i - 1) * 100;
+            $requiredQuests = ($i - 1) * 2; // 2 quests per level
+            
+            if ($totalPoints >= $requiredPoints && $completedQuests >= $requiredQuests) {
+                $level = $i;
+            } else {
+                break;
+            }
+        }
         
-        return view('tutor.achievements', compact('userAchievements', 'totalPoints', 'unlockedCount', 'level', 'pointsForNextLevel', 'tutor'));
+        $nextLevelPointsReq = $level * 100;
+        $nextLevelQuestsReq = $level * 2;
+        
+        $pointsForNextLevel = max(0, $nextLevelPointsReq - $totalPoints);
+        $questsForNextLevel = max(0, $nextLevelQuestsReq - $completedQuests);
+        
+        return view('tutor.achievements', compact(
+            'userAchievements', 'totalPoints', 'unlockedCount', 'level', 
+            'pointsForNextLevel', 'questsForNextLevel', 'completedQuests', 
+            'nextLevelPointsReq', 'nextLevelQuestsReq', 'tutor'
+        ));
     }
     
     private function calculateProgress($tutor, $achievement)

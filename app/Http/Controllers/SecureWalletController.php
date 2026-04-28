@@ -461,7 +461,14 @@ class SecureWalletController extends Controller
             ->where('user_type', $userType)
             ->first();
 
-        return view('wallet.cash-out', compact('wallet', 'userType', 'user'));
+        $withdrawalFeePercent = 10;
+        $studentLevel = 1;
+        if ($userType === 'student' && method_exists($user, 'getWithdrawalFeePercent')) {
+            $withdrawalFeePercent = $user->getWithdrawalFeePercent();
+            $studentLevel = $user->getLevel();
+        }
+
+        return view('wallet.cash-out', compact('wallet', 'userType', 'user', 'withdrawalFeePercent', 'studentLevel'));
     }
 
     /**

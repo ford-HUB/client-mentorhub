@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +42,7 @@
             position: fixed;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .navbar {
@@ -92,8 +93,9 @@
             border-radius: 25px;
         }
 
-        .nav-links a:hover, .nav-links a.active {
-            background-color: rgba(255,255,255,0.2);
+        .nav-links a:hover,
+        .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
         }
 
@@ -114,7 +116,7 @@
             font-weight: bold;
             cursor: pointer;
             z-index: 1000;
-            transition: transform 0.2s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s cubic-bezier(0.4,0,0.2,1);
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .profile-icon:hover {
@@ -719,8 +721,328 @@
         .footer-modal-body a:hover {
             text-decoration: underline;
         }
+
+        .btn-ai-generate {
+            background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-ai-generate::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: rotate(45deg);
+            animation: aiShimmer 3s infinite;
+        }
+
+        @keyframes aiShimmer {
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) rotate(45deg);
+            }
+        }
+
+        .btn-ai-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+        }
+
+        .ai-modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-modal-overlay.show {
+            display: flex;
+        }
+
+        .ai-modal {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: aiModalIn 0.3s ease;
+        }
+
+        @keyframes aiModalIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .ai-modal-header {
+            background: linear-gradient(135deg, #0ea5e9, #10b981);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-modal-header h2 {
+            margin: 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .ai-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .ai-modal-body {
+            padding: 1.5rem 2rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .ai-student-card {
+            background: linear-gradient(135deg, #ecfdf5, #e0f7fa);
+            border: 1px solid #a7f3d0;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .ai-student-card h4 {
+            margin: 0 0 0.5rem;
+            color: #4a5568;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ai-student-card .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem 0;
+            font-size: 0.9rem;
+        }
+
+        .ai-student-card .detail-label {
+            color: #718096;
+        }
+
+        .ai-student-card .detail-value {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .ai-config-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .ai-config-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .ai-config-group select,
+        .ai-config-group input {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+
+        .ai-config-group select:focus,
+        .ai-config-group input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+        }
+
+        .ai-config-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .ai-modal-footer {
+            padding: 1rem 2rem 1.5rem;
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+        }
+
+        .btn-ai-cancel {
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.3s;
+        }
+
+        .btn-ai-cancel:hover {
+            background: #cbd5e0;
+        }
+
+        .btn-ai-submit {
+            background: linear-gradient(135deg, #0ea5e9, #10b981);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-ai-submit:hover {
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-ai-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .ai-loading-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            z-index: 10;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+        }
+
+        .ai-loading-overlay.show {
+            display: flex;
+        }
+
+        .ai-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #0ea5e9;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ai-loading-text {
+            color: #4a5568;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .ai-loading-sub {
+            color: #a0aec0;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+        }
+
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: linear-gradient(135deg, #0ea5e9, #10b981);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ai-generated-notice {
+            display: none;
+            background: linear-gradient(135deg, #ecfdf5, #e0f7fa);
+            border: 1px solid #6ee7b7;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #047857;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-generated-notice.show {
+            display: flex;
+        }
     </style>
 </head>
+
 <body>
     <header>
         <div class="navbar">
@@ -731,14 +1053,15 @@
             <nav class="nav-links" id="nav-links">
                 <a href="{{ route('tutor.dashboard') }}">Dashboard</a>
                 <a href="{{ route('tutor.bookings.index') }}">My Bookings</a>
-                <a href="#">Students</a>
-                <a href="#">Schedule</a>
-                
+                <a href="{{ route('tutor.students') }}">Students</a>
+                <a href="{{ route('tutor.schedule') }}">Schedule</a>
+
             </nav>
             <div class="profile-dropdown-container" style="position: relative;">
                 <div class="profile-icon" id="profile-icon">
                     @if($tutor->profile_picture)
-                        <img src="{{ route('tutor.profile.picture') }}?v={{ time() }}" alt="Profile Picture" class="profile-icon-img">
+                        <img src="{{ route('tutor.profile.picture') }}?v={{ time() }}" alt="Profile Picture"
+                            class="profile-icon-img">
                     @else
                         {{ strtoupper(substr($tutor->first_name, 0, 1) . substr($tutor->last_name, 0, 1)) }}
                     @endif
@@ -746,8 +1069,9 @@
                 <div class="dropdown-menu" id="dropdown-menu">
                     <a href="{{ route('tutor.profile.edit') }}">My Profile</a>
                     <a href="{{ route('tutor.settings') }}">Achievements</a>
-                        <a href="#">Report a Problem</a>
-                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                    <a href="#">Report a Problem</a>
+                    <a href="#"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                     <form id="logout-form" method="POST" action="{{ route('tutor.logout') }}" style="display: none;">
                         @csrf
                     </form>
@@ -764,7 +1088,8 @@
             </div>
 
             @if($errors->any())
-                <div style="background-color: #f8d7da; color: #721c24; padding: 1rem; border-radius: 5px; margin-bottom: 1rem; border: 1px solid #f5c6cb;">
+                <div
+                    style="background-color: #f8d7da; color: #721c24; padding: 1rem; border-radius: 5px; margin-bottom: 1rem; border: 1px solid #f5c6cb;">
                     <ul style="margin: 0; padding-left: 1rem;">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -775,20 +1100,21 @@
 
             <form action="{{ route('tutor.activities.store') }}" method="POST" id="activity-form">
                 @csrf
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="title">Activity Title *</label>
                         <input type="text" id="title" name="title" value="{{ old('title') }}" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="type">Activity Type *</label>
                         <select id="type" name="type" required>
                             <option value="">Select Type</option>
                             <option value="activity" {{ old('type') == 'activity' ? 'selected' : '' }}>Activity</option>
                             <option value="exam" {{ old('type') == 'exam' ? 'selected' : '' }}>Exam</option>
-                            <option value="assignment" {{ old('type') == 'assignment' ? 'selected' : '' }}>Assignment</option>
+                            <option value="assignment" {{ old('type') == 'assignment' ? 'selected' : '' }}>Assignment
+                            </option>
                             <option value="quiz" {{ old('type') == 'quiz' ? 'selected' : '' }}>Quiz</option>
                         </select>
                     </div>
@@ -806,14 +1132,15 @@
                             @endforeach
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="session_id">Related Session (Optional)</label>
                         <select id="session_id" name="session_id">
                             <option value="">No specific session</option>
                             @foreach($sessions as $session)
                                 <option value="{{ $session->id }}" {{ old('session_id') == $session->id ? 'selected' : '' }}>
-                                    {{ $session->date->format('M d, Y') }} - {{ $session->student->first_name }} {{ $session->student->last_name }}
+                                    {{ $session->date->format('M d, Y') }} - {{ $session->student->first_name }}
+                                    {{ $session->student->last_name }}
                                 </option>
                             @endforeach
                         </select>
@@ -827,18 +1154,21 @@
 
                 <div class="form-group">
                     <label for="instructions">Instructions</label>
-                    <textarea id="instructions" name="instructions" placeholder="Provide specific instructions for the student...">{{ old('instructions') }}</textarea>
+                    <textarea id="instructions" name="instructions"
+                        placeholder="Provide specific instructions for the student...">{{ old('instructions') }}</textarea>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="total_points">Total Points *</label>
-                        <input type="number" id="total_points" name="total_points" value="{{ old('total_points', 100) }}" min="1" required>
+                        <input type="number" id="total_points" name="total_points"
+                            value="{{ old('total_points', 100) }}" min="1" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="time_limit">Time Limit (minutes)</label>
-                        <input type="number" id="time_limit" name="time_limit" value="{{ old('time_limit') }}" min="1" placeholder="Optional">
+                        <input type="number" id="time_limit" name="time_limit" value="{{ old('time_limit') }}" min="1"
+                            placeholder="Optional">
                     </div>
                 </div>
 
@@ -848,27 +1178,45 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Multiple Choice Questions</label>
-                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Add multiple choice questions for this activity</p>
+                    <div class="ai-generated-notice" id="ai-generated-notice">
+                        <i class="fas fa-robot"></i>
+                        <span><strong>AI Generated Content:</strong> Please review and edit the generated questions to ensure quality and accuracy before assigning to the student.</span>
+                    </div>
                     
-                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <label>Multiple Choice Questions</label>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Add multiple choice questions for
+                        this activity</p>
+
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
                         <button type="button" class="add-question" id="add-question-btn">
                             <i class="fas fa-plus"></i> Add Question
                         </button>
-                        <button type="button" class="btn btn-secondary" id="test-btn" style="background-color: #17a2b8; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 5px; cursor: pointer; font-size: 1rem; transition: background-color 0.3s; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <button type="button" class="btn btn-secondary" id="test-btn"
+                            style="background-color: #17a2b8; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 5px; cursor: pointer; font-size: 1rem; transition: background-color 0.3s; display: inline-flex; align-items: center; gap: 0.5rem;">
                             <i class="fas fa-flask"></i> Fill Test Data (5 Questions)
                         </button>
+                        <button type="button" class="btn-ai-generate" id="ai-generate-btn">
+                            <i class="fas fa-magic"></i> Generate with AI
+                        </button>
                     </div>
-                    
+
                     <div id="questions-container">
                         <!-- Questions will be dynamically added here -->
                     </div>
                 </div>
 
                 <div class="form-actions">
-                    <a href="{{ route('tutor.my-sessions') }}" class="btn btn-secondary">
+                    <a href="{{ route('tutor.students') }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i>
                         Cancel
+                    </a>
+                    <a href="{{ route('tutor.my-sessions') }}" class="btn btn-secondary" style="background-color: #17a2b8; color: white;">
+                        <i class="fas fa-tasks"></i>
+                        My Sessions
+                    </a>
+                    <a id="view-session-btn" href="#" class="btn btn-secondary" style="display: none; background-color: #6c757d; color: white;">
+                        <i class="fas fa-calendar-check"></i>
+                        View Session
                     </a>
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-paper-plane"></i>
@@ -878,6 +1226,58 @@
             </form>
         </div>
     </main>
+
+    <!-- AI Generation Modal -->
+    <div class="ai-modal-overlay" id="ai-modal-overlay">
+        <div class="ai-modal">
+            <div class="ai-modal-header">
+                <h2><i class="fas fa-magic"></i> Generate Quest with AI</h2>
+                <button class="ai-modal-close" id="ai-modal-close">&times;</button>
+            </div>
+            <div class="ai-modal-body" style="position: relative;">
+                <div class="ai-loading-overlay" id="ai-loading">
+                    <div class="ai-spinner"></div>
+                    <div class="ai-loading-text">Generating Quest...</div>
+                    <div class="ai-loading-sub">This may take up to 30 seconds</div>
+                </div>
+
+                <div class="ai-student-card" id="ai-student-info">
+                    <!-- Student details will be loaded here -->
+                </div>
+
+                <div class="ai-config-group">
+                    <label for="ai-topic">Topic Focus</label>
+                    <input type="text" id="ai-topic" placeholder="E.g. specific chapter, concept, or learning objective...">
+                </div>
+
+                <div class="ai-config-row">
+                    <div class="ai-config-group">
+                        <label for="ai-num-questions">Number of Questions</label>
+                        <select id="ai-num-questions">
+                            <option value="5" selected>5 Questions (Short Quiz)</option>
+                            <option value="10">10 Questions (Standard Quiz)</option>
+                            <option value="15">15 Questions (Long Quiz)</option>
+                            <option value="20">20 Questions (Exam)</option>
+                        </select>
+                    </div>
+                    <div class="ai-config-group">
+                        <label for="ai-difficulty">Difficulty Level</label>
+                        <select id="ai-difficulty">
+                            <option value="easy">Beginner</option>
+                            <option value="medium" selected>Intermediate</option>
+                            <option value="hard">Advanced</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-modal-footer">
+                <button class="btn-ai-cancel" id="ai-cancel-btn">Cancel</button>
+                <button class="btn-ai-submit" id="ai-submit-btn">
+                    <i class="fas fa-bolt"></i> Generate Questions
+                </button>
+            </div>
+        </div>
+    </div>
 
     @include('layouts.footer-modals')
 
@@ -896,13 +1296,13 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Mobile menu toggle
             const menuToggle = document.getElementById('menu-toggle');
             const navLinks = document.getElementById('nav-links');
 
             if (menuToggle && navLinks) {
-                menuToggle.addEventListener('click', function() {
+                menuToggle.addEventListener('click', function () {
                     navLinks.classList.toggle('active');
                 });
             }
@@ -912,17 +1312,37 @@
             const dropdownMenu = document.getElementById('dropdown-menu');
 
             if (profileIcon && dropdownMenu) {
-                profileIcon.addEventListener('click', function(e) {
+                profileIcon.addEventListener('click', function (e) {
                     e.stopPropagation();
                     dropdownMenu.classList.toggle('active');
                 });
 
                 // Close dropdown when clicking outside
-                document.addEventListener('click', function(e) {
+                document.addEventListener('click', function (e) {
                     if (!profileIcon.contains(e.target)) {
                         dropdownMenu.classList.remove('active');
                     }
                 });
+            }
+
+            // View Session button logic
+            const sessionIdSelect = document.getElementById('session_id');
+            const viewSessionBtn = document.getElementById('view-session-btn');
+
+            function updateViewSessionBtn() {
+                const sessionId = sessionIdSelect.value;
+                if (sessionId) {
+                    viewSessionBtn.href = `/tutor/bookings/${sessionId}`;
+                    viewSessionBtn.style.display = 'inline-flex';
+                } else {
+                    viewSessionBtn.style.display = 'none';
+                }
+            }
+
+            if (sessionIdSelect && viewSessionBtn) {
+                sessionIdSelect.addEventListener('change', updateViewSessionBtn);
+                // Initial check
+                updateViewSessionBtn();
             }
 
             // Multiple choice questions functionality
@@ -931,13 +1351,13 @@
             let questionCount = 0;
 
             // Add new question
-            addQuestionBtn.addEventListener('click', function() {
+            addQuestionBtn.addEventListener('click', function () {
                 addQuestion();
             });
 
             // Test button - fill with sample questions
             const testBtn = document.getElementById('test-btn');
-            testBtn.addEventListener('click', function() {
+            testBtn.addEventListener('click', function () {
                 // Clear existing questions
                 questionsContainer.innerHTML = '';
                 questionCount = 0;
@@ -972,14 +1392,14 @@
                 ];
 
                 // Add each test question
-                testQuestions.forEach(function(testQ) {
+                testQuestions.forEach(function (testQ) {
                     questionCount++;
                     const questionIndex = questionCount;
-                    
+
                     const questionItem = document.createElement('div');
                     questionItem.className = 'question-item';
                     questionItem.setAttribute('data-question-index', questionIndex);
-                    
+
                     questionItem.innerHTML = `
                         <div class="question-header">
                             <span class="question-number">Question ${questionIndex}</span>
@@ -1002,15 +1422,15 @@
                             <span class="correct-answer-label">Select the correct answer below:</span>
                         </div>
                     `;
-                    
+
                     questionsContainer.appendChild(questionItem);
-                    
+
                     // Add options for this question
                     const optionsList = questionItem.querySelector('.options-list');
-                    testQ.options.forEach(function(option, optIndex) {
+                    testQ.options.forEach(function (option, optIndex) {
                         const optionLabel = String.fromCharCode(65 + optIndex); // A, B, C, D, etc.
                         const isCorrect = optIndex === testQ.correctAnswer;
-                        
+
                         const optionItem = document.createElement('div');
                         optionItem.className = 'option-item';
                         optionItem.innerHTML = `
@@ -1021,7 +1441,7 @@
                                 <i class="fas fa-times"></i>
                             </button>
                         `;
-                        
+
                         optionsList.appendChild(optionItem);
                     });
                 });
@@ -1030,11 +1450,11 @@
             function addQuestion() {
                 questionCount++;
                 const questionIndex = questionCount;
-                
+
                 const questionItem = document.createElement('div');
                 questionItem.className = 'question-item';
                 questionItem.setAttribute('data-question-index', questionIndex);
-                
+
                 questionItem.innerHTML = `
                     <div class="question-header">
                         <span class="question-number">Question ${questionIndex}</span>
@@ -1057,9 +1477,9 @@
                         <span class="correct-answer-label">Select the correct answer below:</span>
                     </div>
                 `;
-                
+
                 questionsContainer.appendChild(questionItem);
-                
+
                 // Add initial 4 options
                 const optionsList = questionItem.querySelector('.options-list');
                 for (let i = 0; i < 4; i++) {
@@ -1078,11 +1498,11 @@
                     console.error('Options list not found');
                     return;
                 }
-                
+
                 const optionCount = optionsList.children.length;
                 const optionIndex = optionCount;
                 const optionLabel = String.fromCharCode(65 + optionIndex); // A, B, C, D, etc.
-                
+
                 const optionItem = document.createElement('div');
                 optionItem.className = 'option-item';
                 optionItem.innerHTML = `
@@ -1093,22 +1513,22 @@
                         <i class="fas fa-times"></i>
                     </button>
                 `;
-                
+
                 optionsList.appendChild(optionItem);
             }
 
             function removeOption(button) {
                 const optionItem = button.closest('.option-item');
                 const optionsList = optionItem.parentElement;
-                
+
                 // Don't allow removing if only one option remains
                 if (optionsList.children.length <= 1) {
                     alert('Each question must have at least one option.');
                     return;
                 }
-                
+
                 optionItem.remove();
-                
+
                 // Re-index remaining options
                 reindexOptions(optionsList);
             }
@@ -1117,12 +1537,12 @@
                 const questionItem = optionsList.closest('.question-item');
                 const questionIndex = questionItem.getAttribute('data-question-index');
                 const options = optionsList.querySelectorAll('.option-item');
-                
+
                 options.forEach((option, newIndex) => {
                     const radio = option.querySelector('input[type="radio"]');
                     const textInput = option.querySelector('input[type="text"]');
                     const labelSpan = option.querySelector('.option-label');
-                    
+
                     if (radio) {
                         radio.value = newIndex;
                         radio.name = `questions[${questionIndex}][correct_answer]`;
@@ -1141,11 +1561,11 @@
             function removeQuestion(button) {
                 const questionItem = button.closest('.question-item');
                 questionItem.remove();
-                
+
                 // Re-number remaining questions
                 renumberQuestions();
             }
-            
+
             // Make functions globally accessible
             window.removeQuestion = removeQuestion;
             window.removeOption = removeOption;
@@ -1160,13 +1580,13 @@
                     }
                     const newQuestionIndex = index + 1;
                     question.setAttribute('data-question-index', newQuestionIndex);
-                    
+
                     // Update all input names
                     const textarea = question.querySelector('textarea[name^="questions"]');
                     if (textarea) {
                         textarea.name = `questions[${newQuestionIndex}][question]`;
                     }
-                    
+
                     const optionsList = question.querySelector('.options-list');
                     if (optionsList) {
                         optionsList.setAttribute('data-question-index', newQuestionIndex);
@@ -1175,7 +1595,7 @@
                             const radio = option.querySelector('input[type="radio"]');
                             const textInput = option.querySelector('input[type="text"]');
                             const labelSpan = option.querySelector('.option-label');
-                            
+
                             if (radio) {
                                 radio.name = `questions[${newQuestionIndex}][correct_answer]`;
                             }
@@ -1187,7 +1607,7 @@
                                 labelSpan.textContent = optionLabel + '.';
                             }
                         });
-                        
+
                         // Update add option button
                         const addOptionBtn = question.querySelector('.add-option');
                         if (addOptionBtn) {
@@ -1195,52 +1615,52 @@
                         }
                     }
                 });
-                
+
                 questionCount = questions.length;
             }
 
             // Form submission - prepare questions data
             const activityForm = document.getElementById('activity-form');
-            activityForm.addEventListener('submit', function(e) {
+            activityForm.addEventListener('submit', function (e) {
                 const questions = [];
                 const questionItems = questionsContainer.querySelectorAll('.question-item');
-                
+
                 questionItems.forEach((questionItem) => {
                     const questionTextarea = questionItem.querySelector('textarea[name^="questions"]');
                     if (!questionTextarea) return;
-                    
+
                     const questionText = questionTextarea.value.trim();
                     if (!questionText) return;
-                    
+
                     const options = [];
                     const optionItems = questionItem.querySelectorAll('.option-item');
-                    
+
                     optionItems.forEach((optionItem, optIndex) => {
                         const optionInput = optionItem.querySelector('input[type="text"]');
                         if (optionInput && optionInput.value.trim()) {
                             options.push(optionInput.value.trim());
                         }
                     });
-                    
+
                     if (options.length < 2) {
                         e.preventDefault();
                         alert('Each question must have at least 2 options.');
                         return;
                     }
-                    
+
                     const correctAnswerRadio = questionItem.querySelector('input[type="radio"]:checked');
                     if (!correctAnswerRadio) {
                         e.preventDefault();
                         alert('Please select the correct answer for all questions.');
                         return;
                     }
-                    
+
                     // Find the index of the correct answer
                     const correctIndex = Array.from(optionItems).findIndex(item => {
                         const radio = item.querySelector('input[type="radio"]');
                         return radio && radio.checked;
                     });
-                    
+
                     questions.push({
                         question: questionText,
                         type: 'multiple_choice',
@@ -1248,13 +1668,13 @@
                         correct_answer: correctIndex >= 0 ? correctIndex : null
                     });
                 });
-                
+
                 // Remove any existing hidden input
                 const existingInput = document.getElementById('questions-json');
                 if (existingInput) {
                     existingInput.remove();
                 }
-                
+
                 // Add hidden input with questions JSON
                 const questionsInput = document.createElement('input');
                 questionsInput.type = 'hidden';
@@ -1265,7 +1685,184 @@
             });
         });
     </script>
+    <script>
+        (function () {
+            const aiBtn = document.getElementById('ai-generate-btn');
+            const aiOverlay = document.getElementById('ai-modal-overlay');
+            const aiClose = document.getElementById('ai-modal-close');
+            const aiCancel = document.getElementById('ai-cancel-btn');
+            const aiSubmit = document.getElementById('ai-submit-btn');
+            const aiLoading = document.getElementById('ai-loading');
+            const aiStudentInfo = document.getElementById('ai-student-info');
+            const studentSelect = document.getElementById('student_id');
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+            function openAIModal() {
+                const selectedStudentId = studentSelect.value;
+                if (!selectedStudentId) {
+                    alert('Please select a student first before generating an AI quest.');
+                    return;
+                }
+                aiOverlay.classList.add('show');
+                fetchStudentDetails(selectedStudentId);
+            }
+
+            function closeAIModal() {
+                aiOverlay.classList.remove('show');
+                aiLoading.classList.remove('show');
+            }
+
+            function fetchStudentDetails(studentId) {
+                aiStudentInfo.innerHTML = '<h4><i class="fas fa-spinner fa-spin"></i> Loading student profile...</h4>';
+                fetch('/tutor/activities/student-details/' + studentId, {
+                    headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken }
+                })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.error) {
+                            aiStudentInfo.innerHTML = '<h4 style="color:#e53e3e;">Error</h4><p>' + data.error + '</p>';
+                            return;
+                        }
+                        const s = data.student;
+                        let html = '<h4><i class="fas fa-user-graduate"></i> Student Profile</h4>';
+                        html += '<div class="detail-row"><span class="detail-label">Name</span><span class="detail-value">' + s.name + '</span></div>';
+                        html += '<div class="detail-row"><span class="detail-label">Course</span><span class="detail-value">' + s.course + '</span></div>';
+                        html += '<div class="detail-row"><span class="detail-label">Year Level</span><span class="detail-value">' + s.year_level + '</span></div>';
+                        html += '<div class="detail-row"><span class="detail-label">Interests</span><span class="detail-value">' + s.subjects_interest + '</span></div>';
+                        if (data.past_activities && data.past_activities.length > 0) {
+                            html += '<div style="margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid #d0d9f5;font-size:0.8rem;color:#718096;">';
+                            html += '<strong>' + data.past_activities.length + '</strong> past activities found';
+                            html += '</div>';
+                        }
+                        aiStudentInfo.innerHTML = html;
+                    })
+                    .catch(() => {
+                        aiStudentInfo.innerHTML = '<h4 style="color:#e53e3e;">Error</h4><p>Failed to load student details.</p>';
+                    });
+            }
+
+            function generateQuest() {
+                const selectedStudentId = studentSelect.value;
+                if (!selectedStudentId) return;
+
+                aiLoading.classList.add('show');
+                aiSubmit.disabled = true;
+
+                const payload = {
+                    student_id: selectedStudentId,
+                    num_questions: document.getElementById('ai-num-questions').value,
+                    difficulty: document.getElementById('ai-difficulty').value,
+                    topic_focus: document.getElementById('ai-topic').value
+                };
+
+                fetch('/tutor/activities/generate-ai-quest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify(payload)
+                })
+                    .then(r => r.json())
+                    .then(data => {
+                        aiLoading.classList.remove('show');
+                        aiSubmit.disabled = false;
+
+                        if (data.error) {
+                            alert('AI Error: ' + data.error);
+                            return;
+                        }
+                        if (data.success && data.activity) {
+                            fillFormWithAIData(data.activity);
+                            closeAIModal();
+                        }
+                    })
+                    .catch(err => {
+                        aiLoading.classList.remove('show');
+                        aiSubmit.disabled = false;
+                        alert('Failed to generate quest. Please try again.');
+                        console.error(err);
+                    });
+            }
+
+            function fillFormWithAIData(activity) {
+                // Fill basic fields
+                document.getElementById('title').value = activity.title || '';
+                document.getElementById('type').value = activity.type || 'quiz';
+                document.getElementById('description').value = activity.description || '';
+                document.getElementById('instructions').value = activity.instructions || '';
+                document.getElementById('total_points').value = activity.total_points || 100;
+                if (activity.time_limit) {
+                    document.getElementById('time_limit').value = activity.time_limit;
+                }
+
+                // Show AI generated notice
+                document.getElementById('ai-generated-notice').classList.add('show');
+
+                // Clear existing questions
+                const container = document.getElementById('questions-container');
+                container.innerHTML = '';
+
+                // Build questions
+                if (activity.questions && activity.questions.length > 0) {
+                    activity.questions.forEach(function (q, qIdx) {
+                        const questionIndex = qIdx + 1;
+                        const qDiv = document.createElement('div');
+                        qDiv.className = 'question-item';
+                        qDiv.setAttribute('data-question-index', questionIndex);
+
+                        qDiv.innerHTML = '<div class="question-header">' +
+                            '<span class="question-number">Question ' + questionIndex + ' <span class="ai-badge" style="margin-left:6px;"><i class="fas fa-robot"></i> AI</span></span>' +
+                            '<button type="button" class="remove-question" onclick="removeQuestion(this)"><i class="fas fa-trash"></i> Remove</button>' +
+                            '</div>' +
+                            '<div class="question-input-group">' +
+                            '<label>Question Text *</label>' +
+                            '<textarea name="questions[' + questionIndex + '][question]" required placeholder="Enter your question here...">' + (q.question || '') + '</textarea>' +
+                            '</div>' +
+                            '<div class="options-container">' +
+                            '<label style="display:block;margin-bottom:0.5rem;font-weight:600;color:#333;">Options *</label>' +
+                            '<div class="options-list" data-question-index="' + questionIndex + '"></div>' +
+                            '<button type="button" class="add-option" onclick="addOptionToQuestion(this, ' + questionIndex + ')"><i class="fas fa-plus"></i> Add Option</button>' +
+                            '<span class="correct-answer-label">Select the correct answer below:</span>' +
+                            '</div>';
+
+                        container.appendChild(qDiv);
+
+                        const optList = qDiv.querySelector('.options-list');
+                        const options = q.options || ['', '', '', ''];
+                        const correctIdx = q.correct_answer != null ? parseInt(q.correct_answer) : 0;
+
+                        options.forEach(function (opt, oIdx) {
+                            const letter = String.fromCharCode(65 + oIdx);
+                            const checked = oIdx === correctIdx ? 'checked' : '';
+                            const optDiv = document.createElement('div');
+                            optDiv.className = 'option-item';
+                            optDiv.innerHTML =
+                                '<input type="radio" name="questions[' + questionIndex + '][correct_answer]" value="' + oIdx + '" ' + checked + ' required>' +
+                                '<span class="option-label">' + letter + '.</span>' +
+                                '<input type="text" name="questions[' + questionIndex + '][options][' + oIdx + ']" placeholder="Enter option text" value="' + (opt || '').replace(/"/g, '&quot;') + '" required autocomplete="off">' +
+                                '<button type="button" class="remove-option" onclick="removeOption(this)"><i class="fas fa-times"></i></button>';
+                            optList.appendChild(optDiv);
+                        });
+                    });
+                }
+
+                // Scroll to questions
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            // Event listeners
+            aiBtn.addEventListener('click', openAIModal);
+            aiClose.addEventListener('click', closeAIModal);
+            aiCancel.addEventListener('click', closeAIModal);
+            aiSubmit.addEventListener('click', generateQuest);
+            aiOverlay.addEventListener('click', function (e) {
+                if (e.target === aiOverlay) closeAIModal();
+            });
+        })();
+    </script>
     @include('layouts.footer-js')
 </body>
-</html>
 
+</html>

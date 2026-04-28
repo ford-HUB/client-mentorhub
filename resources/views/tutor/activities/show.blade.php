@@ -443,6 +443,17 @@
                                                             {{ chr(65 + $studentAnswerIndex) }}. {{ $question['options'][$studentAnswerIndex] ?? 'N/A' }}
                                                         </span>
                                                     </div>
+
+                                                    @if(!$isCorrect && isset($wrongAnswerSuggestions[$index]))
+                                                        <div style="margin-top: 1rem; padding: 1rem; background: #fff8f8; border: 1px dashed #f44336; border-radius: 8px;">
+                                                            <div style="font-size: 0.8rem; font-weight: 700; color: #f44336; text-transform: uppercase; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+                                                                <i class="fas fa-magic"></i> AI Improvement Suggestion
+                                                            </div>
+                                                            <div style="font-style: italic; color: #555; font-size: 0.95rem; line-height: 1.5;">
+                                                                "{{ $wrongAnswerSuggestions[$index] }}"
+                                                            </div>
+                                                        </div>
+                                                    @endif
                                                 @else
                                                     <div style="padding: 0.75rem; background-color: #fff3cd; border-radius: 3px; margin-top: 0.5rem; color: #856404;">
                                                         <i class="fas fa-exclamation-triangle"></i> No answer provided
@@ -505,32 +516,32 @@
 
                             @if($submission && $submission->status === 'graded' && isset($learningAnalysis))
                                 <!-- Adaptive Learning Recommendations -->
-                                <div class="adaptive-learning-section" style="margin-top: 2rem; padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                                    <h3 style="margin-bottom: 1.5rem; color: white; display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-brain"></i> AI-Powered Learning Recommendations
+                                <div class="adaptive-learning-section" style="margin-top: 2rem; padding: 2rem; background: white; border: 1px solid #eef2f6; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                                    <h3 style="margin-bottom: 1.5rem; color: #1e293b; display: flex; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-brain" style="color: #6366f1;"></i> AI-Powered Learning Recommendations
                                     </h3>
                                     
                                     <!-- Learning Pace Indicator -->
-                                    <div style="background-color: rgba(255,255,255,0.15); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; backdrop-filter: blur(10px);">
+                                    <div style="background-color: #f8fafc; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1.5rem;">
                                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                            <span style="color: white; font-weight: 600;">Learning Pace:</span>
-                                            <span style="color: white; font-weight: 700; text-transform: capitalize; padding: 0.3rem 0.8rem; background-color: rgba(255,255,255,0.2); border-radius: 20px;">
+                                            <span style="color: #475569; font-weight: 600;">Learning Pace:</span>
+                                            <span style="color: #1e293b; font-weight: 700; text-transform: capitalize; padding: 0.3rem 0.8rem; background-color: #e2e8f0; border-radius: 20px; font-size: 0.85rem;">
                                                 {{ str_replace('_', ' ', $learningAnalysis['learning_pace']) }}
                                             </span>
                                         </div>
                                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                                            <span style="color: rgba(255,255,255,0.9);">Average Score:</span>
-                                            <span style="color: white; font-weight: 600;">{{ $learningAnalysis['average_score'] }}%</span>
+                                            <span style="color: #64748b;">Average Score:</span>
+                                            <span style="color: #1e293b; font-weight: 600;">{{ $learningAnalysis['average_score'] }}%</span>
                                         </div>
                                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
-                                            <span style="color: rgba(255,255,255,0.9);">Performance Trend:</span>
-                                            <span style="color: white; font-weight: 600; text-transform: capitalize;">
+                                            <span style="color: #64748b;">Performance Trend:</span>
+                                            <span style="color: #1e293b; font-weight: 600; text-transform: capitalize;">
                                                 @if($learningAnalysis['performance_trend'] === 'improving')
-                                                    <i class="fas fa-arrow-up" style="color: #4ade80;"></i>
+                                                    <i class="fas fa-arrow-up" style="color: #10b981;"></i>
                                                 @elseif($learningAnalysis['performance_trend'] === 'declining')
-                                                    <i class="fas fa-arrow-down" style="color: #f87171;"></i>
+                                                    <i class="fas fa-arrow-down" style="color: #ef4444;"></i>
                                                 @else
-                                                    <i class="fas fa-minus" style="color: #fbbf24;"></i>
+                                                    <i class="fas fa-minus" style="color: #f59e0b;"></i>
                                                 @endif
                                                 {{ str_replace('_', ' ', $learningAnalysis['performance_trend']) }}
                                             </span>
@@ -539,15 +550,15 @@
 
                                     <!-- Suggested Settings -->
                                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-                                        <div style="background-color: rgba(255,255,255,0.15); padding: 1rem; border-radius: 8px; backdrop-filter: blur(10px);">
-                                            <div style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-bottom: 0.5rem;">Suggested Difficulty</div>
-                                            <div style="color: white; font-weight: 700; text-transform: capitalize; font-size: 1.1rem;">
+                                        <div style="background-color: #f8fafc; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                            <div style="color: #64748b; font-size: 0.9rem; margin-bottom: 0.5rem;">Suggested Difficulty</div>
+                                            <div style="color: #1e293b; font-weight: 700; text-transform: capitalize; font-size: 1.1rem;">
                                                 {{ str_replace('_', ' ', $suggestedDifficulty ?? 'normal') }}
                                             </div>
                                         </div>
-                                        <div style="background-color: rgba(255,255,255,0.15); padding: 1rem; border-radius: 8px; backdrop-filter: blur(10px);">
-                                            <div style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-bottom: 0.5rem;">Suggested Frequency</div>
-                                            <div style="color: white; font-weight: 700; text-transform: capitalize; font-size: 1.1rem;">
+                                        <div style="background-color: #f8fafc; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                            <div style="color: #64748b; font-size: 0.9rem; margin-bottom: 0.5rem;">Suggested Frequency</div>
+                                            <div style="color: #1e293b; font-weight: 700; text-transform: capitalize; font-size: 1.1rem;">
                                                 {{ str_replace('_', ' ', $suggestedFrequency ?? 'normal') }}
                                             </div>
                                         </div>
@@ -555,9 +566,9 @@
 
                                     <!-- Recommendations -->
                                     @if(!empty($learningAnalysis['recommendations']))
-                                        <div style="background-color: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 8px; backdrop-filter: blur(10px);">
-                                            <h4 style="color: white; margin-bottom: 1rem; font-size: 1.1rem;">
-                                                <i class="fas fa-lightbulb"></i> Teaching Recommendations
+                                        <div style="background-color: #f8fafc; padding: 1.5rem; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                            <h4 style="color: #1e293b; margin-bottom: 1rem; font-size: 1.1rem;">
+                                                <i class="fas fa-lightbulb" style="color: #f59e0b;"></i> Teaching Recommendations
                                             </h4>
                                             <div style="display: grid; gap: 1rem;">
                                                 @foreach($learningAnalysis['recommendations'] as $recommendation)

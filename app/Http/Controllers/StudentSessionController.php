@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Tutor;
 use App\Models\Session;
 use App\Models\Wallet;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Message;
@@ -19,8 +20,21 @@ class StudentSessionController extends Controller
         $student = Auth::guard('student')->user();
         
         // Only show approved tutors that are active
-        $tutors = Tutor::where('registration_status', 'approved')
-            ->where('is_active', true)
+        $query = Tutor::where('registration_status', 'approved')
+            ->where('is_active', true);
+            
+        // Don't show tutors that the student already has an accepted booking with
+        if ($student) {
+            $query->whereDoesntHave('sessions', function($q) use ($student) {
+                $q->where('student_id', $student->id)
+                  ->where('status', 'accepted');
+            });
+        }
+            
+        $tutors = $query->with(['sessions' => function($q) {
+                $q->whereIn('status', ['accepted', 'pending'])
+                  ->where('date', '>=', now()->toDateString());
+            }])
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')
             ->get();
@@ -33,6 +47,7 @@ class StudentSessionController extends Controller
             $tutors = $tutors->map(function($tutor) use ($studentInterests) {
                 $tutor->match_score = $this->calculateMatchScore($tutor, $studentInterests);
                 $tutor->is_matched = $tutor->match_score > 0;
+                $tutor->next_available = $this->calculateNextAvailableSlot($tutor->sessions);
                 return $tutor;
             });
             
@@ -48,11 +63,18 @@ class StudentSessionController extends Controller
             $tutors = $tutors->map(function($tutor) {
                 $tutor->match_score = 0;
                 $tutor->is_matched = false;
+                $tutor->next_available = $this->calculateNextAvailableSlot($tutor->sessions);
                 return $tutor;
             })->sortByDesc('reviews_avg_rating')->values();
         }
+        $studentLevel = 1;
+        $studentDiscount = 0;
+        if ($student) {
+            $studentLevel = $student->getLevel();
+            $studentDiscount = min(50, ($studentLevel - 1) * 2);
+        }
         
-        return view('student.book-session', compact('tutors', 'student'));
+        return view('student.book-session', compact('tutors', 'student', 'studentLevel', 'studentDiscount'));
     }
     
     /**
@@ -112,6 +134,68 @@ class StudentSessionController extends Controller
         return $matches;
     }
 
+    /**
+     * Calculate the next available 1-hour slot for a tutor based on their sessions.
+     */
+    private function calculateNextAvailableSlot($sessions)
+    {
+        $now = now();
+        $startHour = 8; // 8 AM
+        $endHour = 20; // 8 PM
+
+        $checkTime = $now->copy();
+        
+        if ($checkTime->hour >= $endHour) {
+            $checkTime->addDay()->setHour($startHour)->setMinute(0)->setSecond(0);
+        } elseif ($checkTime->hour < $startHour) {
+            $checkTime->setHour($startHour)->setMinute(0)->setSecond(0);
+        } else {
+            $checkTime->addHour()->setMinute(0)->setSecond(0);
+            if ($checkTime->hour >= $endHour) {
+                $checkTime->addDay()->setHour($startHour)->setMinute(0)->setSecond(0);
+            }
+        }
+
+        for ($i = 0; $i < 30; $i++) {
+            $date = $checkTime->copy()->toDateString();
+            
+            while ($checkTime->hour < $endHour) {
+                $slotStart = $checkTime->copy();
+                $slotEnd = $checkTime->copy()->addHour();
+
+                $conflict = false;
+                foreach ($sessions as $session) {
+                    if ($session->date === $date) {
+                        $sessionStart = \Carbon\Carbon::parse($session->date . ' ' . $session->start_time);
+                        $sessionEnd = \Carbon\Carbon::parse($session->date . ' ' . $session->end_time);
+
+                        if ($slotStart->lt($sessionEnd) && $slotEnd->gt($sessionStart)) {
+                            $conflict = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!$conflict) {
+                    return [
+                        'date' => $slotStart->format('Y-m-d'),
+                        'start_time' => $slotStart->format('H:i'),
+                        'end_time' => $slotEnd->format('H:i'),
+                        'is_today' => $slotStart->isToday(),
+                        'is_tomorrow' => $slotStart->isTomorrow(),
+                        'formatted_date' => $slotStart->format('M d, Y')
+                    ];
+                }
+
+                $checkTime->addHour();
+            }
+            
+            $checkTime->addDay()->setHour($startHour)->setMinute(0)->setSecond(0);
+        }
+        
+        return null;
+    }
+
     // Handle booking submission
     public function store(Request $request)
     {
@@ -161,6 +245,24 @@ class StudentSessionController extends Controller
                 }
             }
 
+            // Check for conflicting sessions for the tutor
+            if ($request->booking_type === 'hourly') {
+                $conflict = Session::where('tutor_id', $request->tutor_id)
+                    ->whereIn('status', ['accepted', 'pending'])
+                    ->where('date', $request->date)
+                    ->where(function ($query) use ($request) {
+                        $query->where('start_time', '<', $request->end_time)
+                              ->where('end_time', '>', $request->start_time);
+                    })
+                    ->exists();
+
+                if ($conflict) {
+                    return redirect()->back()
+                        ->withInput()
+                        ->withErrors(['error' => 'The selected time conflicts with another session. Please choose a different time.']);
+                }
+            }
+
             // Get tutor to get their rate
             $tutor = Tutor::findOrFail($request->tutor_id);
             
@@ -207,11 +309,23 @@ class StudentSessionController extends Controller
                 
                 $sessionRate = $hourlyRate * $hours;
             }
-            $studentId = Auth::guard('student')->id();
+            $student = Auth::guard('student')->user();
 
-            if (!$studentId) {
+            if (!$student) {
                 return redirect()->route('login.student')->with('error', 'Please log in to book a session.');
             }
+
+            // Apply level-based discount (2% per level starting at level 2, max 50%)
+            $level = $student->getLevel();
+            $discountPercentage = min(50, ($level - 1) * 2);
+            $originalRate = $sessionRate;
+            
+            if ($discountPercentage > 0) {
+                $discountMultiplier = 1 - ($discountPercentage / 100);
+                $sessionRate = $sessionRate * $discountMultiplier;
+            }
+
+            $studentId = $student->id;
 
             // Check if tutor is approved and active
             if ($tutor->registration_status !== 'approved') {
@@ -277,9 +391,23 @@ class StudentSessionController extends Controller
                 'status' => 'pending',
             ]);
 
+            // Notify tutor about the new booking
+            $student = Auth::guard('student')->user();
+            $sessionDate = \Carbon\Carbon::parse($request->date)->format('F j, Y');
+            $startTimeFmt = date('g:i A', strtotime($request->start_time));
+            Notification::create([
+                'user_id'    => $request->tutor_id,
+                'user_type'  => 'tutor',
+                'type'       => 'new_booking',
+                'title'      => 'New Booking Request',
+                'message'    => $student->first_name . ' ' . $student->last_name .
+                                ' has requested a ' . ucfirst(str_replace('_', '-', $request->session_type)) .
+                                ' session on ' . $sessionDate . ' at ' . $startTimeFmt . '.',
+                'related_id' => $session->id,
+            ]);
+
             // Check achievements for student
             $achievementService = new AchievementNotificationService();
-            $student = Auth::guard('student')->user();
             $achievementService->checkAndNotifyProgress($student, 'student', 'sessions_booked');
 
             DB::commit();
@@ -288,6 +416,10 @@ class StudentSessionController extends Controller
                 $message = 'Session booking request sent successfully! Payment of ₱' . number_format($sessionRate, 2) . '/month has been deducted from your wallet.';
             } else {
                 $message = 'Session booking request sent successfully! Payment of ₱' . number_format($sessionRate, 2) . ' (₱' . number_format($hourlyRate, 2) . '/hour) has been deducted from your wallet.';
+            }
+            
+            if (isset($discountPercentage) && $discountPercentage > 0) {
+                $message .= ' A Level ' . $level . ' discount of ' . $discountPercentage . '% (₱' . number_format($originalRate - $sessionRate, 2) . ') was applied!';
             }
             
             return redirect()->route('student.book-session')->with('success', $message);
@@ -303,6 +435,10 @@ class StudentSessionController extends Controller
     public function getTutorDetails($id)
     {
         $tutor = Tutor::where('id', $id)
+            ->with(['sessions' => function($q) {
+                $q->whereIn('status', ['accepted', 'pending'])
+                  ->where('date', '>=', now()->toDateString());
+            }])
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')
             ->firstOrFail();
@@ -310,6 +446,7 @@ class StudentSessionController extends Controller
         // Add calculated ratings that include both session reviews and assignment answer ratings
         $tutor->average_rating = $tutor->getAverageRating();
         $tutor->rating_count = $tutor->getRatingCount();
+        $tutor->next_available = $this->calculateNextAvailableSlot($tutor->sessions);
         
         return response()->json($tutor);
     }

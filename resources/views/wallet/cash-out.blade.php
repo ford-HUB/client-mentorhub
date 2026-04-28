@@ -303,8 +303,14 @@
                     Important Notice
                 </div>
                 <div class="warning-text">
-                    <strong>Processing Fee:</strong> A 10% deduction will be applied to every cash out request.<br>
-                    Cash out requests are processed within 24 hours. Please ensure your GCash account details are correct.
+                    <strong>Processing Fee:</strong> A <strong>{{ $withdrawalFeePercent }}%</strong> deduction will be applied to every cash out request.
+                    @if(isset($userType) && $userType === 'student' && $withdrawalFeePercent < 10)
+                        <br>
+                        <span style="color: #28a745; font-weight: 600;">
+                            <i class="fas fa-trophy"></i> Level {{ $studentLevel }} Benefit: Reduced from 10% to {{ $withdrawalFeePercent }}%! 
+                        </span>
+                    @endif
+                    <br>Cash out requests are processed within 24 hours. Please ensure your GCash account details are correct.
                 </div>
             </div>
 

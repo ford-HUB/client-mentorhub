@@ -258,6 +258,277 @@
             margin-top: 2px;
         }
         
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .reward-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .reward-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        
+        .reward-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+        
+        .reward-card.booking-reward::before {
+            background: linear-gradient(90deg, #28a745, #20c997);
+        }
+        
+        .reward-card.withdrawal-reward::before {
+            background: linear-gradient(90deg, #ff9800, #ff5722);
+        }
+        
+        .reward-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .reward-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+        
+        .reward-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .reward-next {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .reward-next i {
+            color: #ffd700;
+        }
+        
+        .requirements-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .requirements-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .next-level-badge {
+            background: linear-gradient(135deg, #ffd700, #ff9800);
+            color: #333;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
+            50% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+        }
+        
+        .req-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .req-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #ddd;
+            transition: all 0.3s ease;
+        }
+        
+        .req-item.completed {
+            border-left-color: #28a745;
+            background: linear-gradient(135deg, rgba(40,167,69,0.05), rgba(40,167,69,0.02));
+        }
+        
+        .req-item.pending {
+            border-left-color: #ffc107;
+            background: linear-gradient(135deg, rgba(255,193,7,0.05), rgba(255,193,7,0.02));
+        }
+        
+        .req-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        
+        .req-item.completed .req-icon {
+            background: rgba(40,167,69,0.15);
+            color: #28a745;
+        }
+        
+        .req-item.pending .req-icon {
+            background: rgba(255,193,7,0.15);
+            color: #ff9800;
+        }
+        
+        .req-details {
+            flex: 1;
+        }
+        
+        .req-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+        
+        .req-status {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .req-status strong {
+            color: #2d7dd2;
+        }
+        
+        .roadmap-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .roadmap-timeline {
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            padding: 1rem 0;
+            scrollbar-width: thin;
+        }
+        
+        .roadmap-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 120px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .roadmap-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 60px;
+            width: calc(100% - 20px);
+            height: 3px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+        
+        .roadmap-item.unlocked:not(:last-child)::after {
+            background: linear-gradient(90deg, #28a745, #20c997);
+        }
+        
+        .roadmap-node {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .roadmap-item.unlocked .roadmap-node {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            box-shadow: 0 2px 8px rgba(40,167,69,0.3);
+        }
+        
+        .roadmap-item.current .roadmap-node {
+            background: linear-gradient(135deg, #2d7dd2, #4a3dd9);
+            color: white;
+            box-shadow: 0 0 0 4px rgba(45,125,210,0.2), 0 2px 8px rgba(45,125,210,0.3);
+            animation: pulse-node 2s infinite;
+        }
+        
+        @keyframes pulse-node {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(45,125,210,0.2), 0 2px 8px rgba(45,125,210,0.3); }
+            50% { box-shadow: 0 0 0 8px rgba(45,125,210,0.1), 0 4px 12px rgba(45,125,210,0.4); }
+        }
+        
+        .roadmap-item.locked .roadmap-node {
+            background: #e0e0e0;
+            color: #999;
+        }
+        
+        .roadmap-info {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .roadmap-info .roadmap-reward {
+            font-weight: 600;
+            color: #28a745;
+        }
+        
+        .roadmap-info .roadmap-fee {
+            font-weight: 600;
+            color: #ff9800;
+        }
+        
+        .roadmap-info .roadmap-req {
+            color: #999;
+            font-size: 0.7rem;
+        }
+        
         @media (max-width: 1200px) {
             .achievements-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -276,6 +547,14 @@
             }
             
             .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .rewards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .req-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -353,14 +632,184 @@
         <!-- Level Card -->
         <div class="level-card">
             <div class="level-number">Level {{ $level }}</div>
-            <p style="margin-bottom: 0.5rem;">Keep learning to level up!</p>
-            <div class="level-progress">
-                <div class="level-progress-bar" style="width: {{ min(100, (($totalPoints % 100) / 100) * 100) }}%"></div>
+            <p style="margin-bottom: 1.5rem;">Keep learning and completing quests to level up!</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Points Progress -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.95rem;">
+                        <span style="font-weight: bold;"><i class="fas fa-star" style="color: #ffd700; margin-right: 5px;"></i> Points Progress</span>
+                        <span>{{ $pointsForNextLevel > 0 ? $pointsForNextLevel . ' more needed' : 'Completed!' }}</span>
+                    </div>
+                    <div class="level-progress" style="margin-top: 0; background: rgba(0,0,0,0.2);">
+                        @php
+                            $pointsProgress = $nextLevelPointsReq > 0 ? min(100, ($totalPoints / $nextLevelPointsReq) * 100) : 100;
+                        @endphp
+                        <div class="level-progress-bar" style="width: {{ $pointsProgress }}%; {{ $pointsForNextLevel == 0 ? 'background: #28a745;' : 'background: #ffd700;' }}"></div>
+                    </div>
+                    <div class="level-progress-text" style="text-align: left; margin-top: 0.5rem;">{{ $totalPoints }} / {{ $nextLevelPointsReq }} pts</div>
+                </div>
+
+                <!-- Quests Progress -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.95rem;">
+                        <span style="font-weight: bold;"><i class="fas fa-tasks" style="color: #17a2b8; margin-right: 5px;"></i> Quests (Activities) Progress</span>
+                        <span>{{ $questsForNextLevel > 0 ? $questsForNextLevel . ' more needed' : 'Completed!' }}</span>
+                    </div>
+                    <div class="level-progress" style="margin-top: 0; background: rgba(0,0,0,0.2);">
+                        @php
+                            $questsProgress = $nextLevelQuestsReq > 0 ? min(100, ($completedQuests / $nextLevelQuestsReq) * 100) : 100;
+                        @endphp
+                        <div class="level-progress-bar" style="width: {{ $questsProgress }}%; {{ $questsForNextLevel == 0 ? 'background: #28a745;' : 'background: #17a2b8;' }}"></div>
+                    </div>
+                    <div class="level-progress-text" style="text-align: left; margin-top: 0.5rem;">{{ $completedQuests }} / {{ $nextLevelQuestsReq }} quests completed</div>
+                </div>
             </div>
-            <div class="level-progress-text">{{ $pointsForNextLevel }} points to next level</div>
         </div>
         
-        <!-- Achievements Section -->
+        <div class="requirements-card">
+            <div class="requirements-header">
+                <h2 class="section-title" style="margin-bottom: 0;">
+                    <i class="fas fa-clipboard-list"></i>
+                    Level Up Requirements
+                </h2>
+                @if($pointsForNextLevel > 0 || $questsForNextLevel > 0)
+                    <div class="next-level-badge">
+                        <i class="fas fa-arrow-up"></i>
+                        Level {{ $level + 1 }} Next
+                    </div>
+                @else
+                    <div class="next-level-badge" style="background: linear-gradient(135deg, #28a745, #20c997); color: white;">
+                        <i class="fas fa-check-circle"></i>
+                        Requirements Met!
+                    </div>
+                @endif
+            </div>
+            
+            <div class="req-grid">
+                <div class="req-item {{ $pointsForNextLevel == 0 ? 'completed' : 'pending' }}">
+                    <div class="req-icon">
+                        <i class="fas {{ $pointsForNextLevel == 0 ? 'fa-check-circle' : 'fa-star' }}"></i>
+                    </div>
+                    <div class="req-details">
+                        <div class="req-title">Achievement Points</div>
+                        <div class="req-status">
+                            @if($pointsForNextLevel == 0)
+                                <strong>✓ Completed!</strong> — {{ $totalPoints }}/{{ $nextLevelPointsReq }} pts
+                            @else
+                                <strong>{{ $totalPoints }}/{{ $nextLevelPointsReq }} pts</strong> — {{ $pointsForNextLevel }} more needed
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="req-item {{ $questsForNextLevel == 0 ? 'completed' : 'pending' }}">
+                    <div class="req-icon">
+                        <i class="fas {{ $questsForNextLevel == 0 ? 'fa-check-circle' : 'fa-tasks' }}"></i>
+                    </div>
+                    <div class="req-details">
+                        <div class="req-title">Completed Quests (Activities)</div>
+                        <div class="req-status">
+                            @if($questsForNextLevel == 0)
+                                <strong>✓ Completed!</strong> — {{ $completedQuests }}/{{ $nextLevelQuestsReq }} quests
+                            @else
+                                <strong>{{ $completedQuests }}/{{ $nextLevelQuestsReq }} quests</strong> — {{ $questsForNextLevel }} more needed
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 1.5rem; padding: 1rem; background: linear-gradient(135deg, rgba(45,125,210,0.05), rgba(74,61,217,0.05)); border-radius: 10px; border: 1px dashed rgba(45,125,210,0.3);">
+                <div style="font-weight: 600; color: #2d7dd2; margin-bottom: 0.5rem;">
+                    <i class="fas fa-lightbulb" style="color: #ffd700;"></i> How to Level Up
+                </div>
+                <div style="font-size: 0.9rem; color: #555; line-height: 1.6;">
+                    You need <strong>both</strong> requirements to reach the next level:
+                    <ul style="margin: 0.5rem 0 0 1.5rem;">
+                        <li>Earn <strong>{{ $nextLevelPointsReq }} points</strong> by unlocking achievements</li>
+                        <li>Complete <strong>{{ $nextLevelQuestsReq }} quests</strong> (submit activities from your tutor)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="rewards-grid">
+            <div class="reward-card booking-reward">
+                <div class="reward-icon">🎫</div>
+                <div class="reward-value" style="color: #28a745;">{{ $bookingDiscount }}% OFF</div>
+                <div class="reward-label">Session Booking Discount</div>
+                <p style="font-size: 0.85rem; color: #555; margin-bottom: 1rem; line-height: 1.5;">
+                    Every session you book automatically gets a <strong>{{ $bookingDiscount }}%</strong> discount applied to the tutor's rate.
+                </p>
+                @if($level < 50)
+                    <div class="reward-next">
+                        <i class="fas fa-arrow-circle-up"></i>
+                        <span>Next level: <strong>{{ $nextBookingDiscount }}%</strong> discount</span>
+                    </div>
+                @else
+                    <div class="reward-next" style="background: #d4edda; color: #155724;">
+                        <i class="fas fa-crown" style="color: #ffd700;"></i>
+                        <span>Maximum discount reached!</span>
+                    </div>
+                @endif
+            </div>
+            
+            <div class="reward-card withdrawal-reward">
+                <div class="reward-icon">💰</div>
+                <div class="reward-value" style="color: #ff9800;">{{ $currentWithdrawalFee }}% Fee</div>
+                <div class="reward-label">Withdrawal Processing Fee</div>
+                <p style="font-size: 0.85rem; color: #555; margin-bottom: 1rem; line-height: 1.5;">
+                    @if($withdrawalFeeReduction > 0)
+                        Reduced from <strong style="text-decoration: line-through;">10%</strong> to <strong>{{ $currentWithdrawalFee }}%</strong> — you save {{ $withdrawalFeeReduction }}% on every cash out!
+                    @else
+                        Standard 10% processing fee. Level up to reduce this!
+                    @endif
+                </p>
+                @if($currentWithdrawalFee > 2)
+                    <div class="reward-next">
+                        <i class="fas fa-arrow-circle-up"></i>
+                        <span>Next level: <strong>{{ $nextWithdrawalFee }}%</strong> fee</span>
+                    </div>
+                @else
+                    <div class="reward-next" style="background: #d4edda; color: #155724;">
+                        <i class="fas fa-crown" style="color: #ffd700;"></i>
+                        <span>Minimum fee reached!</span>
+                    </div>
+                @endif
+            </div>
+        </div>
+        
+        <div class="roadmap-section">
+            <h2 class="section-title">
+                <i class="fas fa-road"></i>
+                Level Progression Roadmap
+            </h2>
+            <div class="roadmap-timeline">
+                @foreach($levelMilestones as $milestone)
+                    <div class="roadmap-item {{ $milestone['is_current'] ? 'current' : ($milestone['is_unlocked'] ? 'unlocked' : 'locked') }}">
+                        <div class="roadmap-node">
+                            @if($milestone['is_current'])
+                                <i class="fas fa-user" style="font-size: 0.8rem;"></i>
+                            @elseif($milestone['is_unlocked'])
+                                <i class="fas fa-check" style="font-size: 0.8rem;"></i>
+                            @else
+                                {{ $milestone['level'] }}
+                            @endif
+                        </div>
+                        <div class="roadmap-info">
+                            <div style="font-weight: 600; margin-bottom: 2px;">Lv.{{ $milestone['level'] }}</div>
+                            <div class="roadmap-reward">{{ $milestone['booking_discount'] }}% off</div>
+                            <div class="roadmap-fee">{{ $milestone['withdrawal_fee'] }}% fee</div>
+                            @if(!$milestone['is_unlocked'])
+                                <div class="roadmap-req">{{ $milestone['points_required'] }}pts · {{ $milestone['quests_required'] }}q</div>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        
         <div class="achievements-section">
             <h2 class="section-title">
                 <i class="fas fa-trophy"></i>

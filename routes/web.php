@@ -279,6 +279,10 @@ Route::middleware(['auth:tutor'])->group(function () {
     Route::get('/tutor/students/{student}/progress', [App\Http\Controllers\TutorActivityController::class, 'getStudentProgress'])->name('tutor.students.progress');
     Route::get('/tutor/schedule', [App\Http\Controllers\TutorActivityController::class, 'schedule'])->name('tutor.schedule');
     
+    // AI Quest Generation routes
+    Route::get('/tutor/activities/student-details/{studentId}', [App\Http\Controllers\TutorActivityController::class, 'getStudentDetails'])->name('tutor.activities.student-details');
+    Route::post('/tutor/activities/generate-ai-quest', [App\Http\Controllers\TutorActivityController::class, 'generateAIQuest'])->name('tutor.activities.generate-ai-quest');
+    
         // Tutor wallet routes with enhanced security
         Route::middleware(['auth:tutor', 'wallet.security'])->group(function () {
             Route::get('/tutor/wallet', [App\Http\Controllers\SecureWalletController::class, 'index'])->name('tutor.wallet');
@@ -315,6 +319,7 @@ Route::middleware(['auth:tutor'])->group(function () {
     // Tutor notifications routes
     Route::get('/tutor/notifications', [App\Http\Controllers\TutorNotificationController::class, 'index'])->name('tutor.notifications');
     Route::get('/tutor/notifications/all', [App\Http\Controllers\TutorNotificationController::class, 'getAll'])->name('tutor.notifications.all');
+    Route::get('/tutor/notifications/{id}/booking-details', [App\Http\Controllers\TutorNotificationController::class, 'getBookingDetails'])->name('tutor.notifications.booking-details');
     Route::post('/tutor/notifications/{id}/mark-read', [App\Http\Controllers\TutorNotificationController::class, 'markAsRead'])->name('tutor.notifications.mark-read');
     Route::post('/tutor/notifications/mark-all-read', [App\Http\Controllers\TutorNotificationController::class, 'markAllAsRead'])->name('tutor.notifications.mark-all-read');
     Route::delete('/tutor/notifications/{id}', [App\Http\Controllers\TutorNotificationController::class, 'destroy'])->name('tutor.notifications.destroy');

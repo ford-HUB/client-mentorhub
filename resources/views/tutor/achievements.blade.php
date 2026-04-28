@@ -353,11 +353,31 @@
         <!-- Level Card -->
         <div class="level-card">
             <div class="level-number">Level {{ $level }}</div>
-            <p style="margin-bottom: 0.5rem;">Keep teaching to level up!</p>
-            <div class="level-progress">
-                <div class="level-progress-bar" style="width: {{ min(100, (($totalPoints % 100) / 100) * 100) }}%"></div>
+            <p style="margin-bottom: 1.5rem;">Keep teaching and completing sessions to level up and lower your withdrawal fees!</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: white;">
+                        <span style="font-weight: bold;"><i class="fas fa-star"></i> Achievement Points</span>
+                        <span>{{ $totalPoints }} / {{ $nextLevelPointsReq }}</span>
+                    </div>
+                    <div class="level-progress" style="margin-top: 0; background: rgba(255,255,255,0.2);">
+                        <div class="level-progress-bar" style="width: {{ min(100, ($totalPoints / $nextLevelPointsReq) * 100) }}%; background: #ffd700;"></div>
+                    </div>
+                    <div class="level-progress-text" style="text-align: left; opacity: 0.8;">{{ $pointsForNextLevel }} more points needed</div>
+                </div>
+                
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: white;">
+                        <span style="font-weight: bold;"><i class="fas fa-chalkboard-teacher"></i> Sessions Completed</span>
+                        <span>{{ $completedQuests }} / {{ $nextLevelQuestsReq }}</span>
+                    </div>
+                    <div class="level-progress" style="margin-top: 0; background: rgba(255,255,255,0.2);">
+                        <div class="level-progress-bar" style="width: {{ min(100, ($completedQuests / $nextLevelQuestsReq) * 100) }}%; background: #4cd137;"></div>
+                    </div>
+                    <div class="level-progress-text" style="text-align: left; opacity: 0.8;">{{ $questsForNextLevel }} more sessions needed</div>
+                </div>
             </div>
-            <div class="level-progress-text">{{ $pointsForNextLevel }} points to next level</div>
         </div>
         
         <!-- Achievements Section -->

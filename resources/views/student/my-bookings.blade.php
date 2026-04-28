@@ -448,7 +448,7 @@
                             </div>
                         </div>
                         <div class="booking-actions">
-                            <a href="{{ route('student.messages') }}" class="btn btn-primary">Message Tutor</a>
+                            <a href="{{ route('student.messages', ['tutor_id' => $booking->tutor_id]) }}" class="btn btn-primary">Message Tutor</a>
                             <button class="btn btn-danger" onclick="cancelSession({{ $booking->id }})">Cancel</button>
                         </div>
                     </div>
@@ -481,7 +481,7 @@
                             </div>
                         </div>
                         <div class="booking-actions">
-                            <a href="{{ route('student.messages') }}" class="btn btn-primary">Message Tutor</a>
+
                             <button class="btn btn-danger" onclick="cancelSession({{ $booking->id }})">Cancel</button>
                         </div>
                     </div>
@@ -516,7 +516,7 @@
                             @if($booking->status === 'completed')
                                 <button class="btn btn-success">Rate Session</button>
                             @endif
-                            <a href="{{ route('student.messages') }}" class="btn btn-secondary">Message Tutor</a>
+                            <a href="{{ route('student.messages', ['tutor_id' => $booking->tutor_id]) }}" class="btn btn-secondary">Message Tutor</a>
                         </div>
                     </div>
                 @empty

@@ -130,7 +130,17 @@ class WalletController extends Controller
             ->where('user_type', $userType)
             ->first();
 
-        return view('wallet.cash-out', compact('wallet'));
+        $processingFeePercentage = 10;
+        $tutorLevel = 1;
+        
+        if ($userType === 'tutor' && method_exists($user, 'getLevel')) {
+            $tutorLevel = $user->getLevel();
+            // Reduce fee by 0.2% per level above 1, max reduction 10%
+            $discount = min(10, ($tutorLevel - 1) * 0.2);
+            $processingFeePercentage = max(0, 10 - $discount);
+        }
+
+        return view('wallet.cash-out', compact('wallet', 'processingFeePercentage', 'tutorLevel'));
     }
 
     /**
@@ -159,11 +169,21 @@ class WalletController extends Controller
             return back()->with('error', 'Insufficient balance.');
         }
 
+        $processingFeePercentage = 10;
+        if ($userType === 'tutor' && method_exists($user, 'getLevel')) {
+            $tutorLevel = $user->getLevel();
+            $discount = min(10, ($tutorLevel - 1) * 0.2);
+            $processingFeePercentage = max(0, 10 - $discount);
+        }
+
+        $feeAmount = $request->amount * ($processingFeePercentage / 100);
+        $amountToReceive = $request->amount - $feeAmount;
+
         DB::beginTransaction();
         try {
             // Create payout request (simulate PayMongo or similar service)
             $payout = $this->paymongoService->createPayout(
-                $request->amount,
+                $amountToReceive,
                 $request->account_number,
                 $request->account_name
             );
@@ -181,16 +201,19 @@ class WalletController extends Controller
                 'status' => 'pending',
                 'payment_method' => 'gcash',
                 'reference_number' => $payout['payout_id'],
-                'description' => 'Cash out to GCash: ' . $request->account_number,
+                'description' => 'Cash out to GCash: ' . $request->account_number . ' (Fee: ₱' . number_format($feeAmount, 2) . ')',
                 'metadata' => [
                     'account_number' => $request->account_number,
                     'account_name' => $request->account_name,
-                    'payout_id' => $payout['payout_id']
+                    'payout_id' => $payout['payout_id'],
+                    'fee_percentage' => $processingFeePercentage,
+                    'fee_amount' => $feeAmount,
+                    'received_amount' => $amountToReceive
                 ],
             ]);
 
             DB::commit();
-            return redirect()->route(Auth::guard('student')->check() ? 'student.wallet' : 'tutor.wallet')->with('success', 'Cash out request submitted successfully. It will be processed within 24 hours.');
+            return redirect()->route($userType === 'student' ? 'student.wallet' : 'tutor.wallet')->with('success', 'Cash out request submitted successfully. It will be processed within 24 hours.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Failed to process cash out: ' . $e->getMessage());
