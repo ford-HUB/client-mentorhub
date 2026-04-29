@@ -769,6 +769,10 @@
                     <span>{{ ucwords(str_replace('_', ' ', $booking->session_type)) }}</span>
                 </div>
                 <div class="detail-item">
+                    <strong><i class="fas fa-book"></i> Subject:</strong>
+                    <span>{{ $booking->subject ?? 'N/A' }}</span>
+                </div>
+                <div class="detail-item">
                     <strong><i class="fas fa-money-bill-wave"></i> Session Rate:</strong>
                     @php
                         // Determine if booking is hourly or monthly by comparing rate with tutor's session_rate
@@ -781,9 +785,9 @@
             </div>
 
             @if($booking->notes)
-            <div class="student-notes">
-                <strong>Student's Notes:</strong>
-                <p>{{ $booking->notes }}</p>
+            <div class="student-notes" style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 8px; padding: 1.5rem; margin-top: 2rem; border-left: 4px solid #4a90e2; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <strong style="color: #2d3748; font-size: 1.1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-sticky-note" style="color: #4a90e2;"></i> Student's Notes:</strong>
+                <p style="color: #4a5568; line-height: 1.6; margin-top: 0.5rem; white-space: pre-wrap;">{{ $booking->notes }}</p>
             </div>
             @endif
 

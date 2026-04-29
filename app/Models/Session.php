@@ -21,6 +21,7 @@ class Session extends Model
         'end_time',
         'status',
         'notes',
+        'subject',
         'rate',
     ];
 

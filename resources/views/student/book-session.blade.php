@@ -1074,7 +1074,14 @@
                             </div>
                         </div>
 
-                        <div class="notes-container">
+                        <div class="subject-container" style="margin-top: 1rem;">
+                            <h4>Subject *</h4>
+                            <input type="text" id="subject" name="subject" required
+                                placeholder="e.g., Mathematics, Programming, etc."
+                                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-family: inherit;">
+                        </div>
+
+                        <div class="notes-container" style="margin-top: 1rem;">
                             <h4>Additional Notes (Optional)</h4>
                             <textarea id="notes" name="notes"
                                 placeholder="Any specific topics you'd like to cover or questions you have..."></textarea>

@@ -210,6 +210,7 @@ class StudentSessionController extends Controller
                 'date' => 'required|date|after_or_equal:today',
                 'start_time' => 'required',
                 'end_time' => 'required',
+                'subject' => 'required|string|max:255',
                 'notes' => 'nullable|string|max:500',
             ]);
 
@@ -351,6 +352,7 @@ class StudentSessionController extends Controller
                 'date' => $request->date,
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
+                'subject' => $request->subject,
                 'notes' => $request->notes,
                 'rate' => $sessionRate,
                 'status' => 'pending',
