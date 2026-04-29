@@ -1586,7 +1586,26 @@
                     // Check for overlap with existing sessions
                     const sessionDate = document.getElementById('session-date').value;
                     if (checkTimeOverlap(sessionDate, startTime + ':00', endTime + ':00')) {
-                        timeError.textContent = 'This time conflicts with an existing booking. Please select an available time.';
+                        let msg = 'This time conflicts with an existing booking. Please select an available time.';
+                        
+                        if (window.currentTutorNextAvailable) {
+                            const next = window.currentTutorNextAvailable;
+                            let dateStr = next.date === sessionDate ? "later today" : "on " + next.formatted_date;
+                            msg = `This time conflicts with an existing booking. The tutor is next available ${dateStr} at ${next.start_time}. The form has been updated to this available time.`;
+                            
+                            // Auto-update to next available time
+                            document.getElementById('session-date').value = next.date;
+                            document.getElementById('session-start-time').value = next.start_time;
+                            document.getElementById('session-end-time').value = next.end_time;
+                            
+                            setTimeout(() => {
+                                document.getElementById('session-date').dispatchEvent(new Event('change'));
+                                updateTimeFields();
+                                updateSummaryTime();
+                            }, 100);
+                        }
+                        
+                        timeError.textContent = msg;
                         timeError.style.display = 'block';
                         return false;
                     }

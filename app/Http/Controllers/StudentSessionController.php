@@ -139,22 +139,35 @@ class StudentSessionController extends Controller
     /**
      * Calculate the next available 1-hour slot for a tutor based on their sessions.
      */
-    private function calculateNextAvailableSlot($sessions)
+    private function calculateNextAvailableSlot($sessions, $startFrom = null)
     {
-        $now = now();
+        $now = $startFrom ? $startFrom->copy() : now();
         $startHour = 8; // 8 AM
         $endHour = 20; // 8 PM
 
         $checkTime = $now->copy();
 
-        if ($checkTime->hour >= $endHour) {
-            $checkTime->addDay()->setHour($startHour)->setMinute(0)->setSecond(0);
-        } elseif ($checkTime->hour < $startHour) {
-            $checkTime->setHour($startHour)->setMinute(0)->setSecond(0);
-        } else {
-            $checkTime->addHour()->setMinute(0)->setSecond(0);
+        if (!$startFrom) {
             if ($checkTime->hour >= $endHour) {
                 $checkTime->addDay()->setHour($startHour)->setMinute(0)->setSecond(0);
+            } elseif ($checkTime->hour < $startHour) {
+                $checkTime->setHour($startHour)->setMinute(0)->setSecond(0);
+            } else {
+                $checkTime->addHour()->setMinute(0)->setSecond(0);
+                if ($checkTime->hour >= $endHour) {
+                    $checkTime->addDay()->setHour($startHour)->setMinute(0)->setSecond(0);
+                }
+            }
+        } else {
+            if ($checkTime->hour >= $endHour) {
+                $checkTime->addDay()->setHour($startHour)->setMinute(0)->setSecond(0);
+            } elseif ($checkTime->hour < $startHour) {
+                $checkTime->setHour($startHour)->setMinute(0)->setSecond(0);
+            } else {
+                $checkTime->addHour()->setMinute(0)->setSecond(0);
+                if ($checkTime->hour >= $endHour) {
+                    $checkTime->addDay()->setHour($startHour)->setMinute(0)->setSecond(0);
+                }
             }
         }
 
@@ -251,9 +264,28 @@ class StudentSessionController extends Controller
                     ->exists();
 
                 if ($conflict) {
+                    $tutorSessions = Session::where('tutor_id', $request->tutor_id)
+                        ->whereIn('status', ['accepted', 'pending'])
+                        ->where('date', '>=', $request->date)
+                        ->get();
+                    
+                    $requestedStart = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time);
+                    $nextAvailable = $this->calculateNextAvailableSlot($tutorSessions, $requestedStart);
+                    
+                    $errorMessage = 'The selected time conflicts with another session.';
+                    if ($nextAvailable) {
+                        if ($nextAvailable['date'] === $request->date) {
+                            $errorMessage .= " However, the tutor is available later today at {$nextAvailable['start_time']} to {$nextAvailable['end_time']}.";
+                        } else {
+                            $errorMessage .= " The next available slot is on {$nextAvailable['formatted_date']} at {$nextAvailable['start_time']} to {$nextAvailable['end_time']}.";
+                        }
+                    } else {
+                        $errorMessage .= " Please choose a different time.";
+                    }
+
                     return redirect()->back()
                         ->withInput()
-                        ->withErrors(['error' => 'The selected time conflicts with another session. Please choose a different time.']);
+                        ->withErrors(['error' => $errorMessage]);
                 }
             }
 
