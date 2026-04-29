@@ -21,8 +21,10 @@ class GeminiService
      */
     public function generateWrongAnswerSuggestion($question, $wrongAnswer, $correctAnswer)
     {
+        $fallback = "Take a moment to review the question: \"{$question}\". I advise you to study this specific topic more deeply to make sure you fully understand why \"{$correctAnswer}\" is the correct answer instead of \"{$wrongAnswer}\".";
+        
         if (empty($this->apiKey)) {
-            return "Try to review the topic again and check why your answer differs from the correct one.";
+            return $fallback;
         }
 
         try {
@@ -31,7 +33,7 @@ class GeminiService
             Student's Wrong Answer: \"{$wrongAnswer}\"
             Correct Answer: \"{$correctAnswer}\"
             
-            Provide a short, encouraging, and helpful suggestion (max 2 sentences) for the student to help them understand why they were wrong and how to improve. Do not be mean. Focus on the learning aspect.";
+            Provide a short, encouraging, and helpful suggestion (max 2 sentences) for the student. Explicitly advise them to study the specific topic or concept related to this question more deeply so they can fully understand it. Do not be mean. Focus on the learning aspect.";
 
             $response = Http::timeout(30)->post($this->baseUrl . '?key=' . $this->apiKey, [
                 'contents' => [
@@ -49,13 +51,15 @@ class GeminiService
 
             if ($response->successful()) {
                 $responseData = $response->json();
-                return $responseData['candidates'][0]['content']['parts'][0]['text'] ?? "Review the concept and try again!";
+                return $responseData['candidates'][0]['content']['parts'][0]['text'] ?? $fallback;
+            } else {
+                Log::error('Gemini API failed', ['status' => $response->status(), 'body' => $response->body()]);
             }
         } catch (Exception $e) {
             Log::error('Gemini suggestion error: ' . $e->getMessage());
         }
 
-        return "Review the concept and try again!";
+        return $fallback;
     }
 
     /**
