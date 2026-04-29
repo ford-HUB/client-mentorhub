@@ -33,7 +33,9 @@ class TutorSessionController extends Controller
                 ->orderBy('start_time', 'desc')
                 ->get();
 
-            $pendingBookings = $bookings->where('status', 'pending');
+            $pendingBookings = $bookings->where('status', 'pending')->filter(function($booking) {
+                return $booking->date->isToday() ? $booking->start_time >= now()->toTimeString() : $booking->date->isFuture();
+            });
             
             // Accepted sessions that are truly upcoming or currently happening
             $acceptedBookings = $bookings->where('status', 'accepted')->filter(function($booking) {
@@ -48,8 +50,13 @@ class TutorSessionController extends Controller
             $rejectedBookings = $bookings->where('status', 'rejected');
             $completedBookings = $bookings->where('status', 'completed');
             
+            // Other cancelled sessions (not expired ones)
+            $cancelledBookings = $bookings->where('status', 'cancelled')->filter(function($booking) {
+                return !str_contains($booking->notes ?? '', 'expired');
+            });
+            
             // Merge past-due accepted into history for display
-            $historyBookings = $completedBookings->merge($rejectedBookings)->merge($pastDueAccepted);
+            $historyBookings = $completedBookings->merge($rejectedBookings)->merge($pastDueAccepted)->merge($cancelledBookings);
 
             return view('tutor.bookings.index', compact('tutor', 'pendingBookings', 'acceptedBookings', 'historyBookings'));
         } catch (\Exception $e) {
@@ -276,8 +283,14 @@ class TutorSessionController extends Controller
     public function getUpcomingSessions()
     {
         $sessions = Session::where('tutor_id', Auth::guard('tutor')->id())
-            ->where('date', '>=', today())
             ->whereIn('status', ['accepted', 'pending'])
+            ->where(function ($query) {
+                $query->where('date', '>', now()->toDateString())
+                    ->orWhere(function ($q) {
+                        $q->where('date', now()->toDateString())
+                            ->where('end_time', '>=', now()->toTimeString());
+                    });
+            })
             ->with('student')
             ->orderBy('date')
             ->orderBy('start_time')
@@ -299,6 +312,13 @@ class TutorSessionController extends Controller
 
             $bookings = Session::where('tutor_id', $tutorId)
                 ->where('status', 'pending')
+                ->where(function ($query) {
+                    $query->where('date', '>', now()->toDateString())
+                        ->orWhere(function ($q) {
+                            $q->where('date', now()->toDateString())
+                                ->where('start_time', '>=', now()->toTimeString());
+                        });
+                })
                 ->with('student')
                 ->orderBy('created_at', 'desc')
                 ->limit(10)

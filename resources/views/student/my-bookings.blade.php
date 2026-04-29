@@ -467,7 +467,9 @@
             <div id="pending" class="tab-content">
                 <h2>Pending Approval</h2>
                 @php
-                    $pendingBookings = $bookings->where('status', 'pending');
+                    $pendingBookings = $bookings->where('status', 'pending')->filter(function($booking) {
+                        return $booking->date->isToday() ? $booking->start_time >= now()->toTimeString() : $booking->date->isFuture();
+                    });
                 @endphp
                 
                 @forelse($pendingBookings as $booking)
@@ -502,6 +504,12 @@
                     $historyBookings = $bookings->filter(function($booking) {
                         $isPast = $booking->date->isPast() && !$booking->date->isToday();
                         $isTodayPast = $booking->date->isToday() && $booking->end_time < now()->toTimeString();
+                        
+                        // Hide expired requests from history
+                        if ($booking->status === 'cancelled' && str_contains($booking->notes ?? '', 'expired')) {
+                            return false;
+                        }
+
                         return in_array($booking->status, ['completed', 'rejected', 'cancelled']) || $isPast || $isTodayPast;
                     });
                 @endphp
