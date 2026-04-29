@@ -432,7 +432,9 @@
             <div id="upcoming" class="tab-content active">
                 <h2>Upcoming Sessions</h2>
                 @php
-                    $upcomingBookings = $bookings->where('status', 'accepted')->where('date', '>=', now()->toDateString());
+                    $upcomingBookings = $bookings->where('status', 'accepted')->filter(function($booking) {
+                        return $booking->date->isToday() ? $booking->end_time >= now()->toTimeString() : $booking->date->isFuture();
+                    });
                 @endphp
                 
                 @forelse($upcomingBookings as $booking)
@@ -497,7 +499,11 @@
             <div id="history" class="tab-content">
                 <h2>Session History</h2>
                 @php
-                    $historyBookings = $bookings->whereIn('status', ['completed', 'rejected', 'cancelled'])->where('date', '<', now()->toDateString());
+                    $historyBookings = $bookings->filter(function($booking) {
+                        $isPast = $booking->date->isPast() && !$booking->date->isToday();
+                        $isTodayPast = $booking->date->isToday() && $booking->end_time < now()->toTimeString();
+                        return in_array($booking->status, ['completed', 'rejected', 'cancelled']) || $isPast || $isTodayPast;
+                    });
                 @endphp
                 
                 @forelse($historyBookings as $booking)

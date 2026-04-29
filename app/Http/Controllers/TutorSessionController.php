@@ -34,11 +34,24 @@ class TutorSessionController extends Controller
                 ->get();
 
             $pendingBookings = $bookings->where('status', 'pending');
-            $acceptedBookings = $bookings->where('status', 'accepted');
+            
+            // Accepted sessions that are truly upcoming or currently happening
+            $acceptedBookings = $bookings->where('status', 'accepted')->filter(function($booking) {
+                return $booking->date->isToday() ? $booking->end_time >= now()->toTimeString() : $booking->date->isFuture();
+            });
+
+            // Sessions that are past their time but still 'accepted' should be treated as history/past-due
+            $pastDueAccepted = $bookings->where('status', 'accepted')->filter(function($booking) {
+                return $booking->date->isToday() ? $booking->end_time < now()->toTimeString() : $booking->date->isPast();
+            });
+
             $rejectedBookings = $bookings->where('status', 'rejected');
             $completedBookings = $bookings->where('status', 'completed');
+            
+            // Merge past-due accepted into history for display
+            $historyBookings = $completedBookings->merge($rejectedBookings)->merge($pastDueAccepted);
 
-            return view('tutor.bookings.index', compact('tutor', 'pendingBookings', 'acceptedBookings', 'rejectedBookings', 'completedBookings'));
+            return view('tutor.bookings.index', compact('tutor', 'pendingBookings', 'acceptedBookings', 'historyBookings'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred while loading your bookings. Please try again.');
         }

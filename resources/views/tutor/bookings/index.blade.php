@@ -767,7 +767,7 @@
 
             <div id="history" class="tab-content">
                 <h2>Booking History</h2>
-                @forelse($rejectedBookings->merge($completedBookings) as $booking)
+                @forelse($historyBookings as $booking)
                      <div class="booking-card">
                         <div class="booking-details">
                             <div class="booking-student">

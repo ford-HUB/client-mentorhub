@@ -872,9 +872,9 @@
                 $month = 12;
             }
             
-            // Get all accepted sessions for the tutor in the requested month
+            // Get all accepted and completed sessions for the tutor in the requested month
             $sessions = Session::where('tutor_id', $tutor->id)
-                ->where('status', 'accepted')
+                ->whereIn('status', ['accepted', 'completed'])
                 ->whereYear('date', $year)
                 ->whereMonth('date', $month)
                 ->with(['student'])

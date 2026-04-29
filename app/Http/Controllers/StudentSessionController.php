@@ -532,7 +532,7 @@ class StudentSessionController extends Controller
 
         // Get all accepted sessions for the student in the requested month
         $sessions = Session::where('student_id', $student->id)
-            ->where('status', 'accepted')
+            ->whereIn('status', ['accepted', 'completed'])
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
             ->with(['tutor'])

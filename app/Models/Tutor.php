@@ -52,6 +52,11 @@ class Tutor extends Authenticatable
         return $this->hasMany(Session::class);
     }
 
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class, 'user_id')->where('user_type', 'tutor');
+    }
+
     public function chatRooms()
     {
         return $this->hasMany(ChatRoom::class);
