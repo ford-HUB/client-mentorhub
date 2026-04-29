@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Session;
 use App\Services\AchievementNotificationService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class UpdateSessionStatuses extends Command
 {
@@ -62,8 +63,7 @@ class UpdateSessionStatuses extends Command
 
         $this->info("Updated {$count} sessions to 'completed'.");
         
-        // Optional: Handle 'pending' sessions that are now in the past?
-        // Usually, if a tutor hasn't accepted a session by the time it should have started, it should be 'expired' or 'cancelled'.
+        // Handle 'pending' sessions that are now in the past
         $expiredSessions = Session::where('status', 'pending')
             ->where(function ($query) use ($now) {
                 $query->where('date', '<', $now->toDateString())
@@ -76,13 +76,11 @@ class UpdateSessionStatuses extends Command
             
         $expiredCount = 0;
         foreach ($expiredSessions as $session) {
-            // Cancel and refund student
             $session->update(['status' => 'cancelled', 'notes' => 'Session expired - not accepted by tutor in time.']);
             
-            // Refund student
             $student = $session->student;
             if ($student) {
-                $wallet = $student->wallet; // Assuming relationship exists, or find it manually
+                $wallet = $student->wallet;
                 if (!$wallet) {
                     $wallet = \App\Models\Wallet::where('user_id', $student->id)->where('user_type', 'student')->first();
                 }
@@ -94,10 +92,13 @@ class UpdateSessionStatuses extends Command
                     ]);
                 }
             }
-            
             $expiredCount++;
         }
-        
+
+        if ($count > 0 || $expiredCount > 0) {
+            Log::info("Session Status Update: Completed {$count} sessions and cancelled {$expiredCount} expired sessions.");
+        }
+
         if ($expiredCount > 0) {
             $this->info("Cancelled {$expiredCount} expired pending sessions.");
         }

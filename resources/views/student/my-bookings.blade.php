@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,13 +18,13 @@
             margin: 0 auto;
             padding: 0 1rem;
         }
-        
+
         .tabs {
             display: flex;
             border-bottom: 2px solid #ddd;
             margin-bottom: 2rem;
         }
-        
+
         .tab-link {
             padding: 1rem 1.5rem;
             cursor: pointer;
@@ -35,25 +36,25 @@
             position: relative;
             top: 2px;
         }
-        
+
         .tab-link.active {
             color: #4a90e2;
             border-bottom: 2px solid #4a90e2;
             font-weight: 600;
         }
-        
+
         .tab-content {
             display: none;
         }
-        
+
         .tab-content.active {
             display: block;
         }
-        
+
         .booking-card {
             background-color: white;
             border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             display: flex;
@@ -62,30 +63,30 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-        
+
         .booking-details {
             flex: 1;
             min-width: 250px;
         }
-        
+
         .booking-tutor {
             font-weight: 600;
             font-size: 1.1rem;
             color: #4a90e2;
         }
-        
+
         .booking-info {
             color: #666;
             margin-top: 0.5rem;
             line-height: 1.4;
         }
-        
+
         .booking-actions {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
         }
-        
+
         .btn {
             padding: 0.5rem 1rem;
             border-radius: 50px;
@@ -97,43 +98,43 @@
             display: inline-block;
             text-align: center;
         }
-        
+
         .btn-primary {
             background-color: #4a90e2;
             color: white;
         }
-        
+
         .btn-primary:hover {
             background-color: #3a7ccc;
         }
-        
+
         .btn-secondary {
             background-color: #6c757d;
             color: white;
         }
-        
+
         .btn-secondary:hover {
             background-color: #5a6268;
         }
-        
+
         .btn-success {
             background-color: #28a745;
             color: white;
         }
-        
+
         .btn-success:hover {
             background-color: #218838;
         }
-        
+
         .btn-danger {
             background-color: #dc3545;
             color: white;
         }
-        
+
         .btn-danger:hover {
             background-color: #c82333;
         }
-        
+
         .status-badge {
             display: inline-block;
             padding: 0.3em 0.7em;
@@ -146,45 +147,60 @@
             border-radius: 0.25rem;
             color: #fff;
         }
-        
-        .status-pending { background-color: #ffc107; color: #000; }
-        .status-accepted { background-color: #28a745; }
-        .status-rejected { background-color: #dc3545; }
-        .status-completed { background-color: #17a2b8; }
-        .status-cancelled { background-color: #6c757d; }
-        
+
+        .status-pending {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .status-accepted {
+            background-color: #28a745;
+        }
+
+        .status-rejected {
+            background-color: #dc3545;
+        }
+
+        .status-completed {
+            background-color: #17a2b8;
+        }
+
+        .status-cancelled {
+            background-color: #6c757d;
+        }
+
         .no-bookings {
             text-align: center;
             padding: 3rem;
             color: #666;
             background-color: white;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
-        
+
         .no-bookings h3 {
             margin-bottom: 1rem;
             color: #4a90e2;
         }
-        
+
         .alert {
             padding: 1rem;
             border-radius: 5px;
             margin-bottom: 1rem;
         }
-        
+
         .alert-success {
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
         }
-        
+
         .alert-error {
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
-        
+
         .profile-icon {
             position: relative;
             width: 40px;
@@ -303,18 +319,18 @@
             margin-right: 0.5rem;
             height: 70px;
         }
-        
+
         @media (max-width: 768px) {
             .booking-card {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            
+
             .booking-actions {
                 width: 100%;
                 justify-content: flex-start;
             }
-            
+
             .tabs {
                 flex-wrap: wrap;
             }
@@ -333,6 +349,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Header (same as dashboard) -->
     <header>
@@ -358,13 +375,14 @@
                         <div class="currency-label">Balance</div>
                     </div>
                 </div>
-                
+
                 <!-- Profile Dropdown -->
                 <div class="profile-dropdown-container" style="position: relative;">
                     <div class="profile-icon" id="profile-icon">
                         @auth('student')
                             @if(Auth::guard('student')->user()->profile_picture)
-                                <img src="{{ asset('storage/' . Auth::guard('student')->user()->profile_picture) }}?{{ time() }}" alt="Profile Picture" class="profile-icon-img">
+                                <img src="{{ asset('storage/' . Auth::guard('student')->user()->profile_picture) }}?{{ time() }}"
+                                    alt="Profile Picture" class="profile-icon-img">
                             @else
                                 {{ substr(Auth::guard('student')->user()->first_name, 0, 1) }}{{ substr(Auth::guard('student')->user()->last_name, 0, 1) }}
                             @endif
@@ -373,38 +391,41 @@
                         @endauth
                     </div>
                     @auth('student')
-                    <div class="dropdown-menu" id="dropdown-menu">
-                        <a href="{{ route('student.profile.edit') }}">My Profile</a>
-                        <a href="{{ route('student.settings') }}">Achievements</a>
-                        <a href="#">Report a Problem</a>
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                        <form id="logout-form" method="POST" action="{{ route('student.logout') }}" style="display: none;">
-                            @csrf
-                        </form>
-                    </div>
+                        <div class="dropdown-menu" id="dropdown-menu">
+                            <a href="{{ route('student.profile.edit') }}">My Profile</a>
+                            <a href="{{ route('student.settings') }}">Achievements</a>
+                            <a href="#">Report a Problem</a>
+                            <a href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                            <form id="logout-form" method="POST" action="{{ route('student.logout') }}"
+                                style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
                     @endauth
                 </div>
             </div>
         </div>
     </header>
-    
+
     <!-- Main Content -->
     <main>
         <div class="bookings-container">
-            <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+            <div class="dashboard-header"
+                style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
                 <div style="display: flex; flex-direction: column; align-items: flex-start;">
                     <h1 class="greeting">My Sessions</h1>
                     <div class="badge badge-student">Student</div>
                 </div>
                 <div class="date-time" id="current-date-time">Tuesday, May 13, 2025</div>
             </div>
-            
+
             @if(session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
                 </div>
             @endif
-            
+
             @if(session('error'))
                 <div class="alert alert-error">
                     {{ session('error') }}
@@ -432,25 +453,29 @@
             <div id="upcoming" class="tab-content active">
                 <h2>Upcoming Sessions</h2>
                 @php
-                    $upcomingBookings = $bookings->where('status', 'accepted')->filter(function($booking) {
+                    $upcomingBookings = $bookings->where('status', 'accepted')->filter(function ($booking) {
                         return $booking->date->isToday() ? $booking->end_time >= now()->toTimeString() : $booking->date->isFuture();
                     });
                 @endphp
-                
+
                 @forelse($upcomingBookings as $booking)
                     <div class="booking-card">
                         <div class="booking-details">
-                            <div class="booking-tutor">{{ $booking->tutor->first_name }} {{ $booking->tutor->last_name }}</div>
+                            <div class="booking-tutor">{{ $booking->tutor->first_name }} {{ $booking->tutor->last_name }}
+                            </div>
                             <div class="booking-info">
                                 <strong>Subject:</strong> {{ $booking->tutor->specialization ?? 'General Tutoring' }}<br>
                                 <strong>Date:</strong> {{ $booking->formatted_date }}<br>
-                                <strong>Time:</strong> {{ $booking->formatted_start_time }} - {{ $booking->formatted_end_time }}<br>
+                                <strong>Time:</strong> {{ $booking->formatted_start_time }} -
+                                {{ $booking->formatted_end_time }}<br>
                                 <strong>Type:</strong> {{ ucfirst(str_replace('_', ' ', $booking->session_type)) }}<br>
-                                <strong>Status:</strong> <span class="status-badge status-{{ strtolower($booking->status) }}">{{ ucfirst($booking->status) }}</span>
+                                <strong>Status:</strong> <span
+                                    class="status-badge status-{{ strtolower($booking->status) }}">{{ ucfirst($booking->status) }}</span>
                             </div>
                         </div>
                         <div class="booking-actions">
-                            <a href="{{ route('student.messages', ['tutor_id' => $booking->tutor_id]) }}" class="btn btn-primary">Message Tutor</a>
+                            <a href="{{ route('student.messages', ['tutor_id' => $booking->tutor_id]) }}"
+                                class="btn btn-primary">Message Tutor</a>
                             <button class="btn btn-danger" onclick="cancelSession({{ $booking->id }})">Cancel</button>
                         </div>
                     </div>
@@ -467,21 +492,24 @@
             <div id="pending" class="tab-content">
                 <h2>Pending Approval</h2>
                 @php
-                    $pendingBookings = $bookings->where('status', 'pending')->filter(function($booking) {
+                    $pendingBookings = $bookings->where('status', 'pending')->filter(function ($booking) {
                         return $booking->date->isToday() ? $booking->start_time >= now()->toTimeString() : $booking->date->isFuture();
                     });
                 @endphp
-                
+
                 @forelse($pendingBookings as $booking)
                     <div class="booking-card">
                         <div class="booking-details">
-                            <div class="booking-tutor">{{ $booking->tutor->first_name }} {{ $booking->tutor->last_name }}</div>
+                            <div class="booking-tutor">{{ $booking->tutor->first_name }} {{ $booking->tutor->last_name }}
+                            </div>
                             <div class="booking-info">
                                 <strong>Subject:</strong> {{ $booking->tutor->specialization ?? 'General Tutoring' }}<br>
                                 <strong>Date:</strong> {{ $booking->formatted_date }}<br>
-                                <strong>Time:</strong> {{ $booking->formatted_start_time }} - {{ $booking->formatted_end_time }}<br>
+                                <strong>Time:</strong> {{ $booking->formatted_start_time }} -
+                                {{ $booking->formatted_end_time }}<br>
                                 <strong>Type:</strong> {{ ucfirst(str_replace('_', ' ', $booking->session_type)) }}<br>
-                                <strong>Status:</strong> <span class="status-badge status-{{ strtolower($booking->status) }}">{{ ucfirst($booking->status) }}</span>
+                                <strong>Status:</strong> <span
+                                    class="status-badge status-{{ strtolower($booking->status) }}">{{ ucfirst($booking->status) }}</span>
                             </div>
                         </div>
                         <div class="booking-actions">
@@ -501,36 +529,43 @@
             <div id="history" class="tab-content">
                 <h2>Session History</h2>
                 @php
-                    $historyBookings = $bookings->filter(function($booking) {
+                    $historyBookings = $bookings->filter(function ($booking) {
                         $isPast = $booking->date->isPast() && !$booking->date->isToday();
                         $isTodayPast = $booking->date->isToday() && $booking->end_time < now()->toTimeString();
-                        
-                        // Hide expired requests from history
+                        $isStartTimePast = $booking->date->isToday() ? $booking->start_time < now()->toTimeString() : $booking->date->isPast();
+
                         if ($booking->status === 'cancelled' && str_contains($booking->notes ?? '', 'expired')) {
+                            return false;
+                        }
+                        if ($booking->status === 'pending' && $isStartTimePast) {
                             return false;
                         }
 
                         return in_array($booking->status, ['completed', 'rejected', 'cancelled']) || $isPast || $isTodayPast;
                     });
                 @endphp
-                
+
                 @forelse($historyBookings as $booking)
                     <div class="booking-card">
                         <div class="booking-details">
-                            <div class="booking-tutor">{{ $booking->tutor->first_name }} {{ $booking->tutor->last_name }}</div>
+                            <div class="booking-tutor">{{ $booking->tutor->first_name }} {{ $booking->tutor->last_name }}
+                            </div>
                             <div class="booking-info">
                                 <strong>Subject:</strong> {{ $booking->tutor->specialization ?? 'General Tutoring' }}<br>
                                 <strong>Date:</strong> {{ $booking->formatted_date }}<br>
-                                <strong>Time:</strong> {{ $booking->formatted_start_time }} - {{ $booking->formatted_end_time }}<br>
+                                <strong>Time:</strong> {{ $booking->formatted_start_time }} -
+                                {{ $booking->formatted_end_time }}<br>
                                 <strong>Type:</strong> {{ ucfirst(str_replace('_', ' ', $booking->session_type)) }}<br>
-                                <strong>Status:</strong> <span class="status-badge status-{{ strtolower($booking->status) }}">{{ ucfirst($booking->status) }}</span>
+                                <strong>Status:</strong> <span
+                                    class="status-badge status-{{ strtolower($booking->status) }}">{{ ucfirst($booking->status) }}</span>
                             </div>
                         </div>
                         <div class="booking-actions">
                             @if($booking->status === 'completed')
                                 <button class="btn btn-success">Rate Session</button>
                             @endif
-                            <a href="{{ route('student.messages', ['tutor_id' => $booking->tutor_id]) }}" class="btn btn-secondary">Message Tutor</a>
+                            <a href="{{ route('student.messages', ['tutor_id' => $booking->tutor_id]) }}"
+                                class="btn btn-secondary">Message Tutor</a>
                         </div>
                     </div>
                 @empty
@@ -542,7 +577,7 @@
             </div>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer>
         <div class="footer-content">
@@ -557,36 +592,36 @@
             </div>
         </div>
     </footer>
-    
+
     @include('layouts.footer-modals')
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Mobile menu toggle
             const menuToggle = document.getElementById('menu-toggle');
             const navLinks = document.getElementById('nav-links');
-            
-            menuToggle.addEventListener('click', function() {
+
+            menuToggle.addEventListener('click', function () {
                 navLinks.classList.toggle('active');
             });
-            
+
             // Profile dropdown
             const profileIcon = document.getElementById('profile-icon');
             const dropdownMenu = document.getElementById('dropdown-menu');
-            
+
             if (profileIcon && dropdownMenu) {
-                profileIcon.addEventListener('click', function(e) {
+                profileIcon.addEventListener('click', function (e) {
                     e.stopPropagation();
                     dropdownMenu.classList.toggle('active');
                 });
-                
-                document.addEventListener('click', function(e) {
+
+                document.addEventListener('click', function (e) {
                     if (!profileIcon.contains(e.target)) {
                         dropdownMenu.classList.remove('active');
                     }
                 });
             }
-            
+
             // Update current date and time
             const dateTimeElement = document.getElementById('current-date-time');
             if (dateTimeElement) {
@@ -603,7 +638,7 @@
         function initializeCurrencyDisplay() {
             const currencyDisplay = document.querySelector('.currency-display');
             if (currencyDisplay) {
-                currencyDisplay.addEventListener('click', function() {
+                currencyDisplay.addEventListener('click', function () {
                     viewWallet();
                 });
             }
@@ -626,7 +661,7 @@
         function viewWallet() {
             window.location.href = "{{ route('student.wallet') }}";
         }
-        
+
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tab-content");
@@ -640,7 +675,7 @@
             document.getElementById(tabName).classList.add('active');
             evt.currentTarget.classList.add('active');
         }
-        
+
         function cancelSession(sessionId) {
             if (confirm('Are you sure you want to cancel this session?')) {
                 // Here you would typically make an AJAX request to cancel the session
@@ -649,7 +684,8 @@
             }
         }
     </script>
-    
+
     @include('layouts.footer-js')
 </body>
+
 </html>
