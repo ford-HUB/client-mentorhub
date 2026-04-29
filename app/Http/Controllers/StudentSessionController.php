@@ -180,9 +180,10 @@ class StudentSessionController extends Controller
 
                 $conflict = false;
                 foreach ($sessions as $session) {
-                    if ($session->date === $date) {
-                        $sessionStart = \Carbon\Carbon::parse($session->date . ' ' . $session->start_time);
-                        $sessionEnd = \Carbon\Carbon::parse($session->date . ' ' . $session->end_time);
+                    $sessionDateStr = $session->date instanceof \Carbon\Carbon ? $session->date->toDateString() : \Carbon\Carbon::parse($session->date)->toDateString();
+                    if ($sessionDateStr === $date) {
+                        $sessionStart = \Carbon\Carbon::parse($sessionDateStr . ' ' . $session->start_time);
+                        $sessionEnd = \Carbon\Carbon::parse($sessionDateStr . ' ' . $session->end_time);
 
                         if ($slotStart->lt($sessionEnd) && $slotEnd->gt($sessionStart)) {
                             $conflict = true;
