@@ -128,22 +128,57 @@ class StudentAssignmentController extends Controller
             $answer = $assignment->selectedAnswer()->with(['tutor', 'ratings'])->first();
         }
         
-        $answers = $assignment->answers()->with('tutor')->get()->map(function($answerItem) {
+        // Get student's interests for matching
+        $studentInterests = [];
+        if ($student->subjects_interest) {
+            $raw = $student->subjects_interest;
+            $studentInterests = is_array($raw) ? $raw : array_map('trim', explode(',', $raw));
+        }
+
+        $answers = $assignment->answers()->with('tutor')->get()->map(function($answerItem) use ($studentInterests) {
             $tutor = $answerItem->tutor;
             // Get tutor's overall rating (includes both session reviews and assignment answer ratings)
             $tutorOverallRating = $tutor->getAverageRating();
             $tutorOverallRatingCount = $tutor->getRatingCount();
+
+            // Determine matched expertise (tutor specialization vs student interests)
+            $tutorExpertise = $tutor->specialization ? array_map('trim', explode(',', $tutor->specialization)) : [];
+            $matched = [];
+            if (!empty($studentInterests) && !empty($tutorExpertise)) {
+                foreach ($studentInterests as $interest) {
+                    foreach ($tutorExpertise as $expertise) {
+                        if (stripos($expertise, $interest) !== false || stripos($interest, $expertise) !== false) {
+                            $matched[] = trim($expertise);
+                        }
+                    }
+                }
+                $matched = array_unique($matched);
+            }
+
             return [
-                'id' => $answerItem->id,
-                'tutor_id' => $tutor->id,
-                'tutor_name' => $tutor->getFullName(),
-                'tutor_specialization' => $tutor->specialization,
-                'answer_preview' => 'This answer is locked. Pay to view the full solution.',
-                'rating' => $tutorOverallRating,
-                'rating_count' => $tutorOverallRatingCount,
-                'created_at' => $answerItem->created_at,
+                'id'                    => $answerItem->id,
+                'tutor_id'              => $tutor->id,
+                'tutor_name'            => $tutor->getFullName(),
+                'tutor_specialization'  => $tutor->specialization,
+                'tutor_bio'             => $tutor->bio,
+                'tutor_phone'           => $tutor->phone,
+                'tutor_is_verified'     => (bool) $tutor->is_verified,
+                'tutor_profile_picture' => $tutor->profile_picture ? asset('storage/' . $tutor->profile_picture) : null,
+                'tutor_initials'        => $tutor->getInitials(),
+                'tutor_session_rate'    => $tutor->session_rate,
+                'matched_interests'     => array_values($matched),
+                'has_match'             => !empty($matched),
+                'answer_preview'        => 'This answer is locked. Pay to view the full solution.',
+                'rating'                => $tutorOverallRating,
+                'rating_count'          => $tutorOverallRatingCount,
+                'created_at'            => $answerItem->created_at,
             ];
-        })->sortByDesc('rating')->values(); // Sort by highest rating
+        })
+        // Sort: matched expertise first, then by highest rating
+        ->sortBy([
+            ['has_match', 'desc'],
+            ['rating', 'desc'],
+        ])->values();
 
         return view('student.assignment-detail', compact('student', 'assignment', 'wallet', 'canAfford', 'answer', 'answers'));
     }

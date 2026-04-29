@@ -141,6 +141,195 @@
             gap: 0.5rem;
         }
 
+        /* ── Verified Badge ── */
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.2rem 0.55rem;
+            border-radius: 20px;
+            margin-left: 0.4rem;
+            vertical-align: middle;
+            letter-spacing: 0.3px;
+        }
+        .verified-badge i { font-size: 0.7rem; }
+
+        /* ── Matched Expertise Chip ── */
+        .matched-section {
+            margin-bottom: 0.75rem;
+        }
+        .matched-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #2d7dd2;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.35rem;
+        }
+        .matched-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+        }
+        .matched-chip {
+            background: linear-gradient(135deg, #e8f4ff, #cce4ff);
+            color: #1a5fa8;
+            border: 1px solid #90c4f8;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .matched-chip i { font-size: 0.72rem; color: #1a73e8; }
+
+        /* ── View Profile Button ── */
+        .btn-view-profile {
+            background: transparent;
+            border: 1.5px solid #2d7dd2;
+            color: #2d7dd2;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.2s;
+            margin-top: 0.4rem;
+        }
+        .btn-view-profile:hover {
+            background: #2d7dd2;
+            color: #fff;
+        }
+
+        /* ── Tutor Credential Modal ── */
+        .tutor-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 9000;
+            align-items: center;
+            justify-content: center;
+        }
+        .tutor-modal-overlay.open {
+            display: flex;
+        }
+        .tutor-modal {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            width: 100%;
+            max-width: 440px;
+            padding: 0;
+            overflow: hidden;
+            animation: modalIn 0.25s cubic-bezier(.4,0,.2,1);
+        }
+        @keyframes modalIn {
+            from { transform: translateY(24px); opacity: 0; }
+            to   { transform: translateY(0);   opacity: 1; }
+        }
+        .tutor-modal-header {
+            background: linear-gradient(135deg, #2d7dd2, #5637d9);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+        }
+        .tutor-modal-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            border: 3px solid rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .tutor-modal-avatar img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+        }
+        .tutor-modal-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .tutor-modal-spec {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.85);
+            margin-top: 0.15rem;
+        }
+        .tutor-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .tutor-modal-close:hover { background: rgba(255,255,255,0.35); }
+        .tutor-modal-body {
+            padding: 1.5rem;
+        }
+        .tutor-cred-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .tutor-cred-row:last-child { border-bottom: none; }
+        .tutor-cred-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+        .tutor-cred-icon.blue  { background: #e8f4ff; color: #1a73e8; }
+        .tutor-cred-icon.green { background: #e6f9f0; color: #28a745; }
+        .tutor-cred-icon.gold  { background: #fff8e1; color: #f59f00; }
+        .tutor-cred-icon.gray  { background: #f5f5f5; color: #666; }
+        .tutor-cred-label {
+            font-size: 0.78rem;
+            color: #999;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .tutor-cred-value {
+            font-size: 0.95rem;
+            color: #333;
+            margin-top: 0.1rem;
+            line-height: 1.5;
+        }
+
         .answer-preview {
             color: #666;
             line-height: 1.6;
@@ -644,9 +833,27 @@
                 
                 @foreach($answers as $index => $ans)
                     <div class="answer-card {{ $index === 0 ? 'answer-card-top-rated' : '' }}">
+
+                        {{-- ── Matched Expertise Chips (shown first if any) ── --}}
+                        @if(!empty($ans['matched_interests']))
+                            <div class="matched-section">
+                                <div class="matched-label"><i class="fas fa-bullseye"></i> Matches Your Interests</div>
+                                <div class="matched-chips">
+                                    @foreach($ans['matched_interests'] as $chip)
+                                        <span class="matched-chip"><i class="fas fa-check-circle"></i> {{ $chip }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="answer-header">
                             <div class="tutor-info">
-                                <div class="tutor-name">{{ $ans['tutor_name'] }}</div>
+                                <div class="tutor-name">
+                                    {{ $ans['tutor_name'] }}
+                                    @if($ans['tutor_is_verified'])
+                                        <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
+                                    @endif
+                                </div>
                                 @if($ans['tutor_specialization'])
                                     <div class="tutor-specialization">{{ $ans['tutor_specialization'] }}</div>
                                 @endif
@@ -656,6 +863,20 @@
                                     </span>
                                     <span class="rating-count">({{ $ans['rating_count'] }} reviews)</span>
                                 </div>
+                                {{-- View Profile Button --}}
+                                <button class="btn-view-profile"
+                                    onclick="openTutorModal(
+                                        {{ json_encode($ans['tutor_name']) }},
+                                        {{ json_encode($ans['tutor_specialization'] ?? '') }},
+                                        {{ json_encode($ans['tutor_bio'] ?? '') }},
+                                        {{ json_encode($ans['tutor_phone'] ?? '') }},
+                                        {{ $ans['tutor_is_verified'] ? 'true' : 'false' }},
+                                        {{ json_encode($ans['tutor_profile_picture']) }},
+                                        {{ json_encode($ans['tutor_initials']) }},
+                                        {{ json_encode($ans['tutor_session_rate'] ? '₱'.number_format($ans['tutor_session_rate'],2).'/session' : 'N/A') }}
+                                    )">
+                                    <i class="fas fa-id-card"></i> View Profile
+                                </button>
                             </div>
                             @if($index === 0)
                                 <span class="top-rated-badge">
@@ -717,6 +938,50 @@
                 </div>
             </div>
         @endif
+    </div>
+
+    {{-- ══ Tutor Credential Modal ══ --}}
+    <div class="tutor-modal-overlay" id="tutorModalOverlay" onclick="closeTutorModal(event)">
+        <div class="tutor-modal" id="tutorModal">
+            <div class="tutor-modal-header">
+                <div class="tutor-modal-avatar" id="modalAvatar"></div>
+                <div>
+                    <div class="tutor-modal-name" id="modalName"></div>
+                    <div class="tutor-modal-spec" id="modalSpec"></div>
+                </div>
+                <button class="tutor-modal-close" onclick="document.getElementById('tutorModalOverlay').classList.remove('open')">&times;</button>
+            </div>
+            <div class="tutor-modal-body">
+                <div class="tutor-cred-row" id="modalVerifiedRow">
+                    <div class="tutor-cred-icon green"><i class="fas fa-shield-alt"></i></div>
+                    <div>
+                        <div class="tutor-cred-label">Verification Status</div>
+                        <div class="tutor-cred-value" id="modalVerified"></div>
+                    </div>
+                </div>
+                <div class="tutor-cred-row" id="modalBioRow">
+                    <div class="tutor-cred-icon blue"><i class="fas fa-user"></i></div>
+                    <div>
+                        <div class="tutor-cred-label">About</div>
+                        <div class="tutor-cred-value" id="modalBio"></div>
+                    </div>
+                </div>
+                <div class="tutor-cred-row" id="modalPhoneRow">
+                    <div class="tutor-cred-icon gray"><i class="fas fa-phone"></i></div>
+                    <div>
+                        <div class="tutor-cred-label">Contact</div>
+                        <div class="tutor-cred-value" id="modalPhone"></div>
+                    </div>
+                </div>
+                <div class="tutor-cred-row">
+                    <div class="tutor-cred-icon gold"><i class="fas fa-peso-sign"></i></div>
+                    <div>
+                        <div class="tutor-cred-label">Session Rate</div>
+                        <div class="tutor-cred-value" id="modalRate"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -870,6 +1135,64 @@
                     };
                     ratingText.textContent = texts[rating] || '';
                 }
+            }
+        });
+
+        // ── Tutor Credential Modal ──
+        function openTutorModal(name, spec, bio, phone, isVerified, avatarUrl, initials, rate) {
+            document.getElementById('modalName').textContent = name;
+            document.getElementById('modalSpec').textContent = spec || 'No specialization listed';
+            document.getElementById('modalRate').textContent = rate || 'N/A';
+
+            // Avatar
+            const avatarEl = document.getElementById('modalAvatar');
+            if (avatarUrl) {
+                avatarEl.innerHTML = `<img src="${avatarUrl}" alt="${name}">`;
+            } else {
+                avatarEl.textContent = initials;
+            }
+
+            // Verified
+            const verEl = document.getElementById('modalVerified');
+            if (isVerified) {
+                verEl.innerHTML = '<span style="color:#28a745;font-weight:700;"><i class="fas fa-check-circle"></i> Verified Tutor</span>';
+            } else {
+                verEl.innerHTML = '<span style="color:#999;"><i class="fas fa-times-circle"></i> Not Yet Verified</span>';
+            }
+
+            // Bio
+            const bioRow = document.getElementById('modalBioRow');
+            const bioEl  = document.getElementById('modalBio');
+            if (bio && bio.trim()) {
+                bioEl.textContent = bio;
+                bioRow.style.display = 'flex';
+            } else {
+                bioRow.style.display = 'none';
+            }
+
+            // Phone
+            const phoneRow = document.getElementById('modalPhoneRow');
+            const phoneEl  = document.getElementById('modalPhone');
+            if (phone && phone.trim()) {
+                phoneEl.textContent = phone;
+                phoneRow.style.display = 'flex';
+            } else {
+                phoneRow.style.display = 'none';
+            }
+
+            document.getElementById('tutorModalOverlay').classList.add('open');
+        }
+
+        function closeTutorModal(event) {
+            if (event.target === document.getElementById('tutorModalOverlay')) {
+                document.getElementById('tutorModalOverlay').classList.remove('open');
+            }
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('tutorModalOverlay').classList.remove('open');
             }
         });
     </script>
