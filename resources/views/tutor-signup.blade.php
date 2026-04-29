@@ -28,26 +28,31 @@
             min-width: 320px;
             max-width: 900px;
         }
+
         .alert-danger {
             background-color: #fff1f2;
             border-color: #fca5a5;
             color: #b91c1c;
         }
+
         .alert-content {
             display: flex;
             align-items: flex-start;
             gap: 16px;
             flex: 1;
         }
+
         .alert-icon {
             font-size: 2rem;
             margin-top: 2px;
             color: #f59e42;
             flex-shrink: 0;
         }
+
         .alert-text {
             flex: 1;
         }
+
         .alert-text strong {
             color: #b91c1c;
             font-weight: 700;
@@ -55,15 +60,18 @@
             display: block;
             margin-bottom: 4px;
         }
+
         .alert-text ul {
             margin: 8px 0 0 0;
             padding-left: 20px;
         }
+
         .alert-text li {
             margin: 4px 0;
             font-size: 1rem;
             color: #b91c1c;
         }
+
         .alert-close {
             background: none;
             border: none;
@@ -78,15 +86,18 @@
             top: 12px;
             right: 16px;
         }
+
         .alert-close:hover {
             opacity: 1;
             color: #ef4444;
         }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -313,7 +324,8 @@
             border-color: #4a90e2;
         }
 
-        .add-custom-btn, .cancel-custom-btn {
+        .add-custom-btn,
+        .cancel-custom-btn {
             padding: 8px 16px;
             border: none;
             border-radius: 6px;
@@ -494,12 +506,13 @@
                 flex-direction: column;
                 gap: 8px;
             }
-            
+
             .custom-subject-input input {
                 width: 100%;
             }
-            
-            .add-custom-btn, .cancel-custom-btn {
+
+            .add-custom-btn,
+            .cancel-custom-btn {
                 width: 100%;
             }
 
@@ -554,7 +567,7 @@
                 <h1>Tutor Registration</h1>
                 <p>Join our community of expert tutors and help students achieve academic excellence</p>
             </div>
-            
+
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <div class="alert-content">
@@ -571,7 +584,7 @@
                     <button class="alert-close" onclick="this.parentElement.style.display='none'">×</button>
                 </div>
             @endif
-            
+
             @if (session('success'))
                 <div class="modal-overlay" id="success-modal-overlay"></div>
                 <div class="success-popup modal-popup" id="success-popup">
@@ -594,10 +607,11 @@
                         left: 0;
                         width: 100vw;
                         height: 100vh;
-                        background: rgba(0,0,0,0.5);
+                        background: rgba(0, 0, 0, 0.5);
                         z-index: 9998;
                         display: block;
                     }
+
                     .modal-popup {
                         position: fixed;
                         top: 50%;
@@ -606,25 +620,69 @@
                         z-index: 9999;
                         background: #fff;
                         border-radius: 16px;
-                        box-shadow: 0 4px 32px rgba(0,0,0,0.2);
+                        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.2);
                         min-width: 320px;
                         max-width: 90vw;
                         padding: 0;
                         animation: modalFadeIn 0.3s;
                     }
+
                     @keyframes modalFadeIn {
-                        from { opacity: 0; transform: translate(-50%, -60%); }
-                        to { opacity: 1; transform: translate(-50%, -50%); }
+                        from {
+                            opacity: 0;
+                            transform: translate(-50%, -60%);
+                        }
+
+                        to {
+                            opacity: 1;
+                            transform: translate(-50%, -50%);
+                        }
                     }
-                    .popup-content { padding: 32px 24px 24px 24px; text-align: center; }
-                    .popup-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-                    .close-popup { cursor: pointer; font-size: 1.5rem; color: #888; transition: color 0.2s; }
-                    .close-popup:hover { color: #333; }
-                    .success-icon { font-size: 2.5rem; color: #4BB543; margin-bottom: 12px; }
-                    .redirect-message { color: #888; font-size: 0.95rem; margin-top: 10px; }
+
+                    .popup-content {
+                        padding: 32px 24px 24px 24px;
+                        text-align: center;
+                    }
+
+                    .popup-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 16px;
+                    }
+
+                    .close-popup {
+                        cursor: pointer;
+                        font-size: 1.5rem;
+                        color: #888;
+                        transition: color 0.2s;
+                    }
+
+                    .close-popup:hover {
+                        color: #333;
+                    }
+
+                    .success-icon {
+                        font-size: 2.5rem;
+                        color: #4BB543;
+                        margin-bottom: 12px;
+                    }
+
+                    .redirect-message {
+                        color: #888;
+                        font-size: 0.95rem;
+                        margin-top: 10px;
+                    }
+
                     @media (max-width: 500px) {
-                        .modal-popup { min-width: 90vw; padding: 0; }
-                        .popup-content { padding: 20px 8px 16px 8px; }
+                        .modal-popup {
+                            min-width: 90vw;
+                            padding: 0;
+                        }
+
+                        .popup-content {
+                            padding: 20px 8px 16px 8px;
+                        }
                     }
                 </style>
                 <script>
@@ -636,7 +694,7 @@
                         document.body.style.overflow = 'auto';
                         window.location.href = "{{ route('home') }}";
                     }
-                    document.addEventListener('DOMContentLoaded', function() {
+                    document.addEventListener('DOMContentLoaded', function () {
                         const popup = document.getElementById('success-popup');
                         const overlay = document.getElementById('success-modal-overlay');
                         if (popup && overlay) {
@@ -661,32 +719,75 @@
                         <div class="popup-body">
                             <div class="success-icon" style="font-size:2.5rem;color:#4BB543;margin-bottom:12px;">✓</div>
                             <p>{{ session('tutor_success') }}</p>
-                            <p class="redirect-message" style="color:#888;font-size:0.95rem;margin-top:10px;">Redirecting to homepage...</p>
+                            <p class="redirect-message" style="color:#888;font-size:0.95rem;margin-top:10px;">Redirecting to
+                                homepage...</p>
                         </div>
                     </div>
                 </div>
                 <style>
                     .modal-overlay {
-                        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-                        background: rgba(0,0,0,0.5); z-index: 9998; display: block;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100vw;
+                        height: 100vh;
+                        background: rgba(0, 0, 0, 0.5);
+                        z-index: 9998;
+                        display: block;
                     }
+
                     .modal-popup {
-                        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                        z-index: 9999; background: #fff; border-radius: 16px;
-                        box-shadow: 0 4px 32px rgba(0,0,0,0.2); min-width: 320px; max-width: 90vw;
-                        padding: 0; animation: modalFadeIn 0.3s;
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        z-index: 9999;
+                        background: #fff;
+                        border-radius: 16px;
+                        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.2);
+                        min-width: 320px;
+                        max-width: 90vw;
+                        padding: 0;
+                        animation: modalFadeIn 0.3s;
                     }
+
                     @keyframes modalFadeIn {
-                        from { opacity: 0; transform: translate(-50%, -60%); }
-                        to { opacity: 1; transform: translate(-50%, -50%); }
+                        from {
+                            opacity: 0;
+                            transform: translate(-50%, -60%);
+                        }
+
+                        to {
+                            opacity: 1;
+                            transform: translate(-50%, -50%);
+                        }
                     }
-                    .popup-content { padding: 32px 24px 24px 24px; text-align: center; }
-                    .popup-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-                    .close-popup { cursor: pointer; font-size: 1.5rem; color: #888; transition: color 0.2s; }
-                    .close-popup:hover { color: #333; }
+
+                    .popup-content {
+                        padding: 32px 24px 24px 24px;
+                        text-align: center;
+                    }
+
+                    .popup-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 16px;
+                    }
+
+                    .close-popup {
+                        cursor: pointer;
+                        font-size: 1.5rem;
+                        color: #888;
+                        transition: color 0.2s;
+                    }
+
+                    .close-popup:hover {
+                        color: #333;
+                    }
                 </style>
                 <script>
-                    document.addEventListener('DOMContentLoaded', function() {
+                    document.addEventListener('DOMContentLoaded', function () {
                         const popup = document.getElementById('success-popup');
                         const overlay = document.getElementById('success-modal-overlay');
                         const closeBtn = document.getElementById('close-success-popup');
@@ -709,11 +810,12 @@
             <div class="registration-container">
                 <div class="registration-content">
                     <h2>Why become a MentorHub Tutor?</h2>
-                    <p>Share your knowledge and make a difference in students' lives while earning on your own schedule.</p>
-                    
+                    <p>Share your knowledge and make a difference in students' lives while earning on your own schedule.
+                    </p>
+
                     <div class="benefits">
                         <h3>Tutor Benefits</h3>
-                        
+
                         <div class="benefit-item">
                             <div class="benefit-icon">💰</div>
                             <div>
@@ -721,7 +823,7 @@
                                 <p>Set your own rates and earn based on your expertise and experience.</p>
                             </div>
                         </div>
-                        
+
                         <div class="benefit-item">
                             <div class="benefit-icon">⏰</div>
                             <div>
@@ -729,7 +831,7 @@
                                 <p>Choose your own hours and teach when it's convenient for you.</p>
                             </div>
                         </div>
-                        
+
                         <div class="benefit-item">
                             <div class="benefit-icon">🌐</div>
                             <div>
@@ -737,7 +839,7 @@
                                 <p>Access our advanced teaching tools and resources for effective online tutoring.</p>
                             </div>
                         </div>
-                        
+
                         <div class="benefit-item">
                             <div class="benefit-icon">📈</div>
                             <div>
@@ -747,34 +849,41 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="registration-form">
                     <div class="form-header">
                         <h2>Create Your Tutor Account</h2>
                         <p>Start your journey as a MentorHub tutor</p>
                     </div>
-                    
-                    <form action="{{ route('register.tutor') }}" method="POST" class="register-form" enctype="multipart/form-data">
+
+                    <form action="{{ route('register.tutor') }}" method="POST" class="register-form"
+                        enctype="multipart/form-data">
                         @csrf
-                        
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="first_name">First Name *</label>
-                                <input type="text" id="first_name" name="first_name" value="{{ old('first_name') }}" required pattern="[a-zA-Z\s\-\']+" title="First name can only contain letters, spaces, hyphens, and apostrophes" onkeypress="return /[a-zA-Z\s\-\']/.test(event.key)">
+                                <input type="text" id="first_name" name="first_name" value="{{ old('first_name') }}"
+                                    required pattern="[a-zA-Z\s\-\']+"
+                                    title="First name can only contain letters, spaces, hyphens, and apostrophes"
+                                    onkeypress="return /[a-zA-Z\s\-\']/.test(event.key)">
                                 @error('first_name')
                                     <span class="error-message">{{ $message }}</span>
                                 @enderror
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="last_name">Last Name *</label>
-                                <input type="text" id="last_name" name="last_name" value="{{ old('last_name') }}" required pattern="[a-zA-Z\s\-\']+" title="Last name can only contain letters, spaces, hyphens, and apostrophes" onkeypress="return /[a-zA-Z\s\-\']/.test(event.key)">
+                                <input type="text" id="last_name" name="last_name" value="{{ old('last_name') }}"
+                                    required pattern="[a-zA-Z\s\-\']+"
+                                    title="Last name can only contain letters, spaces, hyphens, and apostrophes"
+                                    onkeypress="return /[a-zA-Z\s\-\']/.test(event.key)">
                                 @error('last_name')
                                     <span class="error-message">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="email">Email Address *</label>
                             <input type="email" id="email" name="email" value="{{ old('email') }}" required>
@@ -785,10 +894,12 @@
 
                         <div class="form-group">
                             <label for="tutor-id-display">Tutor ID</label>
-                            <input type="text" id="tutor-id-display" value="Will be generated automatically" disabled style="background-color: #f3f4f6; color: #6b7280;">
-                            <small style="display:block; margin-top:0.5rem; color:#6b7280;">Your Tutor ID will be assigned by the system after registration.</small>
+                            <input type="text" id="tutor-id-display" value="Will be generated automatically" disabled
+                                style="background-color: #f3f4f6; color: #6b7280;">
+                            <small style="display:block; margin-top:0.5rem; color:#6b7280;">Your Tutor ID will be
+                                assigned by the system after registration.</small>
                         </div>
-                        
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="password">Password *</label>
@@ -797,13 +908,13 @@
                                     <span class="error-message">{{ $message }}</span>
                                 @enderror
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="password_confirmation">Confirm Password *</label>
                                 <input type="password" id="password_confirmation" name="password_confirmation" required>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="specialization">Specialization *</label>
                             <div class="subject-selection-container">
@@ -812,7 +923,8 @@
                                 </div>
                                 <div class="subject-input-group">
                                     <div class="searchable-dropdown">
-                                        <input type="text" id="subject-search" class="subject-search-input" placeholder="Type to search subjects..." autocomplete="off">
+                                        <input type="text" id="subject-search" class="subject-search-input"
+                                            placeholder="Type to search subjects..." autocomplete="off">
                                         <div class="dropdown-arrow">▼</div>
                                         <div class="dropdown-options" id="dropdown-options">
                                             <div class="option" data-value="Mathematics">Mathematics</div>
@@ -844,35 +956,44 @@
                                             <div class="option" data-value="Web Development">Web Development</div>
                                             <div class="option" data-value="Data Science">Data Science</div>
                                             <div class="option" data-value="Machine Learning">Machine Learning</div>
-                                            <div class="option" data-value="Artificial Intelligence">Artificial Intelligence</div>
-                                            <div class="option" data-value="Database Management">Database Management</div>
-                                            <div class="option" data-value="Software Engineering">Software Engineering</div>
+                                            <div class="option" data-value="Artificial Intelligence">Artificial
+                                                Intelligence</div>
+                                            <div class="option" data-value="Database Management">Database Management
+                                            </div>
+                                            <div class="option" data-value="Software Engineering">Software Engineering
+                                            </div>
                                             <div class="option" data-value="Network Security">Network Security</div>
                                             <div class="option" data-value="Cybersecurity">Cybersecurity</div>
                                             <div class="option" data-value="Digital Marketing">Digital Marketing</div>
-                                            <div class="option" data-value="Business Management">Business Management</div>
+                                            <div class="option" data-value="Business Management">Business Management
+                                            </div>
                                             <div class="option" data-value="Entrepreneurship">Entrepreneurship</div>
                                             <div class="option" data-value="Public Speaking">Public Speaking</div>
                                             <div class="option" data-value="Creative Writing">Creative Writing</div>
                                             <div class="option" data-value="Technical Writing">Technical Writing</div>
                                             <div class="option" data-value="Research Methods">Research Methods</div>
                                             <div class="option" data-value="Academic Writing">Academic Writing</div>
-                                            <div class="option custom-option" data-value="custom">+ Add Custom Subject</div>
+                                            <div class="option custom-option" data-value="custom">+ Add Custom Subject
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="custom-subject-input" id="custom-subject-input" style="display: none;">
-                                        <input type="text" id="custom-subject-text" placeholder="Enter custom subject name">
-                                        <button type="button" id="add-custom-subject" class="add-custom-btn">Add</button>
-                                        <button type="button" id="cancel-custom-subject" class="cancel-custom-btn">Cancel</button>
+                                        <input type="text" id="custom-subject-text"
+                                            placeholder="Enter custom subject name">
+                                        <button type="button" id="add-custom-subject"
+                                            class="add-custom-btn">Add</button>
+                                        <button type="button" id="cancel-custom-subject"
+                                            class="cancel-custom-btn">Cancel</button>
                                     </div>
                                 </div>
-                                <input type="hidden" id="specialization" name="specialization" value="{{ old('specialization') }}" required>
+                                <input type="hidden" id="specialization" name="specialization"
+                                    value="{{ old('specialization') }}" required>
                             </div>
                             @error('specialization')
                                 <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="phone">Phone Number *</label>
                             <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" required>
@@ -883,7 +1004,8 @@
 
                         <div class="form-group">
                             <label for="rate">Rate (₱/month) *</label>
-                            <input type="number" id="rate" name="rate" value="{{ old('rate') }}" min="0" step="0.01" required>
+                            <input type="number" id="rate" name="rate" value="{{ old('rate') }}" min="0" step="0.01"
+                                required>
                             @error('rate')
                                 <span class="error-message">{{ $message }}</span>
                             @enderror
@@ -891,7 +1013,8 @@
 
                         <div class="form-group">
                             <label for="hourly_rate">Rate (₱/hour) *</label>
-                            <input type="number" id="hourly_rate" name="hourly_rate" value="{{ old('hourly_rate') }}" min="0" step="0.01" required>
+                            <input type="number" id="hourly_rate" name="hourly_rate" value="{{ old('hourly_rate') }}"
+                                min="0" step="0.01" required>
                             @error('hourly_rate')
                                 <span class="error-message">{{ $message }}</span>
                             @enderror
@@ -899,7 +1022,8 @@
 
                         <div class="form-group">
                             <label for="bio">Bio</label>
-                            <textarea id="bio" name="bio" rows="3" placeholder="Tell us about yourself and your teaching experience">{{ old('bio') }}</textarea>
+                            <textarea id="bio" name="bio" rows="3"
+                                placeholder="Tell us about yourself and your teaching experience">{{ old('bio') }}</textarea>
                             @error('bio')
                                 <span class="error-message">{{ $message }}</span>
                             @enderror
@@ -908,13 +1032,15 @@
                         <div class="form-group">
                             <label for="cv">CV/Resume *</label>
                             <div class="file-upload-container">
-                                <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" class="file-input" required>
+                                <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" class="file-input"
+                                    required>
                                 <label for="cv" class="file-upload-label">
                                     <div class="file-upload-content">
                                         <div class="file-upload-icon">📄</div>
                                         <div class="file-upload-text">
                                             <span class="file-upload-title">Upload your CV/Resume</span>
-                                            <span class="file-upload-subtitle">PDF, DOC, or DOCX files only (Max 5MB)</span>
+                                            <span class="file-upload-subtitle">PDF, DOC, or DOCX files only (Max
+                                                5MB)</span>
                                         </div>
                                         <div class="file-upload-button">Choose File</div>
                                     </div>
@@ -934,18 +1060,20 @@
                                 <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
-                        
+
                         <div class="form-group checkbox-group">
                             <input type="checkbox" id="terms" name="terms" {{ old('terms') ? 'checked' : '' }} required>
-                            <label for="terms">I agree to the <a href="#" class="modal-link" id="terms-link">Terms and Conditions</a> and <a href="#" class="modal-link" id="privacy-link">Privacy Policy</a></label>
+                            <label for="terms">I agree to the <a href="#" class="modal-link" id="terms-link">Terms and
+                                    Conditions</a> and <a href="#" class="modal-link" id="privacy-link">Privacy
+                                    Policy</a></label>
                             @error('terms')
                                 <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
-                        
+
                         <button type="submit" class="register-btn">Create Tutor Account</button>
                     </form>
-                    
+
                     <div class="form-footer">
                         <p>Already have an account? <a href="/login">Login here</a></p>
                         <p><a href="{{ route('select-role') }}">← Back to Registration Selection</a></p>
@@ -964,19 +1092,21 @@
             </div>
             <div class="modal-body">
                 <p><strong>Last updated:</strong> May 30, 2025</p>
-                
+
                 <h3>1. Acceptance of Terms</h3>
-                <p>By accessing and using MentorHub's services, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use our platform.</p>
-                
+                <p>By accessing and using MentorHub's services, you agree to be bound by these Terms and Conditions. If
+                    you do not agree to these terms, please do not use our platform.</p>
+
                 <h3>2. Description of Service</h3>
-                <p>MentorHub is an online tutoring platform that connects students with qualified tutors. We provide:</p>
+                <p>MentorHub is an online tutoring platform that connects students with qualified tutors. We provide:
+                </p>
                 <ul>
                     <li>One-on-one tutoring sessions</li>
                     <li>Group study sessions</li>
                     <li>Educational resources and materials</li>
                     <li>Progress tracking and reporting</li>
                 </ul>
-                
+
                 <h3>3. User Responsibilities</h3>
                 <p>As a user, you agree to:</p>
                 <ul>
@@ -985,27 +1115,33 @@
                     <li>Treat tutors and other users with respect</li>
                     <li>Use the platform only for educational purposes</li>
                 </ul>
-                
+
                 <h3>4. Payment and Refunds</h3>
-                <p>Payment for tutoring sessions is required in advance. Refunds may be provided in accordance with our refund policy, typically for sessions cancelled with at least 24 hours notice.</p>
-                
+                <p>Payment for tutoring sessions is required in advance. Refunds may be provided in accordance with our
+                    refund policy, typically for sessions cancelled with at least 24 hours notice.</p>
+
                 <h3>5. Tutor Compensation and Cashouts</h3>
-                <p>Tutors on MentorHub receive compensation for completed tutoring sessions according to their set rates. When requesting a cashout of earned funds:</p>
+                <p>Tutors on MentorHub receive compensation for completed tutoring sessions according to their set
+                    rates. When requesting a cashout of earned funds:</p>
                 <ul>
                     <li>A 10% service fee will be deducted from the total cashout amount</li>
                     <li>This fee covers platform maintenance, payment processing, and service costs</li>
                     <li>Tutors are responsible for any additional fees imposed by their payment provider</li>
                 </ul>
-                
+
                 <h3>6. Intellectual Property</h3>
-                <p>All content, materials, and resources provided through MentorHub remain the property of MentorHub or its content providers. Users may not reproduce, distribute, or create derivative works without express permission.</p>
-                
+                <p>All content, materials, and resources provided through MentorHub remain the property of MentorHub or
+                    its content providers. Users may not reproduce, distribute, or create derivative works without
+                    express permission.</p>
+
                 <h3>7. Privacy and Data Protection</h3>
-                <p>Your privacy is important to us. Please review our Privacy Policy to understand how we collect, use, and protect your personal information.</p>
-                
+                <p>Your privacy is important to us. Please review our Privacy Policy to understand how we collect, use,
+                    and protect your personal information.</p>
+
                 <h3>8. Platform Availability</h3>
-                <p>While we strive to maintain continuous service, MentorHub does not guarantee uninterrupted access to the platform. We reserve the right to perform maintenance and updates as needed.</p>
-                
+                <p>While we strive to maintain continuous service, MentorHub does not guarantee uninterrupted access to
+                    the platform. We reserve the right to perform maintenance and updates as needed.</p>
+
                 <h3>9. User Conduct</h3>
                 <p>Users must not:</p>
                 <ul>
@@ -1014,18 +1150,22 @@
                     <li>Share inappropriate or offensive content</li>
                     <li>Attempt to gain unauthorized access to our systems</li>
                 </ul>
-                
+
                 <h3>10. Termination</h3>
-                <p>MentorHub reserves the right to suspend or terminate user accounts that violate these terms or engage in inappropriate behavior.</p>
-                
+                <p>MentorHub reserves the right to suspend or terminate user accounts that violate these terms or engage
+                    in inappropriate behavior.</p>
+
                 <h3>11. Limitation of Liability</h3>
-                <p>MentorHub's liability is limited to the maximum extent permitted by law. We are not responsible for indirect, incidental, or consequential damages arising from use of our services.</p>
-                
+                <p>MentorHub's liability is limited to the maximum extent permitted by law. We are not responsible for
+                    indirect, incidental, or consequential damages arising from use of our services.</p>
+
                 <h3>12. Changes to Terms</h3>
-                <p>We reserve the right to modify these terms at any time. Users will be notified of significant changes, and continued use of the platform constitutes acceptance of updated terms.</p>
-                
+                <p>We reserve the right to modify these terms at any time. Users will be notified of significant
+                    changes, and continued use of the platform constitutes acceptance of updated terms.</p>
+
                 <h3>13. Contact Information</h3>
-                <p>For questions about these Terms and Conditions, please contact us at MentorHub.Website@gmail.com or through our support channels.</p>
+                <p>For questions about these Terms and Conditions, please contact us at MentorHub.Website@gmail.com or
+                    through our support channels.</p>
             </div>
         </div>
     </div>
@@ -1039,16 +1179,17 @@
             </div>
             <div class="modal-body">
                 <p><strong>Last updated:</strong> May 30, 2025</p>
-                
+
                 <h3>1. Information We Collect</h3>
                 <p>We collect the following types of information:</p>
                 <ul>
-                    <li><strong>Personal Information:</strong> Name, email address, phone number, academic information</li>
+                    <li><strong>Personal Information:</strong> Name, email address, phone number, academic information
+                    </li>
                     <li><strong>Usage Data:</strong> Session attendance, progress metrics, platform interactions</li>
                     <li><strong>Technical Data:</strong> IP address, browser type, device information, cookies</li>
                     <li><strong>Communication Data:</strong> Messages, feedback, and support requests</li>
                 </ul>
-                
+
                 <h3>2. How We Use Your Information</h3>
                 <p>We use your information to:</p>
                 <ul>
@@ -1059,16 +1200,17 @@
                     <li>Improve our services and user experience</li>
                     <li>Comply with legal obligations</li>
                 </ul>
-                
+
                 <h3>3. Information Sharing</h3>
                 <p>We may share your information with:</p>
                 <ul>
                     <li><strong>Tutors:</strong> Necessary academic and contact information for session delivery</li>
                     <li><strong>Service Providers:</strong> Third-party vendors who assist in platform operations</li>
-                    <li><strong>Educational Institutions:</strong> With your consent, for academic reporting purposes</li>
+                    <li><strong>Educational Institutions:</strong> With your consent, for academic reporting purposes
+                    </li>
                     <li><strong>Legal Authorities:</strong> When required by law or to protect our rights</li>
                 </ul>
-                
+
                 <h3>4. Data Security</h3>
                 <p>We implement industry-standard security measures to protect your personal information, including:</p>
                 <ul>
@@ -1077,7 +1219,7 @@
                     <li>Access controls and authentication requirements</li>
                     <li>Staff training on data protection practices</li>
                 </ul>
-                
+
                 <h3>5. Your Rights</h3>
                 <p>You have the right to:</p>
                 <ul>
@@ -1087,25 +1229,32 @@
                     <li>Opt-out of marketing communications</li>
                     <li>Port your data to another service</li>
                 </ul>
-                
+
                 <h3>6. Cookies and Tracking</h3>
-                <p>We use cookies and similar technologies to enhance your user experience, analyze platform usage, and provide personalized content. You can manage cookie preferences through your browser settings.</p>
-                
+                <p>We use cookies and similar technologies to enhance your user experience, analyze platform usage, and
+                    provide personalized content. You can manage cookie preferences through your browser settings.</p>
+
                 <h3>7. Data Retention</h3>
-                <p>We retain your personal information for as long as necessary to provide services and comply with legal obligations. Academic progress data may be retained longer for educational continuity purposes.</p>
-                
+                <p>We retain your personal information for as long as necessary to provide services and comply with
+                    legal obligations. Academic progress data may be retained longer for educational continuity
+                    purposes.</p>
+
                 <h3>8. International Data Transfers</h3>
-                <p>Your information may be processed and stored in countries other than your own. We ensure appropriate safeguards are in place for international data transfers.</p>
-                
+                <p>Your information may be processed and stored in countries other than your own. We ensure appropriate
+                    safeguards are in place for international data transfers.</p>
+
                 <h3>9. Children's Privacy</h3>
-                <p>We take special care to protect the privacy of users under 18. Parental consent may be required for certain data collection and processing activities.</p>
-                
+                <p>We take special care to protect the privacy of users under 18. Parental consent may be required for
+                    certain data collection and processing activities.</p>
+
                 <h3>10. Third-Party Links</h3>
-                <p>Our platform may contain links to third-party websites. We are not responsible for the privacy practices of external sites and encourage you to review their privacy policies.</p>
-                
+                <p>Our platform may contain links to third-party websites. We are not responsible for the privacy
+                    practices of external sites and encourage you to review their privacy policies.</p>
+
                 <h3>11. Updates to This Policy</h3>
-                <p>We may update this Privacy Policy periodically. We will notify users of significant changes and post the updated policy on our platform.</p>
-                
+                <p>We may update this Privacy Policy periodically. We will notify users of significant changes and post
+                    the updated policy on our platform.</p>
+
                 <h3>12. Contact Us</h3>
                 <p>For questions about this Privacy Policy or to exercise your rights, contact us at:</p>
                 <ul>
@@ -1126,19 +1275,24 @@
             </div>
             <div class="footer-modal-body">
                 <h3>How do I book a tutoring session?</h3>
-                <p>You can book a session by going to the "Book Session" page, selecting a tutor, choosing your preferred date and time, and confirming your booking.</p>
-                
+                <p>You can book a session by going to the "Book Session" page, selecting a tutor, choosing your
+                    preferred date and time, and confirming your booking.</p>
+
                 <h3>What subjects are available for tutoring?</h3>
-                <p>We offer tutoring in a wide range of subjects including Mathematics, Science, English, History, and more. Available subjects vary by tutor specialization.</p>
-                
+                <p>We offer tutoring in a wide range of subjects including Mathematics, Science, English, History, and
+                    more. Available subjects vary by tutor specialization.</p>
+
                 <h3>Can I reschedule or cancel a session?</h3>
-                <p>Yes, sessions can be rescheduled or cancelled up to 24 hours in advance. Cancellations made within 24 hours may be subject to charges.</p>
-                
+                <p>Yes, sessions can be rescheduled or cancelled up to 24 hours in advance. Cancellations made within 24
+                    hours may be subject to charges.</p>
+
                 <h3>How do payments work?</h3>
-                <p>Payments are processed securely through our integrated payment system. You can add funds to your wallet and use them to pay for sessions and assignments.</p>
-                
+                <p>Payments are processed securely through our integrated payment system. You can add funds to your
+                    wallet and use them to pay for sessions and assignments.</p>
+
                 <h3>What should I do if I have a technical issue?</h3>
-                <p>Please use the "Report a Problem" feature in your dashboard to submit a detailed report of any technical issues you encounter.</p>
+                <p>Please use the "Report a Problem" feature in your dashboard to submit a detailed report of any
+                    technical issues you encounter.</p>
             </div>
         </div>
     </div>
@@ -1153,19 +1307,20 @@
             <div class="footer-modal-body">
                 <h3>Get in Touch</h3>
                 <p>We're here to help! Reach out to us through any of the following channels:</p>
-                
+
                 <h3>Email</h3>
                 <p>
-                    <strong>Email Us:</strong> <a href="mailto:MentorHub.Website@gmail.com">MentorHub.Website@gmail.com</a><br>
+                    <strong>Email Us:</strong> <a
+                        href="mailto:MentorHub.Website@gmail.com">MentorHub.Website@gmail.com</a><br>
                     <small style="color: #666;">We typically respond within 24 hours</small>
                 </p>
-                
+
                 <h3>Phone</h3>
                 <p>+63958667092</p>
-                
+
                 <h3>Address</h3>
                 <p>University of Cebu<br>Cebu City, Philippines</p>
-                
+
                 <h3>Business Hours</h3>
                 <p>Monday - Friday: 8:00 AM - 6:00 PM<br>Saturday: 9:00 AM - 3:00 PM<br>Sunday: Closed</p>
             </div>
@@ -1188,13 +1343,13 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Mobile menu toggle
             const menuToggle = document.getElementById('menu-toggle');
             const navLinks = document.getElementById('nav-links');
 
             if (menuToggle && navLinks) {
-                menuToggle.addEventListener('click', function() {
+                menuToggle.addEventListener('click', function () {
                     const isOpen = navLinks.classList.toggle('active');
                     menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
                 });
@@ -1205,17 +1360,17 @@
             const privacyModal = document.getElementById('privacy-modal');
             const faqModal = document.getElementById('faq-modal');
             const contactModal = document.getElementById('contact-modal');
-            
+
             const termsLinks = [
                 document.getElementById('terms-link'),
                 document.getElementById('footer-terms')
             ];
-            
+
             const privacyLinks = [
                 document.getElementById('privacy-link'),
                 document.getElementById('footer-privacy')
             ];
-            
+
             const termsClose = document.getElementById('terms-close');
             const privacyClose = document.getElementById('privacy-close');
 
@@ -1227,21 +1382,21 @@
             function openModal(modal) {
                 if (isAnimating || !modal) return;
                 isAnimating = true;
-                
+
                 // Store scroll position before opening modal
                 scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-                
+
                 // Prevent body scroll and preserve scrollbar width
                 document.body.style.position = 'fixed';
                 document.body.style.top = `-${scrollPosition}px`;
                 document.body.style.width = '100%';
                 document.body.style.overflow = 'hidden';
-                
+
                 modal.style.display = 'flex';
                 // Force reflow to ensure display is set before adding class
                 void modal.offsetWidth;
                 modal.classList.add('show');
-                
+
                 setTimeout(() => {
                     isAnimating = false;
                 }, 300);
@@ -1250,22 +1405,22 @@
             function closeModal(modal) {
                 if (isAnimating || !modal) return;
                 isAnimating = true;
-                
+
                 modal.classList.remove('show');
-                
+
                 // Wait for transition to complete before restoring scroll
                 modal.addEventListener('transitionend', function handler() {
                     modal.removeEventListener('transitionend', handler);
-                    
+
                     // Restore body scroll smoothly
                     document.body.style.position = '';
                     document.body.style.top = '';
                     document.body.style.width = '';
                     document.body.style.overflow = '';
-                    
+
                     // Restore scroll position
                     window.scrollTo(0, scrollPosition);
-                    
+
                     if (!modal.classList.contains('show')) {
                         modal.style.display = 'none';
                     }
@@ -1276,7 +1431,7 @@
             // Add event listeners for terms modal
             termsLinks.forEach(link => {
                 if (link) {
-                    link.addEventListener('click', function(e) {
+                    link.addEventListener('click', function (e) {
                         e.preventDefault();
                         openModal(termsModal);
                     });
@@ -1286,7 +1441,7 @@
             // Add event listeners for privacy modal
             privacyLinks.forEach(link => {
                 if (link) {
-                    link.addEventListener('click', function(e) {
+                    link.addEventListener('click', function (e) {
                         e.preventDefault();
                         openModal(privacyModal);
                     });
@@ -1295,20 +1450,20 @@
 
             // Close button event listeners
             if (termsClose) {
-                termsClose.addEventListener('click', function() {
+                termsClose.addEventListener('click', function () {
                     closeModal(termsModal);
                 });
             }
 
             if (privacyClose) {
-                privacyClose.addEventListener('click', function() {
+                privacyClose.addEventListener('click', function () {
                     closeModal(privacyModal);
                 });
             }
 
             // Close modal when clicking outside
             if (termsModal) {
-                termsModal.addEventListener('click', function(e) {
+                termsModal.addEventListener('click', function (e) {
                     if (e.target === termsModal) {
                         closeModal(termsModal);
                     }
@@ -1316,7 +1471,7 @@
             }
 
             if (privacyModal) {
-                privacyModal.addEventListener('click', function(e) {
+                privacyModal.addEventListener('click', function (e) {
                     if (e.target === privacyModal) {
                         closeModal(privacyModal);
                     }
@@ -1326,7 +1481,7 @@
             // Add event listeners for FAQ modal
             const faqLink = document.getElementById('footer-faq-link');
             if (faqLink && faqModal) {
-                faqLink.addEventListener('click', function(e) {
+                faqLink.addEventListener('click', function (e) {
                     e.preventDefault();
                     openModal(faqModal);
                 });
@@ -1335,7 +1490,7 @@
             // Add event listeners for Contact modal
             const contactLink = document.getElementById('footer-contact-link');
             if (contactLink && contactModal) {
-                contactLink.addEventListener('click', function(e) {
+                contactLink.addEventListener('click', function (e) {
                     e.preventDefault();
                     openModal(contactModal);
                 });
@@ -1345,11 +1500,11 @@
             if (faqModal) {
                 const faqClose = faqModal.querySelector('.footer-modal-close');
                 if (faqClose) {
-                    faqClose.addEventListener('click', function() {
+                    faqClose.addEventListener('click', function () {
                         closeModal(faqModal);
                     });
                 }
-                faqModal.addEventListener('click', function(e) {
+                faqModal.addEventListener('click', function (e) {
                     if (e.target === faqModal) {
                         closeModal(faqModal);
                     }
@@ -1359,11 +1514,11 @@
             if (contactModal) {
                 const contactClose = contactModal.querySelector('.footer-modal-close');
                 if (contactClose) {
-                    contactClose.addEventListener('click', function() {
+                    contactClose.addEventListener('click', function () {
                         closeModal(contactModal);
                     });
                 }
-                contactModal.addEventListener('click', function(e) {
+                contactModal.addEventListener('click', function (e) {
                     if (e.target === contactModal) {
                         closeModal(contactModal);
                     }
@@ -1371,7 +1526,7 @@
             }
 
             // Close modals with Escape key
-            document.addEventListener('keydown', function(e) {
+            document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape') {
                     closeModal(termsModal);
                     closeModal(privacyModal);
@@ -1400,7 +1555,7 @@
             const addCustomSubjectBtn = document.getElementById('add-custom-subject');
             const cancelCustomSubjectBtn = document.getElementById('cancel-custom-subject');
             const specializationHiddenInput = document.getElementById('specialization');
-            
+
             let selectedSubjects = [];
 
             // Initialize with old values if any
@@ -1431,7 +1586,7 @@
             }
 
             // Add custom subject
-            addCustomSubjectBtn.addEventListener('click', function() {
+            addCustomSubjectBtn.addEventListener('click', function () {
                 const customSubject = customSubjectText.value.trim();
                 if (customSubject && !selectedSubjects.includes(customSubject)) {
                     selectedSubjects.push(customSubject);
@@ -1444,7 +1599,7 @@
             cancelCustomSubjectBtn.addEventListener('click', hideCustomSubjectInput);
 
             // Handle Enter key in custom subject input
-            customSubjectText.addEventListener('keypress', function(e) {
+            customSubjectText.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     addCustomSubjectBtn.click();
@@ -1452,7 +1607,7 @@
             });
 
             // Handle Escape key
-            customSubjectText.addEventListener('keydown', function(e) {
+            customSubjectText.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape') {
                     hideCustomSubjectInput();
                 }
@@ -1479,7 +1634,7 @@
                         </div>
                     `).join('');
                 }
-                
+
                 // Update hidden input for form submission
                 specializationHiddenInput.value = selectedSubjects.join(', ');
             }
@@ -1496,7 +1651,7 @@
             const fileUploadLabel = document.querySelector('.file-upload-label');
 
             // Handle file selection
-            fileInput.addEventListener('change', function(e) {
+            fileInput.addEventListener('change', function (e) {
                 const file = e.target.files[0];
                 if (file) {
                     // Validate file type
@@ -1524,7 +1679,7 @@
             });
 
             // Handle file removal
-            removeFile.addEventListener('click', function() {
+            removeFile.addEventListener('click', function () {
                 fileInput.value = '';
                 fileSelected.style.display = 'none';
                 fileUploadLabel.style.display = 'block';
@@ -1541,7 +1696,7 @@
 
             // Form validation
             const form = document.querySelector('.register-form');
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', function (e) {
                 if (selectedSubjects.length === 0) {
                     e.preventDefault();
                     alert('Please select at least one subject specialization.');
@@ -1558,13 +1713,13 @@
             let selectedOptionIndex = -1;
 
             // Show dropdown on input focus
-            subjectSearchInput.addEventListener('focus', function() {
+            subjectSearchInput.addEventListener('focus', function () {
                 searchableDropdown.classList.add('active');
                 filterOptions('');
             });
 
             // Hide dropdown when clicking outside
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
                 if (!searchableDropdown.contains(e.target)) {
                     searchableDropdown.classList.remove('active');
                     selectedOptionIndex = -1;
@@ -1572,7 +1727,7 @@
             });
 
             // Handle search input
-            subjectSearchInput.addEventListener('input', function() {
+            subjectSearchInput.addEventListener('input', function () {
                 const searchTerm = this.value.toLowerCase();
                 filterOptions(searchTerm);
                 selectedOptionIndex = -1;
@@ -1586,7 +1741,7 @@
                 options.forEach((option, index) => {
                     const text = option.textContent.toLowerCase();
                     const isCustomOption = option.classList.contains('custom-option');
-                    
+
                     if (searchTerm === '' || text.includes(searchTerm) || isCustomOption) {
                         option.classList.remove('hidden');
                         visibleCount++;
@@ -1613,9 +1768,9 @@
 
             // Handle option clicks
             options.forEach(option => {
-                option.addEventListener('click', function() {
+                option.addEventListener('click', function () {
                     const value = this.getAttribute('data-value');
-                    
+
                     if (value === 'custom') {
                         showCustomSubjectInput();
                         subjectSearchInput.value = '';
@@ -1630,10 +1785,10 @@
             });
 
             // Keyboard navigation
-            subjectSearchInput.addEventListener('keydown', function(e) {
+            subjectSearchInput.addEventListener('keydown', function (e) {
                 const visibleOptions = Array.from(options).filter(option => !option.classList.contains('hidden'));
-                
-                switch(e.key) {
+
+                switch (e.key) {
                     case 'ArrowDown':
                         e.preventDefault();
                         selectedOptionIndex = Math.min(selectedOptionIndex + 1, visibleOptions.length - 1);
@@ -1675,4 +1830,5 @@
         });
     </script>
 </body>
+
 </html>

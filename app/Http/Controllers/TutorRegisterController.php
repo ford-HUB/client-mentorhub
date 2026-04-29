@@ -58,7 +58,7 @@ class TutorRegisterController extends Controller
 
         // Generate a unique registration token
         $registrationToken = Str::random(64);
-        
+
         // Generate verification code
         $verificationCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
         $expiresAt = now()->addMinutes(15);
@@ -90,18 +90,19 @@ class TutorRegisterController extends Controller
         // Send verification email
         try {
             Mail::to($request->input('email'))->send(new \App\Mail\VerificationCodeMail($verificationCode, 'tutor'));
-            
+
             return redirect()->route('verify.email', [
                 'email' => $request->input('email'),
                 'type' => 'tutor',
                 'token' => $registrationToken
             ])->with('success', 'Registration information received! Please check your email for the verification code to complete your registration.');
         } catch (\Exception $e) {
+            \Log::error('Tutor registration failed: ' . $e->getMessage(), ['exception' => $e]);
             // Clean up on failure
             Cache::forget('tutor_registration_' . $registrationToken);
             Cache::forget('tutor_verification_' . $request->input('email'));
             Storage::disk('public')->delete($cvPath);
-            
+
             return redirect()->back()->with('error', 'Failed to send verification email. Please try again.');
         }
     }
