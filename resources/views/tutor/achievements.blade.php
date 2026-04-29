@@ -362,9 +362,9 @@
                         <span>{{ $totalPoints }} / {{ $nextLevelPointsReq }}</span>
                     </div>
                     <div class="level-progress" style="margin-top: 0; background: rgba(255,255,255,0.2);">
-                        <div class="level-progress-bar" style="width: {{ min(100, ($totalPoints / $nextLevelPointsReq) * 100) }}%; background: #ffd700;"></div>
+                        <div class="level-progress-bar" style="width: {{ $nextLevelPointsReq > 0 ? min(100, ($totalPoints / $nextLevelPointsReq) * 100) : 100 }}%; background: #ffd700;"></div>
                     </div>
-                    <div class="level-progress-text" style="text-align: left; opacity: 0.8;">{{ $pointsForNextLevel }} more points needed</div>
+                    <div class="level-progress-text" style="text-align: left; opacity: 0.8;">{{ $pointsForNextLevel > 0 ? $pointsForNextLevel . ' more points needed' : 'Completed!' }}</div>
                 </div>
                 
                 <div>
@@ -373,9 +373,9 @@
                         <span>{{ $completedQuests }} / {{ $nextLevelQuestsReq }}</span>
                     </div>
                     <div class="level-progress" style="margin-top: 0; background: rgba(255,255,255,0.2);">
-                        <div class="level-progress-bar" style="width: {{ min(100, ($completedQuests / $nextLevelQuestsReq) * 100) }}%; background: #4cd137;"></div>
+                        <div class="level-progress-bar" style="width: {{ $nextLevelQuestsReq > 0 ? min(100, ($completedQuests / $nextLevelQuestsReq) * 100) : 100 }}%; background: #4cd137;"></div>
                     </div>
-                    <div class="level-progress-text" style="text-align: left; opacity: 0.8;">{{ $questsForNextLevel }} more sessions needed</div>
+                    <div class="level-progress-text" style="text-align: left; opacity: 0.8;">{{ $questsForNextLevel > 0 ? $questsForNextLevel . ' more sessions needed' : 'Completed!' }}</div>
                 </div>
             </div>
         </div>

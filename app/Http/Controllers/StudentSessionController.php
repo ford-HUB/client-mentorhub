@@ -18,41 +18,43 @@ class StudentSessionController extends Controller
     public function index()
     {
         $student = Auth::guard('student')->user();
-        
+
         // Only show approved tutors that are active
         $query = Tutor::where('registration_status', 'approved')
             ->where('is_active', true);
-            
+
         // Don't show tutors that the student already has an accepted booking with
         if ($student) {
-            $query->whereDoesntHave('sessions', function($q) use ($student) {
+            $query->whereDoesntHave('sessions', function ($q) use ($student) {
                 $q->where('student_id', $student->id)
-                  ->where('status', 'accepted');
+                    ->where('status', 'accepted');
             });
         }
-            
-        $tutors = $query->with(['sessions' => function($q) {
+
+        $tutors = $query->with([
+            'sessions' => function ($q) {
                 $q->whereIn('status', ['accepted', 'pending'])
-                  ->where('date', '>=', now()->toDateString());
-            }])
+                    ->where('date', '>=', now()->toDateString());
+            }
+        ])
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')
             ->get();
-        
+
         // Smart match: Prioritize tutors whose specialization matches student's subjects of interest
         if ($student && $student->subjects_interest) {
             $studentInterests = $this->parseSubjects($student->subjects_interest);
-            
+
             // Add match score to each tutor
-            $tutors = $tutors->map(function($tutor) use ($studentInterests) {
+            $tutors = $tutors->map(function ($tutor) use ($studentInterests) {
                 $tutor->match_score = $this->calculateMatchScore($tutor, $studentInterests);
                 $tutor->is_matched = $tutor->match_score > 0;
                 $tutor->next_available = $this->calculateNextAvailableSlot($tutor->sessions);
                 return $tutor;
             });
-            
+
             // Sort by match score (matched tutors first), then by rating
-            $tutors = $tutors->sortByDesc(function($tutor) {
+            $tutors = $tutors->sortByDesc(function ($tutor) {
                 // Primary sort: match score (matched tutors first)
                 // Secondary sort: average rating
                 $rating = $tutor->reviews_avg_rating ?? 0;
@@ -60,7 +62,7 @@ class StudentSessionController extends Controller
             })->values();
         } else {
             // If no subjects of interest, just sort by rating
-            $tutors = $tutors->map(function($tutor) {
+            $tutors = $tutors->map(function ($tutor) {
                 $tutor->match_score = 0;
                 $tutor->is_matched = false;
                 $tutor->next_available = $this->calculateNextAvailableSlot($tutor->sessions);
@@ -73,10 +75,10 @@ class StudentSessionController extends Controller
             $studentLevel = $student->getLevel();
             $studentDiscount = min(50, ($studentLevel - 1) * 2);
         }
-        
+
         return view('student.book-session', compact('tutors', 'student', 'studentLevel', 'studentDiscount'));
     }
-    
+
     /**
      * Parse subjects from text (handles comma-separated, newline-separated, etc.)
      */
@@ -85,18 +87,18 @@ class StudentSessionController extends Controller
         if (empty($subjectsText)) {
             return [];
         }
-        
+
         // Split by comma, newline, or semicolon, then trim and filter
         $subjects = preg_split('/[,;\n\r]+/', $subjectsText);
         $subjects = array_map('trim', $subjects);
-        $subjects = array_filter($subjects, function($subject) {
+        $subjects = array_filter($subjects, function ($subject) {
             return !empty($subject);
         });
-        
+
         // Convert to lowercase for case-insensitive matching
         return array_map('strtolower', $subjects);
     }
-    
+
     /**
      * Calculate match score between tutor specialization and student interests
      */
@@ -105,14 +107,14 @@ class StudentSessionController extends Controller
         if (empty($tutor->specialization) || empty($studentInterests)) {
             return 0;
         }
-        
+
         // Parse tutor specialization (can be comma-separated)
         $tutorSpecializations = $this->parseSubjects($tutor->specialization);
-        
+
         if (empty($tutorSpecializations)) {
             return 0;
         }
-        
+
         // Count matches (case-insensitive)
         $matches = 0;
         foreach ($studentInterests as $interest) {
@@ -129,7 +131,7 @@ class StudentSessionController extends Controller
                 }
             }
         }
-        
+
         // Return match score (higher is better)
         return $matches;
     }
@@ -144,7 +146,7 @@ class StudentSessionController extends Controller
         $endHour = 20; // 8 PM
 
         $checkTime = $now->copy();
-        
+
         if ($checkTime->hour >= $endHour) {
             $checkTime->addDay()->setHour($startHour)->setMinute(0)->setSecond(0);
         } elseif ($checkTime->hour < $startHour) {
@@ -158,7 +160,7 @@ class StudentSessionController extends Controller
 
         for ($i = 0; $i < 30; $i++) {
             $date = $checkTime->copy()->toDateString();
-            
+
             while ($checkTime->hour < $endHour) {
                 $slotStart = $checkTime->copy();
                 $slotEnd = $checkTime->copy()->addHour();
@@ -189,10 +191,10 @@ class StudentSessionController extends Controller
 
                 $checkTime->addHour();
             }
-            
+
             $checkTime->addDay()->setHour($startHour)->setMinute(0)->setSecond(0);
         }
-        
+
         return null;
     }
 
@@ -213,15 +215,15 @@ class StudentSessionController extends Controller
 
             $startTimeStr = $request->start_time;
             $endTimeStr = $request->end_time;
-            
+
             try {
                 $startTime = \Carbon\Carbon::parse($startTimeStr);
                 $endTime = \Carbon\Carbon::parse($endTimeStr);
-                
+
                 if ($request->booking_type === 'hourly' && $endTime->lt($startTime)) {
                     $endTime->addDay();
                 }
-                
+
                 if ($endTime->lte($startTime)) {
                     return redirect()->back()
                         ->withInput()
@@ -234,17 +236,16 @@ class StudentSessionController extends Controller
             }
 
 
-            
 
 
-            // Check for conflicting sessions for the tutor
+
             if ($request->booking_type === 'hourly') {
                 $conflict = Session::where('tutor_id', $request->tutor_id)
                     ->whereIn('status', ['accepted', 'pending'])
                     ->where('date', $request->date)
                     ->where(function ($query) use ($request) {
                         $query->where('start_time', '<', $request->end_time)
-                              ->where('end_time', '>', $request->start_time);
+                            ->where('end_time', '>', $request->start_time);
                     })
                     ->exists();
 
@@ -255,24 +256,21 @@ class StudentSessionController extends Controller
                 }
             }
 
-            // Get tutor to get their rate
             $tutor = Tutor::findOrFail($request->tutor_id);
-            
-            // Use the appropriate rate based on booking type
+
             $hourlyRate = null;
             $hours = null;
-            
+
             if ($request->booking_type === 'monthly') {
                 $sessionRate = $tutor->session_rate ?? 0;
             } else {
-                // For hourly bookings, calculate total based on duration
                 $hourlyRate = $tutor->hourly_rate ?? $tutor->session_rate ?? 0;
-                
+
                 // Calculate hours between start and end time
-                
+
                 $totalMinutes = $startTime->diffInMinutes($endTime);
                 $hours = $totalMinutes / 60;
-                
+
                 $sessionRate = $hourlyRate * $hours;
             }
 
@@ -286,7 +284,7 @@ class StudentSessionController extends Controller
             $level = $student->getLevel();
             $discountPercentage = min(50, ($level - 1) * 2);
             $originalRate = $sessionRate;
-            
+
             if ($discountPercentage > 0) {
                 $discountMultiplier = 1 - ($discountPercentage / 100);
                 $sessionRate = $sessionRate * $discountMultiplier;
@@ -363,13 +361,13 @@ class StudentSessionController extends Controller
             $sessionDate = \Carbon\Carbon::parse($request->date)->format('F j, Y');
             $startTimeFmt = date('g:i A', strtotime($request->start_time));
             Notification::create([
-                'user_id'    => $request->tutor_id,
-                'user_type'  => 'tutor',
-                'type'       => 'new_booking',
-                'title'      => 'New Booking Request',
-                'message'    => $student->first_name . ' ' . $student->last_name .
-                                ' has requested a ' . ucfirst(str_replace('_', '-', $request->session_type)) .
-                                ' session on ' . $sessionDate . ' at ' . $startTimeFmt . '.',
+                'user_id' => $request->tutor_id,
+                'user_type' => 'tutor',
+                'type' => 'new_booking',
+                'title' => 'New Booking Request',
+                'message' => $student->first_name . ' ' . $student->last_name .
+                    ' has requested a ' . ucfirst(str_replace('_', '-', $request->session_type)) .
+                    ' session on ' . $sessionDate . ' at ' . $startTimeFmt . '.',
                 'related_id' => $session->id,
             ]);
 
@@ -378,17 +376,17 @@ class StudentSessionController extends Controller
             $achievementService->checkAndNotifyProgress($student, 'student', 'sessions_booked');
 
             DB::commit();
-            
+
             if ($request->booking_type === 'monthly') {
                 $message = 'Session booking request sent successfully! Payment of ₱' . number_format($sessionRate, 2) . '/month has been deducted from your wallet.';
             } else {
                 $message = 'Session booking request sent successfully! Payment of ₱' . number_format($sessionRate, 2) . ' (₱' . number_format($hourlyRate, 2) . '/hour) has been deducted from your wallet.';
             }
-            
+
             if (isset($discountPercentage) && $discountPercentage > 0) {
                 $message .= ' A Level ' . $level . ' discount of ' . $discountPercentage . '% (₱' . number_format($originalRate - $sessionRate, 2) . ') was applied!';
             }
-            
+
             return redirect()->route('student.book-session')->with('success', $message);
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
@@ -400,7 +398,7 @@ class StudentSessionController extends Controller
                 'request' => $request->all(),
                 'user_id' => Auth::guard('student')->id()
             ]);
-            
+
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['error' => 'An error occurred while creating your booking: ' . $e->getMessage()]);
@@ -411,19 +409,21 @@ class StudentSessionController extends Controller
     public function getTutorDetails($id)
     {
         $tutor = Tutor::where('id', $id)
-            ->with(['sessions' => function($q) {
-                $q->whereIn('status', ['accepted', 'pending'])
-                  ->where('date', '>=', now()->toDateString());
-            }])
+            ->with([
+                'sessions' => function ($q) {
+                    $q->whereIn('status', ['accepted', 'pending'])
+                        ->where('date', '>=', now()->toDateString());
+                }
+            ])
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')
             ->firstOrFail();
-        
+
         // Add calculated ratings that include both session reviews and assignment answer ratings
         $tutor->average_rating = $tutor->getAverageRating();
         $tutor->rating_count = $tutor->getRatingCount();
         $tutor->next_available = $this->calculateNextAvailableSlot($tutor->sessions);
-        
+
         return response()->json($tutor);
     }
 
@@ -473,11 +473,11 @@ class StudentSessionController extends Controller
     public function schedule(Request $request)
     {
         $student = Auth::guard('student')->user();
-        
+
         // Get the requested month/year or default to current
         $year = (int) $request->get('year', now()->year);
         $month = (int) $request->get('month', now()->month);
-        
+
         // Validate month and year ranges
         if ($month < 1 || $month > 12) {
             $month = now()->month;
@@ -485,7 +485,7 @@ class StudentSessionController extends Controller
         if ($year < 2020 || $year > 2030) {
             $year = now()->year;
         }
-        
+
         // Handle month overflow/underflow
         if ($month > 12) {
             $year += 1;
@@ -494,7 +494,7 @@ class StudentSessionController extends Controller
             $year -= 1;
             $month = 12;
         }
-        
+
         // Get all accepted sessions for the student in the requested month
         $sessions = Session::where('student_id', $student->id)
             ->where('status', 'accepted')
@@ -504,35 +504,35 @@ class StudentSessionController extends Controller
             ->orderBy('date')
             ->orderBy('start_time')
             ->get();
-        
+
         // Group sessions by date
-        $sessionsByDate = $sessions->groupBy(function($session) {
+        $sessionsByDate = $sessions->groupBy(function ($session) {
             return $session->date->format('Y-m-d');
         });
-        
+
         // Get calendar data
         $calendarData = $this->generateCalendarData($year, $month, $sessionsByDate);
-        
+
         return view('student.schedule.index', compact('student', 'sessions', 'sessionsByDate', 'calendarData', 'year', 'month'));
     }
 
     // Generate calendar data for the month
     private function generateCalendarData($year, $month, $sessionsByDate)
     {
-        $firstDay = now()->setYear((int)$year)->setMonth((int)$month)->startOfMonth();
+        $firstDay = now()->setYear((int) $year)->setMonth((int) $month)->startOfMonth();
         $lastDay = $firstDay->copy()->endOfMonth();
         $startOfWeek = $firstDay->copy()->startOfWeek();
         $endOfWeek = $lastDay->copy()->endOfWeek();
-        
+
         $calendar = [];
         $current = $startOfWeek->copy();
-        
+
         while ($current->lte($endOfWeek)) {
             $week = [];
             for ($i = 0; $i < 7; $i++) {
                 $date = $current->copy();
                 $dateString = $date->format('Y-m-d');
-                
+
                 $dayData = [
                     'date' => $date,
                     'isCurrentMonth' => $date->month == $month,
@@ -540,13 +540,13 @@ class StudentSessionController extends Controller
                     'sessions' => $sessionsByDate->get($dateString, collect()),
                     'sessionCount' => $sessionsByDate->get($dateString, collect())->count(),
                 ];
-                
+
                 $week[] = $dayData;
                 $current->addDay();
             }
             $calendar[] = $week;
         }
-        
+
         return $calendar;
     }
-} 
+}

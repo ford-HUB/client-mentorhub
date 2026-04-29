@@ -168,6 +168,7 @@
         $learningAnalysis = null;
         $suggestedDifficulty = null;
         $suggestedFrequency = null;
+        $wrongAnswerSuggestions = [];
         
         if ($submission && $submission->status === 'graded') {
             $adaptiveLearningService = new \App\Services\AdaptiveLearningService();
