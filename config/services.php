@@ -46,6 +46,6 @@ return [
     ],
 
     'resend' => [
-        'resend_apikey' => env('RESEND_APIKEY')
+        'key' => env('RESEND_APIKEY')
     ]
 ];
