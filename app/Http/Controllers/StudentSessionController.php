@@ -207,43 +207,35 @@ class StudentSessionController extends Controller
                 'session_type' => 'required|in:face_to_face,online',
                 'date' => 'required|date|after_or_equal:today',
                 'start_time' => 'required',
-                'end_time' => 'required|after:start_time',
+                'end_time' => 'required',
                 'notes' => 'nullable|string|max:500',
-            ], [
-                'end_time.after' => 'The end time must be after the start time.',
             ]);
 
-            // Additional validation to ensure end_time is after start_time
-            // For hourly bookings, allow next-day end times
-            if ($request->booking_type === 'hourly') {
-                $startTime = \Carbon\Carbon::createFromFormat('H:i:s', $request->start_time);
-                $endTime = \Carbon\Carbon::createFromFormat('H:i:s', $request->end_time);
+            $startTimeStr = $request->start_time;
+            $endTimeStr = $request->end_time;
+            
+            try {
+                $startTime = \Carbon\Carbon::parse($startTimeStr);
+                $endTime = \Carbon\Carbon::parse($endTimeStr);
                 
-                // If end time is before start time, treat it as next day
-                if ($endTime->lt($startTime)) {
+                if ($request->booking_type === 'hourly' && $endTime->lt($startTime)) {
                     $endTime->addDay();
                 }
                 
-                // Validate that duration is reasonable (not more than 24 hours)
-                $totalMinutes = $startTime->diffInMinutes($endTime);
-                if ($totalMinutes <= 0) {
+                if ($endTime->lte($startTime)) {
                     return redirect()->back()
                         ->withInput()
                         ->withErrors(['end_time' => 'The end time must be after the start time.']);
                 }
-                if ($totalMinutes > 24 * 60) {
-                    return redirect()->back()
-                        ->withInput()
-                        ->withErrors(['end_time' => 'Session duration cannot exceed 24 hours.']);
-                }
-            } else {
-                // For monthly bookings, simple validation
-                if ($request->start_time >= $request->end_time) {
-                    return redirect()->back()
-                        ->withInput()
-                        ->withErrors(['end_time' => 'The end time must be after the start time.']);
-                }
+            } catch (\Exception $e) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['error' => 'Invalid time format provided.']);
             }
+
+
+            
+
 
             // Check for conflicting sessions for the tutor
             if ($request->booking_type === 'hourly') {
@@ -277,38 +269,13 @@ class StudentSessionController extends Controller
                 $hourlyRate = $tutor->hourly_rate ?? $tutor->session_rate ?? 0;
                 
                 // Calculate hours between start and end time
-                $startTime = \Carbon\Carbon::createFromFormat('H:i:s', $request->start_time);
-                $endTime = \Carbon\Carbon::createFromFormat('H:i:s', $request->end_time);
                 
-                // Handle case where end time is before start time
-                if ($endTime->lt($startTime)) {
-                    // If end time is 00:00 (midnight) and start is in the morning (before 12:00 PM),
-                    // and the duration would be > 12 hours, assume user meant 12:00 PM (noon) instead
-                    if ($endTime->format('H:i') === '00:00' && $startTime->format('H') < 12) {
-                        $nextDayEndTime = $endTime->copy()->addDay();
-                        $nextDayDuration = $startTime->diffInMinutes($nextDayEndTime) / 60;
-                        
-                        // Treat 00:00 as 12:00 PM (noon) for same-day calculation
-                        $sameDayEndTime = $endTime->copy()->setTime(12, 0);
-                        $sameDayDuration = $startTime->diffInMinutes($sameDayEndTime) / 60;
-                        
-                        // If same-day duration is more reasonable (< 12 hours), use that
-                        if ($sameDayDuration > 0 && $sameDayDuration <= 12 && $nextDayDuration > 12) {
-                            $endTime = $sameDayEndTime; // Treat as 12:00 PM (noon)
-                        } else {
-                            $endTime->addDay(); // Add 24 hours for next day
-                        }
-                    } else {
-                        $endTime->addDay(); // Add 24 hours for next day
-                    }
-                }
-                
-                // Calculate total minutes and convert to hours (including fractional hours)
                 $totalMinutes = $startTime->diffInMinutes($endTime);
                 $hours = $totalMinutes / 60;
                 
                 $sessionRate = $hourlyRate * $hours;
             }
+
             $student = Auth::guard('student')->user();
 
             if (!$student) {
@@ -423,11 +390,20 @@ class StudentSessionController extends Controller
             }
             
             return redirect()->route('student.book-session')->with('success', $message);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            throw $e;
         } catch (\Exception $e) {
             DB::rollBack();
+            \Log::error('Booking Error: ' . $e->getMessage(), [
+                'exception' => $e,
+                'request' => $request->all(),
+                'user_id' => Auth::guard('student')->id()
+            ]);
+            
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['error' => 'An error occurred while creating your booking. Please try again.']);
+                ->withErrors(['error' => 'An error occurred while creating your booking: ' . $e->getMessage()]);
         }
     }
 
