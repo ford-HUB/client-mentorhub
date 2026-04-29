@@ -1565,7 +1565,8 @@
         }
 
         function loadTodaysSessions() {
-            const today = new Date().toISOString().slice(0, 10); // Get YYYY-MM-DD
+            const d = new Date();
+            const today = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
             const url = `{{ route('tutor.sessions.today') }}?date=${today}`;
 
             fetch(url)

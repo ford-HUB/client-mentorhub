@@ -268,6 +268,7 @@ class TutorSessionController extends Controller
             $sessions = Session::where('tutor_id', $tutorId)
                 ->where('date', $request->date)
                 ->where('status', 'accepted')
+                ->where('end_time', '>=', now()->toTimeString())
                 ->with('student')
                 ->orderBy('start_time')
                 ->get();
