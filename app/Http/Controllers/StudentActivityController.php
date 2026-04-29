@@ -98,7 +98,26 @@ class StudentActivityController extends Controller
         // Refresh activity to get latest status
         $activity->refresh();
 
-        return view('student.activity-details', compact('activity', 'submission', 'student'));
+        // Generate AI suggestions for wrong answers
+        $wrongAnswerSuggestions = [];
+        if ($submission && $submission->status === 'graded') {
+            $geminiService = new \App\Services\GeminiService();
+            if ($activity->questions && is_array($activity->questions)) {
+                foreach ($activity->questions as $index => $question) {
+                    $studentAnswerIndex = isset($submission->answers[$index]) ? (int)$submission->answers[$index] : null;
+                    $correctAnswerIndex = isset($question['correct_answer']) ? (int)$question['correct_answer'] : null;
+
+                    if ($studentAnswerIndex !== null && $correctAnswerIndex !== null && $studentAnswerIndex !== $correctAnswerIndex) {
+                        $questionText = $question['question'] ?? '';
+                        $wrongText = $question['options'][$studentAnswerIndex] ?? 'N/A';
+                        $correctText = $question['options'][$correctAnswerIndex] ?? 'N/A';
+                        $wrongAnswerSuggestions[$index] = $geminiService->generateWrongAnswerSuggestion($questionText, $wrongText, $correctText);
+                    }
+                }
+            }
+        }
+
+        return view('student.activity-details', compact('activity', 'submission', 'student', 'wrongAnswerSuggestions'));
     }
 
     // Save student's answers (draft)

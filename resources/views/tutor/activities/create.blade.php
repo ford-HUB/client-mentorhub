@@ -805,8 +805,7 @@
                 transform: translateY(0) scale(1);
             }
         }
-
-        .ai-modal-header {
+    .ai-modal-header {
             background: linear-gradient(135deg, #0ea5e9, #10b981);
             color: white;
             padding: 1.5rem 2rem;
@@ -1195,7 +1194,7 @@
                             style="background-color: #17a2b8; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 5px; cursor: pointer; font-size: 1rem; transition: background-color 0.3s; display: inline-flex; align-items: center; gap: 0.5rem;">
                             <i class="fas fa-flask"></i> Fill Test Data (5 Questions)
                         </button>
-                        <button type="button" class="btn-ai-generate" id="ai-generate-btn">
+                        <button type="button" class="btn-ai-generate" id="ai-generate-btn" style="display: none;">
                             <i class="fas fa-magic"></i> Generate with AI
                         </button>
                     </div>

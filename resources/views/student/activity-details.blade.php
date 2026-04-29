@@ -619,6 +619,17 @@
                                         </div>
                                     @endif
                                 @endif
+                                
+                                @if(isset($wrongAnswerSuggestions[$index]))
+                                    <div style="margin-top: 1rem; padding: 1rem; background-color: #f0f7ff; border-left: 4px solid #4a90e2; border-radius: 4px;">
+                                        <div style="color: #4a90e2; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                            <i class="fas fa-robot"></i> AI Study Advice
+                                        </div>
+                                        <div style="color: #555; font-size: 0.95rem; line-height: 1.5;">
+                                            {{ $wrongAnswerSuggestions[$index] }}
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         @endforeach
                     </div>

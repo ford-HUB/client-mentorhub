@@ -739,14 +739,28 @@
                 $sessions = $student->sessions->where('tutor_id', $tutor->id);
                 $activities = Activity::where('tutor_id', $tutor->id)
                     ->where('student_id', $student->id)
+                    ->with(['submissions' => function($query) use ($student) {
+                        $query->where('student_id', $student->id);
+                    }])
                     ->get();
+                
+                $gradedActivities = $activities->filter(function($activity) use ($student) {
+                    $submission = $activity->studentSubmission($student->id);
+                    return $submission && $submission->status === 'graded';
+                });
+                $totalPoints = $gradedActivities->sum(function($activity) use ($student) {
+                    $submission = $activity->studentSubmission($student->id);
+                    return $submission ? $submission->score : 0;
+                });
+                $maxPoints = $gradedActivities->sum('total_points');
+                $averageScore = $maxPoints > 0 ? ($totalPoints / $maxPoints) * 100 : 0;
                 
                 $student->stats = [
                     'total_sessions' => $sessions->count(),
                     'completed_sessions' => $sessions->where('status', 'completed')->count(),
                     'total_activities' => $activities->count(),
                     'completed_activities' => $activities->whereIn('status', ['completed', 'graded'])->count(),
-                    'average_score' => $activities->where('status', 'graded')->avg('score') ?? 0,
+                    'average_score' => $averageScore,
                     'last_session' => $sessions->sortByDesc('created_at')->first()?->created_at,
                     'online_sessions' => $sessions->where('session_type', 'online')->count(),
                     'face_to_face_sessions' => $sessions->where('session_type', 'face_to_face')->count(),
@@ -760,14 +774,28 @@
                 $sessions = $student->sessions->where('tutor_id', $tutor->id);
                 $activities = Activity::where('tutor_id', $tutor->id)
                     ->where('student_id', $student->id)
+                    ->with(['submissions' => function($query) use ($student) {
+                        $query->where('student_id', $student->id);
+                    }])
                     ->get();
+                
+                $gradedActivities = $activities->filter(function($activity) use ($student) {
+                    $submission = $activity->studentSubmission($student->id);
+                    return $submission && $submission->status === 'graded';
+                });
+                $totalPoints = $gradedActivities->sum(function($activity) use ($student) {
+                    $submission = $activity->studentSubmission($student->id);
+                    return $submission ? $submission->score : 0;
+                });
+                $maxPoints = $gradedActivities->sum('total_points');
+                $averageScore = $maxPoints > 0 ? ($totalPoints / $maxPoints) * 100 : 0;
                 
                 $student->stats = [
                     'total_sessions' => $sessions->count(),
                     'completed_sessions' => $sessions->where('status', 'completed')->count(),
                     'total_activities' => $activities->count(),
                     'completed_activities' => $activities->whereIn('status', ['completed', 'graded'])->count(),
-                    'average_score' => $activities->where('status', 'graded')->avg('score') ?? 0,
+                    'average_score' => $averageScore,
                     'last_session' => $sessions->sortByDesc('created_at')->first()?->created_at,
                     'online_sessions' => $sessions->where('session_type', 'online')->count(),
                     'face_to_face_sessions' => $sessions->where('session_type', 'face_to_face')->count(),
@@ -781,14 +809,28 @@
                 $sessions = $student->sessions->where('tutor_id', $tutor->id);
                 $activities = Activity::where('tutor_id', $tutor->id)
                     ->where('student_id', $student->id)
+                    ->with(['submissions' => function($query) use ($student) {
+                        $query->where('student_id', $student->id);
+                    }])
                     ->get();
+                
+                $gradedActivities = $activities->filter(function($activity) use ($student) {
+                    $submission = $activity->studentSubmission($student->id);
+                    return $submission && $submission->status === 'graded';
+                });
+                $totalPoints = $gradedActivities->sum(function($activity) use ($student) {
+                    $submission = $activity->studentSubmission($student->id);
+                    return $submission ? $submission->score : 0;
+                });
+                $maxPoints = $gradedActivities->sum('total_points');
+                $averageScore = $maxPoints > 0 ? ($totalPoints / $maxPoints) * 100 : 0;
                 
                 $student->stats = [
                     'total_sessions' => $sessions->count(),
                     'rejected_sessions' => $sessions->where('status', 'rejected')->count(),
                     'total_activities' => $activities->count(),
                     'completed_activities' => $activities->whereIn('status', ['completed', 'graded'])->count(),
-                    'average_score' => $activities->where('status', 'graded')->avg('score') ?? 0,
+                    'average_score' => $averageScore,
                     'last_session' => $sessions->sortByDesc('created_at')->first()?->created_at,
                     'online_sessions' => $sessions->where('session_type', 'online')->count(),
                     'face_to_face_sessions' => $sessions->where('session_type', 'face_to_face')->count(),
