@@ -9,4 +9,4 @@ Artisan::command('inspire', function () {
 
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('sessions:update-status')->everyMinute();
+Schedule::command('sessions:update-status')->everyMinute()->withoutOverlapping();
