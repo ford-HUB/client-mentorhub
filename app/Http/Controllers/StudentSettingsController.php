@@ -77,10 +77,41 @@ class StudentSettingsController extends Controller
             ];
         }
 
-        // Count completed quests (activities submitted)
-        $completedQuests = ActivitySubmission::where('student_id', $student->id)
-            ->where('status', 'submitted')
-            ->count();
+        // ---------------------------------------------------------------
+        // Achievement Points: sum of scores earned on PASSED quests only.
+        // A quest is considered "passed" when:
+        //   - score >= activity.passing_score  (if a passing score is set by tutor), OR
+        //   - score > 0                        (fallback when no threshold set)
+        // ---------------------------------------------------------------
+        $gradedSubmissions = ActivitySubmission::where('student_id', $student->id)
+            ->whereIn('status', ['graded', 'submitted'])
+            ->with('activity')
+            ->get();
+
+        // Reset totalPoints — now based on actual scores, not badge achievements
+        $totalPoints = 0;
+        $passedQuests = 0;
+        $failedQuests = 0;
+
+        foreach ($gradedSubmissions as $sub) {
+            $activity     = $sub->activity;
+            $score        = (int) ($sub->score ?? 0);
+            $passingScore = $activity ? $activity->passing_score : null;
+
+            $passed = ($passingScore !== null)
+                ? $score >= $passingScore
+                : $score > 0;
+
+            if ($passed) {
+                $totalPoints += $score;   // actual score = points earned
+                $passedQuests++;
+            } else {
+                $failedQuests++;
+            }
+        }
+
+        // Every quest attempt (pass OR fail) advances the quests progress bar
+        $completedQuests = $passedQuests + $failedQuests;
 
         // Calculate level based on total points and completed quests
         $level = 1;
@@ -137,6 +168,8 @@ class StudentSettingsController extends Controller
             'pointsForNextLevel',
             'questsForNextLevel',
             'completedQuests',
+            'passedQuests',
+            'failedQuests',
             'nextLevelPointsReq',
             'nextLevelQuestsReq',
             'student',
@@ -168,7 +201,7 @@ class StudentSettingsController extends Controller
                 break;
             case 'activities_submitted':
                 $current = ActivitySubmission::where('student_id', $student->id)
-                    ->where('status', 'submitted')
+                    ->whereIn('status', ['submitted', 'graded'])
                     ->count();
                 break;
             case 'perfect_ratings':

@@ -24,6 +24,7 @@ class Activity extends Model
         'time_limit',
         'feedback',
         'score',
+        'passing_score',
         'submitted_at',
         'graded_at'
     ];
@@ -72,15 +73,15 @@ class Activity extends Model
         if ($this->status === 'completed' || $this->status === 'graded') {
             return 100;
         }
-        
+
         if ($this->status === 'in_progress') {
             return 50;
         }
-        
+
         if ($this->status === 'sent') {
             return 25;
         }
-        
+
         return 0;
     }
 
@@ -92,10 +93,14 @@ class Activity extends Model
 
         $percentage = ($this->score / $this->total_points) * 100;
 
-        if ($percentage >= 90) return 'A';
-        if ($percentage >= 80) return 'B';
-        if ($percentage >= 70) return 'C';
-        if ($percentage >= 60) return 'D';
+        if ($percentage >= 90)
+            return 'A';
+        if ($percentage >= 80)
+            return 'B';
+        if ($percentage >= 70)
+            return 'C';
+        if ($percentage >= 60)
+            return 'D';
         return 'F';
     }
 

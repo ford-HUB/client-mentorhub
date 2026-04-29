@@ -22,7 +22,7 @@ class GeminiService
     public function generateWrongAnswerSuggestion($question, $wrongAnswer, $correctAnswer)
     {
         $fallback = "Take a moment to review the question: \"{$question}\". I advise you to study this specific topic more deeply to make sure you fully understand why \"{$correctAnswer}\" is the correct answer instead of \"{$wrongAnswer}\".";
-        
+
         if (empty($this->apiKey)) {
             return $fallback;
         }

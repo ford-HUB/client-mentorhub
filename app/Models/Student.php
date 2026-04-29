@@ -87,31 +87,45 @@ class Student extends Authenticatable
 
     public function getLevel()
     {
-        // Get total points from unlocked achievements
-        $totalPoints = \App\Models\UserAchievement::where('user_type', 'App\Models\Student')
-            ->where('user_id', $this->id)
-            ->where('is_unlocked', true)
-            ->join('achievements', 'user_achievements.achievement_id', '=', 'achievements.id')
-            ->sum('achievements.points');
-            
-        // Count completed quests (activities submitted)
-        $completedQuests = \App\Models\ActivitySubmission::where('student_id', $this->id)
-            ->where('status', 'submitted')
-            ->count();
-            
+        // Achievement Points = sum of scores earned on PASSED quests only.
+        // A quest is "passed" when score >= activity.passing_score (if set), or score > 0 (fallback).
+        $gradedSubmissions = \App\Models\ActivitySubmission::where('student_id', $this->id)
+            ->whereIn('status', ['graded', 'submitted'])
+            ->with('activity')
+            ->get();
+
+        $totalPoints    = 0;
+        $completedQuests = 0;
+
+        foreach ($gradedSubmissions as $sub) {
+            $activity     = $sub->activity;
+            $score        = (int) ($sub->score ?? 0);
+            $passingScore = $activity ? $activity->passing_score : null;
+
+            $passed = ($passingScore !== null)
+                ? $score >= $passingScore
+                : $score > 0;
+
+            if ($passed) {
+                $totalPoints += $score;
+            }
+            // Every graded quest (pass OR fail) counts toward completedQuests
+            $completedQuests++;
+        }
+
         $level = 1;
         $maxLevel = 50;
         for ($i = 2; $i <= $maxLevel; $i++) {
             $requiredPoints = ($i - 1) * 100;
             $requiredQuests = ($i - 1) * 2;
-            
+
             if ($totalPoints >= $requiredPoints && $completedQuests >= $requiredQuests) {
                 $level = $i;
             } else {
                 break;
             }
         }
-        
+
         return $level;
     }
 

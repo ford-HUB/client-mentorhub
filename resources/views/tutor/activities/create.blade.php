@@ -1165,6 +1165,12 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="passing_score">Passing Score <small style="font-weight:normal; color:#888;">(optional — for quest point rewards)</small></label>
+                        <input type="number" id="passing_score" name="passing_score"
+                            value="{{ old('passing_score') }}" min="0" placeholder="e.g. 75 (leave blank = any score > 0 passes)">
+                    </div>
+
+                    <div class="form-group">
                         <label for="time_limit">Time Limit (minutes)</label>
                         <input type="number" id="time_limit" name="time_limit" value="{{ old('time_limit') }}" min="1"
                             placeholder="Optional">

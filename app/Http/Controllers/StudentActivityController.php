@@ -310,15 +310,33 @@ class StudentActivityController extends Controller
             $score = round($score);
         }
 
+        // Determine if activity can be fully auto-graded (only multiple choice questions)
+        $hasOtherQuestionTypes = false;
+        if (!empty($questions) && is_array($questions)) {
+            foreach ($questions as $question) {
+                if (isset($question['type']) && $question['type'] !== 'multiple_choice') {
+                    $hasOtherQuestionTypes = true;
+                    break;
+                }
+            }
+        }
+        
+        // If there are no questions at all, it's not auto-gradable
+        if (empty($questions)) {
+            $hasOtherQuestionTypes = true;
+        }
+
+        $finalStatus = $hasOtherQuestionTypes ? 'submitted' : 'graded';
+
         // Update submission with auto-graded score
         $submission->update([
             'answers' => $request->answers,
             'notes' => $request->notes,
             'attachments' => $attachments,
-            'status' => 'graded', // Auto-graded, so set to graded immediately
+            'status' => $finalStatus,
             'score' => $score,
             'submitted_at' => now(),
-            'graded_at' => now()
+            'graded_at' => $finalStatus === 'graded' ? now() : null
         ]);
 
         // Refresh the submission to ensure we have the latest data
@@ -326,21 +344,32 @@ class StudentActivityController extends Controller
 
         // Update activity status
         $activity->update([
-            'status' => 'graded',
-            'graded_at' => now()
+            'status' => $finalStatus,
+            'graded_at' => $finalStatus === 'graded' ? now() : null
         ]);
         
         // Refresh the activity as well
         $activity->refresh();
 
-        // Create notification for student about grading
-        \App\Models\Notification::create([
-            'user_id' => $student->id,
-            'user_type' => 'student',
-            'type' => 'activity_graded',
-            'title' => 'Activity Graded',
-            'message' => 'Your activity "' . $activity->title . '" has been automatically graded. Score: ' . $score . '/' . $activity->total_points,
-        ]);
+        // Create notification for student about grading if auto-graded
+        if ($finalStatus === 'graded') {
+            \App\Models\Notification::create([
+                'user_id' => $student->id,
+                'user_type' => 'student',
+                'type' => 'activity_graded',
+                'title' => 'Activity Graded',
+                'message' => 'Your activity "' . $activity->title . '" has been automatically graded. Score: ' . $score . '/' . $activity->total_points,
+            ]);
+        } else {
+            // Notification for tutor that a student has submitted an activity
+            \App\Models\Notification::create([
+                'user_id' => $activity->tutor_id,
+                'user_type' => 'tutor',
+                'type' => 'activity_submitted',
+                'title' => 'Activity Submitted',
+                'message' => $student->first_name . ' ' . $student->last_name . ' has submitted "' . $activity->title . '".',
+            ]);
+        }
 
         // Check achievements for student
         $achievementService = new \App\Services\AchievementNotificationService();

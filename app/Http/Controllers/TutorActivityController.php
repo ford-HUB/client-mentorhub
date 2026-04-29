@@ -75,6 +75,7 @@
             'instructions' => 'nullable|string',
             'due_date' => 'nullable|date|after:now',
             'total_points' => 'required|integer|min:1',
+            'passing_score' => 'nullable|integer|min:0',
             'time_limit' => 'nullable|integer|min:1',
             'questions' => 'nullable'
         ]);
@@ -121,6 +122,7 @@
             'attachments' => null, // No longer using attachments
             'due_date' => $request->due_date,
             'total_points' => $request->total_points,
+            'passing_score' => $request->passing_score ?: null,
             'time_limit' => $request->time_limit,
         ]);
 
@@ -212,7 +214,7 @@
             // Get the submission
             $submission = $activity->submissions()->where('student_id', $activity->student_id)->first();
             
-            if (!$submission || $submission->status !== 'submitted') {
+            if (!$submission) {
                 return redirect()->route('tutor.activities.show', $activity)
                     ->with('error', 'No submitted activity found to grade.');
             }

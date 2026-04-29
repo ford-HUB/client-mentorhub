@@ -638,7 +638,7 @@
                 <!-- Points Progress -->
                 <div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.95rem;">
-                        <span style="font-weight: bold;"><i class="fas fa-star" style="color: #ffd700; margin-right: 5px;"></i> Points Progress</span>
+                        <span style="font-weight: bold;"><i class="fas fa-star" style="color: #ffd700; margin-right: 5px;"></i> Points Progress <small style="font-weight:normal; opacity:0.8;">(score from passed quests)</small></span>
                         <span>{{ $pointsForNextLevel > 0 ? $pointsForNextLevel . ' more needed' : 'Completed!' }}</span>
                     </div>
                     <div class="level-progress" style="margin-top: 0; background: rgba(0,0,0,0.2);">
@@ -662,7 +662,14 @@
                         @endphp
                         <div class="level-progress-bar" style="width: {{ $questsProgress }}%; {{ $questsForNextLevel == 0 ? 'background: #28a745;' : 'background: #17a2b8;' }}"></div>
                     </div>
-                    <div class="level-progress-text" style="text-align: left; margin-top: 0.5rem;">{{ $completedQuests }} / {{ $nextLevelQuestsReq }} quests completed</div>
+                    <div class="level-progress-text" style="text-align: left; margin-top: 0.5rem;">{{ $completedQuests }} / {{ $nextLevelQuestsReq }} quests taken
+                        @if($completedQuests > 0)
+                            &nbsp;—&nbsp;
+                            <span style="color: #28a745;"><i class="fas fa-check-circle"></i> {{ $passedQuests }} passed</span>
+                            &nbsp;
+                            <span style="color: #ff6b6b;"><i class="fas fa-times-circle"></i> {{ $failedQuests }} failed</span>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -727,8 +734,8 @@
                 <div style="font-size: 0.9rem; color: #555; line-height: 1.6;">
                     You need <strong>both</strong> requirements to reach the next level:
                     <ul style="margin: 0.5rem 0 0 1.5rem;">
-                        <li>Earn <strong>{{ $nextLevelPointsReq }} points</strong> by unlocking achievements</li>
-                        <li>Complete <strong>{{ $nextLevelQuestsReq }} quests</strong> (submit activities from your tutor)</li>
+                        <li>Earn <strong>{{ $nextLevelPointsReq }} points</strong> — your score on each quest you <strong>pass</strong> is added as points (e.g. scoring 80/100 on a passing quest gives you 80 pts)</li>
+                        <li>Take <strong>{{ $nextLevelQuestsReq }} quests</strong> (submit activities from your tutor) — both passed and failed attempts are counted</li>
                     </ul>
                 </div>
             </div>

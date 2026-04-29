@@ -351,9 +351,7 @@
                 @endif
             </div>
 
-            @php
-                $submission = $activity->submissions()->where('student_id', $activity->student_id)->first();
-            @endphp
+
 
             @if($submission)
                 <!-- Student Submission -->
@@ -610,7 +608,7 @@
 
                         @if($submission->status === 'graded')
                             <!-- Graded Results -->
-                            <div class="grading-section">
+                            <div class="grading-section" id="graded-results">
                                 <h3 style="margin-bottom: 1rem; color: #333;">Grading Results</h3>
                                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
                                     <div style="text-align: center; padding: 1rem; background-color: white; border-radius: 5px;">
@@ -627,13 +625,57 @@
                                     </div>
                                 </div>
                                 @if($submission->feedback)
-                                    <div style="background-color: white; padding: 1rem; border-radius: 5px;">
+                                    <div style="background-color: white; padding: 1rem; border-radius: 5px; margin-bottom: 1.5rem;">
                                         <h4 style="color: #333; margin-bottom: 0.5rem;">Feedback:</h4>
                                         <p style="color: #666; line-height: 1.6;">{{ $submission->feedback }}</p>
                                     </div>
                                 @endif
+                                
+                                <button type="button" onclick="showGradeForm()" class="btn btn-secondary" style="background-color: #6c757d; color: white;">
+                                    <i class="fas fa-edit"></i> Edit Grade
+                                </button>
                             </div>
                         @endif
+
+                        <!-- Grading Form -->
+                        <div class="grading-section" id="grading-form-container" style="{{ $submission->status === 'graded' ? 'display: none;' : '' }}">
+                            <h3 style="margin-bottom: 1.5rem; color: #333;">Grade Activity</h3>
+                            <form id="grade-form" action="{{ route('tutor.activities.grade', $activity) }}" method="POST">
+                                @csrf
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label for="score" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Score (out of {{ $activity->total_points }})</label>
+                                    <input type="number" name="score" id="score" value="{{ $submission->score ?? 0 }}" min="0" max="{{ $activity->total_points }}" class="form-control" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;" required>
+                                </div>
+                                
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label for="feedback" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Feedback (optional)</label>
+                                    <textarea name="feedback" id="feedback" rows="4" class="form-control" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;" placeholder="Provide feedback to the student...">{{ $submission->feedback }}</textarea>
+                                </div>
+                                
+                                <div style="display: flex; gap: 1rem;">
+                                    <button type="submit" id="submit-grade-btn" class="btn btn-primary">
+                                        <i class="fas fa-check"></i> Submit Grade
+                                    </button>
+                                    @if($submission->status === 'graded')
+                                        <button type="button" onclick="hideGradeForm()" class="btn btn-secondary" style="background-color: #6c757d; color: white;">
+                                            Cancel
+                                        </button>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
+
+                        <script>
+                            function showGradeForm() {
+                                document.getElementById('graded-results').style.display = 'none';
+                                document.getElementById('grading-form-container').style.display = 'block';
+                            }
+                            
+                            function hideGradeForm() {
+                                document.getElementById('graded-results').style.display = 'block';
+                                document.getElementById('grading-form-container').style.display = 'none';
+                            }
+                        </script>
                     @else
                         <div class="no-submission">
                             <i class="fas fa-clock"></i>
