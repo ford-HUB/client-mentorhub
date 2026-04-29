@@ -128,28 +128,22 @@ class StudentAssignmentController extends Controller
             $answer = $assignment->selectedAnswer()->with(['tutor', 'ratings'])->first();
         }
         
-        // Get student's interests for matching
-        $studentInterests = [];
-        if ($student->subjects_interest) {
-            $raw = $student->subjects_interest;
-            $studentInterests = is_array($raw) ? $raw : array_map('trim', explode(',', $raw));
-        }
+        // Get assignment subject for matching
+        $assignmentSubject = $assignment->subject;
 
-        $answers = $assignment->answers()->with('tutor')->get()->map(function($answerItem) use ($studentInterests) {
+        $answers = $assignment->answers()->with('tutor')->get()->map(function($answerItem) use ($assignmentSubject) {
             $tutor = $answerItem->tutor;
             // Get tutor's overall rating (includes both session reviews and assignment answer ratings)
             $tutorOverallRating = $tutor->getAverageRating();
             $tutorOverallRatingCount = $tutor->getRatingCount();
 
-            // Determine matched expertise (tutor specialization vs student interests)
+            // Determine matched expertise (tutor specialization vs assignment subject)
             $tutorExpertise = $tutor->specialization ? array_map('trim', explode(',', $tutor->specialization)) : [];
             $matched = [];
-            if (!empty($studentInterests) && !empty($tutorExpertise)) {
-                foreach ($studentInterests as $interest) {
-                    foreach ($tutorExpertise as $expertise) {
-                        if (stripos($expertise, $interest) !== false || stripos($interest, $expertise) !== false) {
-                            $matched[] = trim($expertise);
-                        }
+            if ($assignmentSubject && !empty($tutorExpertise)) {
+                foreach ($tutorExpertise as $expertise) {
+                    if (stripos($expertise, $assignmentSubject) !== false || stripos($assignmentSubject, $expertise) !== false) {
+                        $matched[] = trim($expertise);
                     }
                 }
                 $matched = array_unique($matched);

@@ -837,7 +837,7 @@
                         {{-- ── Matched Expertise Chips (shown first if any) ── --}}
                         @if(!empty($ans['matched_interests']))
                             <div class="matched-section">
-                                <div class="matched-label"><i class="fas fa-bullseye"></i> Matches Your Interests</div>
+                                <div class="matched-label"><i class="fas fa-bullseye"></i> Matched Expertise</div>
                                 <div class="matched-chips">
                                     @foreach($ans['matched_interests'] as $chip)
                                         <span class="matched-chip"><i class="fas fa-check-circle"></i> {{ $chip }}</span>
