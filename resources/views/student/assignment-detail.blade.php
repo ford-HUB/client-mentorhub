@@ -848,14 +848,32 @@
 
                         <div class="answer-header">
                             <div class="tutor-info">
-                                <div class="tutor-name">
+                                <div class="tutor-name"
+                                     style="cursor: pointer; color: #2d7dd2; display: inline-block; transition: color 0.2s;"
+                                     onmouseover="this.style.color='#1a5fa8'"
+                                     onmouseout="this.style.color='#2d7dd2'"
+                                     onclick="openTutorModal(
+                                         {{ json_encode($ans['tutor_name']) }},
+                                         {{ json_encode($ans['tutor_specialization'] ?? '') }},
+                                         {{ json_encode($ans['tutor_bio'] ?? '') }},
+                                         {{ json_encode($ans['tutor_phone'] ?? '') }},
+                                         {{ $ans['tutor_is_verified'] ? 'true' : 'false' }},
+                                         {{ json_encode($ans['tutor_profile_picture']) }},
+                                         {{ json_encode($ans['tutor_initials']) }},
+                                         {{ json_encode($ans['tutor_session_rate'] ? '₱'.number_format($ans['tutor_session_rate'],2).'/session' : 'N/A') }}
+                                     )">
                                     {{ $ans['tutor_name'] }}
                                     @if($ans['tutor_is_verified'])
                                         <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
                                     @endif
                                 </div>
-                                @if($ans['tutor_specialization'])
+                                @if(!empty($ans['tutor_specialization']))
                                     <div class="tutor-specialization">{{ $ans['tutor_specialization'] }}</div>
+                                @endif
+                                @if(!empty($ans['tutor_bio']))
+                                    <div class="tutor-bio" style="color: #555; font-size: 0.85rem; margin-top: 0.5rem; margin-bottom: 0.25rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
+                                        {{ $ans['tutor_bio'] }}
+                                    </div>
                                 @endif
                                 <div class="tutor-rating">
                                     <span class="rating-badge">
